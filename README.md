@@ -36,3 +36,8 @@ Last but not least, you will notice that I am using C not C++ as Casey did and t
 for that is that he is mostly writing C code with the exception of operator overloading
 which I do not plan to rely on. That's where my code is going to differ. (Assuming that
 I would have enough free time to make it there.)
+
+## Troubleshooting
+
+If the compilation fails make sure that the `obj` directory exist and that you have
+installed MinGW and that `gcc` has been added to `PATH`.
