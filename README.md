@@ -22,7 +22,7 @@ are executed in the order that they appear.
 The script compiles the handmade hero game.
 
 ```sh
-gcc src/handmade.c -o handmade.exe -Wl,--subsystem,windows -lgdi32
+gcc src/handmade.c -o obj/handmade.exe -Wl,--subsystem,windows -lgdi32
 ```
 
 To display graphics for an application compiled with MinGW we need to link
