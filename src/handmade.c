@@ -28,6 +28,19 @@ LRESULT CALLBACK MainWindowCallback(
 			OutputDebugString("WM_ACTIVEAPP");
 		} break;
 
+		case WM_PAINT:
+		{
+			OutputDebugString("WM_PAINT");
+			PAINTSTRUCT Paint = {};
+			HDC DeviceContext = BeginPaint(Window, &Paint);
+			int const X = Paint.rcPaint.left;
+			int const Y = Paint.rcPaint.top;
+			int const Width = (Paint.rcPaint.right - Paint.rcPaint.left);
+			int const Height = (Paint.rcPaint.bottom - Paint.rcPaint.top);
+			PatBlt(DeviceContext, X, Y, Width, Height, BLACKNESS);
+			EndPaint(Window, &Paint);
+		} break;
+
 		default:
 		{
 			Result = DefWindowProc(Window, Message, WParam, LParam);
