@@ -48,7 +48,7 @@ int CALLBACK WinMain(
 	WindowClass.hInstance = Instance;
 	WindowClass.lpszClassName = "HandMadeHeroWindowClass";
 	if (RegisterClass(&WindowClass)) {
-		HWND Window = CreateWindowEx(
+		HWND WindowHandle = CreateWindowEx(
 			0,
 			WindowClass.lpszClassName,
 			"Handmade Hero",
