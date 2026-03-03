@@ -52,7 +52,7 @@ int CALLBACK WinMain(
 			0,
 			WindowClass.lpszClassName,
 			"Handmade Hero",
-			WS_EX_OVERLAPPEDWINDOW | WS_VISIBLE,
+			WS_OVERLAPPEDWINDOW | WS_VISIBLE,
 			CW_USEDEFAULT,
 			CW_USEDEFAULT,
 			CW_USEDEFAULT,
