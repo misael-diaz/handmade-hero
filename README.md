@@ -1,5 +1,6 @@
 # handmade-hero
-following Casey's game dev tutorial
+Just following Casey's game dev [Handmade Hero](https://www.youtube.com/watch?v=I5fNrmQYeuI&list=PLnuhp3Xd9PYTt6svyQPyRO_AAuMWGxPzU) series with some experimentation of my own
+for learning purposes.
 
 ## Requirements
 
