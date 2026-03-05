@@ -104,10 +104,10 @@ LRESULT CALLBACK Win32MainWindowCallback(
 			RECT ClientRect = {};
 			GetClientRect(Window, &ClientRect);
 			int const Width = (
-				ClientRect.right - ClientRect.rcClientRect.left
+				ClientRect.right - ClientRect.left
 			);
 			int const Height = (
-				ClientRect.bottom - ClientRect.rcClientRect.top
+				ClientRect.bottom - ClientRect.top
 			);
 			Win32ResizeDIBSection(Width, Height);
 			OutputDebugString("WM_SIZE");
