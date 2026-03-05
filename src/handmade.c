@@ -57,14 +57,14 @@ internal void Win32ResizeDIBSection(int const Width, int const Height)
 
 internal void Win32UpdateWindow(
 		HDC DeviceContext,
-		RECT const * const WindowRect,
+		RECT WindowRect,
 		int const X,
 		int const Y,
 		int const Width,
 		int const Height)
 {
-	int const WindowWidth = WindowRect->right - WindowRect->left;
-	int const WindowHeight = WindowRect->bottom - WindowRect->top;
+	int const WindowWidth = WindowRect.right - WindowRect.left;
+	int const WindowHeight = WindowRect.bottom - WindowRect.top;
 	StretchDIBits(
 		DeviceContext,
 /*
@@ -144,7 +144,7 @@ LRESULT CALLBACK Win32MainWindowCallback(
 			GetWindowRect(Window, &WindowRect);
 			Win32UpdateWindow(
 				DeviceContext,
-				&WindowRect,
+				WindowRect,
 				X,
 				Y,
 				Width,
