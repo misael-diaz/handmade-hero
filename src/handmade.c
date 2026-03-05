@@ -10,52 +10,62 @@
 typedef uint8_t uint8;
 typedef uint32_t uint32;
 
-// TODO this is global for now
+// TODO this are global for now
 
 global BOOL running;
-global BITMAPINFO BitmapInfo;
-global void *Bitmap;
-global int BitmapWidth;
-global int BitmapHeight;
+global struct win32_offscreen_buffer {
+	BITMAPINFO BitmapInfo;
+	void *Bitmap;
+	int BitmapPitch;
+	int BitmapWidth;
+	int BitmapHeight;
+	int BitmapSize;
+} BackBuffer;
 
 // DIB Device Independent Bitmap
 // Thanks to Chris Hecker of Spy party fame for his insightful comments (I'm keeping the
 // thank you note as Casey did on the stream day 4 session).
-internal void Win32ResizeDIBSection(int const Width, int const Height)
+internal void Win32ResizeDIBSection(
+		struct win32_offscreen_buffer * const Buffer,
+		int const Width,
+		int const Height)
 {
-	BitmapWidth = Width;
-	BitmapHeight = Height;
+	Buffer->BitmapWidth = Width;
+	Buffer->BitmapHeight = Height;
 	// NOTE we want a bitmamp with a top-left origin so by convention biHeight < 0
-	BitmapInfo.bmiHeader.biSize = sizeof(BitmapInfo.bmiHeader);
-	BitmapInfo.bmiHeader.biWidth = BitmapWidth;
-	BitmapInfo.bmiHeader.biHeight = -BitmapHeight;
-	BitmapInfo.bmiHeader.biPlanes = 1;
-	BitmapInfo.bmiHeader.biBitCount = BITMAP_DEPTH;
-	BitmapInfo.bmiHeader.biCompression = BI_RGB;
-	if (Bitmap) {
-		VirtualFree(Bitmap, 0, MEM_RELEASE);
-		Bitmap = NULL;
+	Buffer->BitmapInfo.bmiHeader.biSize = sizeof(BitmapInfo.bmiHeader);
+	Buffer->BitmapInfo.bmiHeader.biWidth = (Buffer->BitmapWidth);
+	Buffer->BitmapInfo.bmiHeader.biHeight = -(Buffer->BitmapHeight);
+	Buffer->BitmapInfo.bmiHeader.biPlanes = 1;
+	Buffer->BitmapInfo.bmiHeader.biBitCount = BITMAP_DEPTH;
+	Buffer->BitmapInfo.bmiHeader.biCompression = BI_RGB;
+	if (Buffer->Bitmap) {
+		VirtualFree(Buffer->Bitmap, 0, MEM_RELEASE);
+		Buffer->Bitmap = NULL;
 	}
-	int const BitmapSize = (BITMAP_DEPTH / 8) * (BitmapWidth * BitmapHeight);
+	int const BitmapSize = (BITMAP_DEPTH / 8) * (Buffer->BitmapWidth * Buffer->BitmapHeight);
+	Buffer->BitmapSize = BitmapSize;
 	DWORD const AllocationType = MEM_COMMIT | MEM_RESERVE;
-	Bitmap = VirtualAlloc(0, BitmapSize, AllocationType, PAGE_READWRITE);
-	uint8 *Row = Bitmap;
-	uint32 *Pixel = Bitmap;
-	size_t const Pitch = (BITMAP_DEPTH / 8) * BitmapWidth;
-	for(int y = 0; y != BitmapHeight; ++y) {
+	Buffer->Bitmap = VirtualAlloc(0, BitmapSize, AllocationType, PAGE_READWRITE);
+	uint8 *Row = Buffer->Bitmap;
+	uint32 *Pixel = Buffer->Bitmap;
+	int const Pitch = (BITMAP_DEPTH / 8) * Buffer->BitmapWidth;
+	Buffer->BitmapPitch = Pitch;
+	for(int y = 0; y != Buffer->BitmapHeight; ++y) {
 		Pixel = (uint32*) Row;
 		uint8 const R = 0xff; // Red
 		uint8 const G = 0xff; // Green
 		uint8 const B = 0xff; // Blue
 		uint8 const P = 0x00; // Pad
-		for(int x = 0; x != BitmapWidth; ++x) {
+		for(int x = 0; x != Buffer->BitmapWidth; ++x) {
 			*(Pixel + x) = ((P << 24) + (R << 16) + (G << 8) + (B << 0));
 		}
 		Row += Pitch;
 	}
 }
 
-internal void Win32UpdateWindow(
+internal void Win32CopyBufferToWindow(
+		struct win32_offscreen_buffer Buffer,
 		HDC DeviceContext,
 		RECT WindowRect,
 		int const X,
@@ -79,14 +89,14 @@ internal void Win32UpdateWindow(
 */
 		0,
 		0,
-		BitmapWidth,
-		BitmapHeight,
+		Buffer.BitmapWidth,
+		Buffer.BitmapHeight,
 		0,
 		0,
 		WindowWidth,
 		WindowHeight,
-		Bitmap,
-		&BitmapInfo,
+		Buffer.Bitmap,
+		&Buffer.BitmapInfo,
 		DIB_RGB_COLORS,
 		SRCCOPY
 	);
@@ -110,7 +120,7 @@ LRESULT CALLBACK Win32MainWindowCallback(
 			int const Height = (
 				ClientRect.bottom - ClientRect.top
 			);
-			Win32ResizeDIBSection(Width, Height);
+			Win32ResizeDIBSection(&BackBuffer, Width, Height);
 			OutputDebugString("WM_SIZE");
 		} break;
 
@@ -142,7 +152,8 @@ LRESULT CALLBACK Win32MainWindowCallback(
 			int const Height = (Paint.rcPaint.bottom - Paint.rcPaint.top);
 			RECT WindowRect = {};
 			GetWindowRect(Window, &WindowRect);
-			Win32UpdateWindow(
+			Win32CopyBufferToWindow(
+				BackBuffer,
 				DeviceContext,
 				WindowRect,
 				X,
