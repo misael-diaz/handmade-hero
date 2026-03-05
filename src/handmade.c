@@ -11,7 +11,7 @@ typedef uint32_t uint32;
 
 // TODO this is global for now
 
-global bool running;
+global BOOL running;
 global BITMAPINFO BitmapInfo;
 global void *Bitmap;
 global int BitmapWidth;
