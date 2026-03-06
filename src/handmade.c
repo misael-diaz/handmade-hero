@@ -170,6 +170,37 @@ LRESULT CALLBACK Win32MainWindowCallback(
 			EndPaint(Window, &Paint);
 		} break;
 
+		case WM_SYSKEYDOWN:
+		{
+		} break;
+
+		case WM_SYSKEYUP:
+		{
+		} break;
+
+		case WM_KEYDOWN:
+		{
+		} break;
+
+		case WM_KEYUP:
+		{
+			uint32 VKCode = wParam;
+			bool const WasDown = ((LParam & (1 << 30)) != 0);
+			bool const transition = ((LParam & (1 << 31)) != 0);
+			if (VK_UP == VKCode) {
+			} else if (VK_DOWN == VKCode) {
+			} else if (VK_LEFT == VKCode) {
+			} else if (VK_RIGHT == VKCode) {
+			} else if (VK_SPACE == VKCode) {
+			} else if (VK_ESCAPE == VKCode) {
+				if (transition) {
+					OutputDebugString("ESCAPE Key Transition Bit Set");
+				} else {
+					OutputDebugString("ESCAPE Key Transition Bit NOT Set");
+				}
+			}
+		} break;
+
 		default:
 		{
 			Result = DefWindowProc(Window, Message, WParam, LParam);
