@@ -184,7 +184,7 @@ LRESULT CALLBACK Win32MainWindowCallback(
 
 		case WM_KEYUP:
 		{
-			uint32 VKCode = wParam;
+			uint32 VKCode = WParam;
 			bool const WasDown = ((LParam & (1 << 30)) != 0);
 			bool const transition = ((LParam & (1 << 31)) != 0);
 			if (VK_UP == VKCode) {
