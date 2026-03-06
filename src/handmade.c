@@ -185,18 +185,12 @@ LRESULT CALLBACK Win32MainWindowCallback(
 		case WM_KEYUP:
 		{
 			uint32 VKCode = WParam;
-			bool const WasDown = ((LParam & (1 << 30)) != 0);
 			if (VK_UP == VKCode) {
 			} else if (VK_DOWN == VKCode) {
 			} else if (VK_LEFT == VKCode) {
 			} else if (VK_RIGHT == VKCode) {
 			} else if (VK_SPACE == VKCode) {
 			} else if (VK_ESCAPE == VKCode) {
-				if (WasDown) {
-					OutputDebugString("ESCAPE Key Previous State Bit Set");
-				} else {
-					OutputDebugString("ESCAPE Key Previous State Bit NOT Set");
-				}
 			}
 		} break;
 
