@@ -22,6 +22,21 @@ global struct win32_offscreen_buffer {
 	int BitmapSize;
 } BackBuffer;
 
+struct win32_window_dimension {
+	int Width;
+	int Height;
+};
+
+internal struct win32_window_dimension Win32GetWindowDimension(HWND WindowHandle)
+{
+	RECT ClientRect = {};
+	GetClientRect(Window, &ClientRect);
+	struct win32_window_dimension WindowDimension = {};
+	WindowDimension.Width = (ClientRect.right - ClientRect.left);
+	WindowDimension.Height = (ClientRect.bottom - ClientRect.top);
+	return WindowDimension;
+}
+
 // DIB Device Independent Bitmap
 // Thanks to Chris Hecker of Spy party fame for his insightful comments (I'm keeping the
 // thank you note as Casey did on the stream day 4 session).
@@ -67,14 +82,13 @@ internal void Win32ResizeDIBSection(
 internal void Win32CopyBufferToWindow(
 		struct win32_offscreen_buffer Buffer,
 		HDC DeviceContext,
-		RECT WindowRect,
+		WindowWidth,
+		WindowHeight,
 		int const X,
 		int const Y,
 		int const Width,
 		int const Height)
 {
-	int const WindowWidth = WindowRect.right - WindowRect.left;
-	int const WindowHeight = WindowRect.bottom - WindowRect.top;
 	StretchDIBits(
 		DeviceContext,
 /*
@@ -112,15 +126,8 @@ LRESULT CALLBACK Win32MainWindowCallback(
 	switch(Message) {
 		case WM_SIZE:
 		{
-			RECT ClientRect = {};
-			GetClientRect(Window, &ClientRect);
-			int const Width = (
-				ClientRect.right - ClientRect.left
-			);
-			int const Height = (
-				ClientRect.bottom - ClientRect.top
-			);
-			Win32ResizeDIBSection(&BackBuffer, Width, Height);
+			struct win32_window_dimension WindowDimension = Win32GetWindowDimension(Window);
+			Win32ResizeDIBSection(&BackBuffer, WindowDimension.Width, WindowDimension.Height);
 			OutputDebugString("WM_SIZE");
 		} break;
 
@@ -150,12 +157,12 @@ LRESULT CALLBACK Win32MainWindowCallback(
 			int const Y = Paint.rcPaint.top;
 			int const Width = (Paint.rcPaint.right - Paint.rcPaint.left);
 			int const Height = (Paint.rcPaint.bottom - Paint.rcPaint.top);
-			RECT WindowRect = {};
-			GetWindowRect(Window, &WindowRect);
+			struct win32_window_dimension WindowDimension = Win32GetWindowDimension(Window);
 			Win32CopyBufferToWindow(
 				BackBuffer,
 				DeviceContext,
-				WindowRect,
+				Window.Width,
+				Window.Height,
 				X,
 				Y,
 				Width,
