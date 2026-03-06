@@ -27,7 +27,7 @@ struct win32_window_dimension {
 	int Height;
 };
 
-internal struct win32_window_dimension Win32GetWindowDimension(HWND WindowHandle)
+internal struct win32_window_dimension Win32GetWindowDimension(HWND Window)
 {
 	RECT ClientRect = {};
 	GetClientRect(Window, &ClientRect);
@@ -48,7 +48,7 @@ internal void Win32ResizeDIBSection(
 	Buffer->BitmapWidth = Width;
 	Buffer->BitmapHeight = Height;
 	// NOTE we want a bitmamp with a top-left origin so by convention biHeight < 0
-	Buffer->BitmapInfo.bmiHeader.biSize = sizeof(BitmapInfo.bmiHeader);
+	Buffer->BitmapInfo.bmiHeader.biSize = sizeof(Buffer->BitmapInfo.bmiHeader);
 	Buffer->BitmapInfo.bmiHeader.biWidth = (Buffer->BitmapWidth);
 	Buffer->BitmapInfo.bmiHeader.biHeight = -(Buffer->BitmapHeight);
 	Buffer->BitmapInfo.bmiHeader.biPlanes = 1;
@@ -82,8 +82,8 @@ internal void Win32ResizeDIBSection(
 internal void Win32CopyBufferToWindow(
 		struct win32_offscreen_buffer Buffer,
 		HDC DeviceContext,
-		WindowWidth,
-		WindowHeight,
+		int const WindowWidth,
+		int const WindowHeight,
 		int const X,
 		int const Y,
 		int const Width,
@@ -161,8 +161,8 @@ LRESULT CALLBACK Win32MainWindowCallback(
 			Win32CopyBufferToWindow(
 				BackBuffer,
 				DeviceContext,
-				Window.Width,
-				Window.Height,
+				WindowDimension.Width,
+				WindowDimension.Height,
 				X,
 				Y,
 				Width,
