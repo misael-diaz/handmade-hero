@@ -254,7 +254,7 @@ int CALLBACK WinMain(
 				double const ElapsedTimeMillis = (CounterElapsed * InvClockrate);
 				char OutputElapsedTime[256];
 				wsprintf(OutputElapsedTime, "elapsed-time (ms): %.0f\n", ElapsedTimeMillis);
-				OutputElapsedTimeDebugString(OutputElapsedTime);
+				OutputDebugString(OutputElapsedTime);
 
 				LastCounter = EndCounter;
 			}
