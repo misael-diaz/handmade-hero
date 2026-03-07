@@ -9,6 +9,7 @@
 
 typedef uint8_t uint8;
 typedef uint32_t uint32;
+typedef int64_t int64;
 
 // TODO this are global for now
 
@@ -229,6 +230,13 @@ int CALLBACK WinMain(
 			0
 		);
 		if (WindowHandle) {
+			int64 LastCounter = 0;
+			int64 Countrate = 1;
+			QueryPerformanceCounter(&LastCounter);
+			QueryPerformanceFrequency(&Countrate);
+			double const Clockrate = Countrate;
+			double const InvClockrate = (1000.0 / Clockrate);
+
 			MSG Message = {};
 			running = true;
 			while (running) {
@@ -239,6 +247,16 @@ int CALLBACK WinMain(
 				} else {
 					break;
 				}
+				int64 EndCounter = 0;
+				QueryPerformanceCounter(&EndCounter);
+
+				double const CounterElapsed = (EndCounter - LastCounter);
+				double const ElapsedTimeMillis = (CounterElapsed * InvClockrate);
+				char OutputElapsedTime[256];
+				wsprintf(OutputElapsedTime, "elapsed-time (ms): %.0f\n", ElapsedTimeMillis);
+				OutputElapsedTimeDebugString(OutputElapsedTime);
+
+				LastCounter = EndCounter;
 			}
 		}
 	}
