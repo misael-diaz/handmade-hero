@@ -9,6 +9,8 @@
 #define internal static
 #define BITMAP_DEPTH 32
 
+#define SAMPLE_SIZE 16
+
 typedef uint8_t uint8;
 typedef uint32_t uint32;
 typedef uint64_t uint64;
@@ -244,7 +246,7 @@ int CALLBACK WinMain(
 			MSG Message = {};
 			running = true;
 			uint8 SampleCount = 0;
-			double const SampleSizeInv = 1.0 / 256.0;
+			double const SampleSizeInv = 1.0 / ((double) SAMPLE_SIZE);
 			double SumElapsedTimeMillis = 0;
 			double SumCycleCount = 0;
 			while (running) {
@@ -265,7 +267,7 @@ int CALLBACK WinMain(
 				SumElapsedTimeMillis += ElapsedTimeMillis;
 				SumCycleCount += CycleCountElapsed;
 
-				if (0 == SampleCount) {
+				if (SAMPLE_SIZE == SampleCount) {
 					double const AvgElapsedTimeMillis = (
 						SampleSizeInv * SumElapsedTimeMillis
 					);
@@ -275,8 +277,8 @@ int CALLBACK WinMain(
 					);
 					char Output[256];
 					char fmt[] = (
-						"CPU-Clockspeed (GHz): %.2lf \n"
-						"elapsed-time (ms): %.0lf\n"
+						"CPU-Clockspeed (GHz): %.2lf"
+						"elapsed-time (ms): %.1lf\n"
 						);
 					sprintf(
 							Output,
@@ -288,9 +290,11 @@ int CALLBACK WinMain(
 
 					SumElapsedTimeMillis = 0;
 					SumCycleCount = 0;
+					SampleCount = 0;
 				}
 
 				LastCounter = EndCounter;
+				LastCycleCount = EndCycleCount;
 				++SampleCount;
 			}
 		}
