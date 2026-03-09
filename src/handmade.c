@@ -239,6 +239,9 @@ int CALLBACK WinMain(
 
 			MSG Message = {};
 			running = true;
+			uint8 SampleCount = 0;
+			double const SampleSizeInv = 1.0 / 256.0;
+			double SumElapsedTimeMillis = 0;
 			while (running) {
 				BOOL MessageResult = GetMessage(&Message, 0, 0, 0);
 				if (0 < MessageResult) {
@@ -252,12 +255,19 @@ int CALLBACK WinMain(
 
 				double const CounterElapsed = (EndCounter - LastCounter);
 				double const ElapsedTimeMillis = (CounterElapsed * InvClockrate);
-				int64 const ElapsedTimeMillisInt = ElapsedTimeMillis;
-				char OutputElapsedTime[256];
-				wsprintf(OutputElapsedTime, "elapsed-time (ms): %d\n", ElapsedTimeMillisInt);
-				OutputDebugString(OutputElapsedTime);
+				SumElapsedTimeMillis += ElapsedTimeMillis;
+
+				if (0 == SampleCount) {
+					double const AvgElapsedTimeMillis = SampleSizeInv * SumElapsedTimeMillis;
+					int64 const AvgElapsedTimeMillisInt = AvgElapsedTimeMillis;
+					char OutputElapsedTime[256];
+					wsprintf(OutputElapsedTime, "elapsed-time (ms): %d\n", AvgElapsedTimeMillisInt);
+					OutputDebugString(OutputElapsedTime);
+					SumElapsedTime = 0;
+				}
 
 				LastCounter = EndCounter;
+				++SampleCount;
 			}
 		}
 	}
