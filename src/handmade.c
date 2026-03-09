@@ -268,7 +268,7 @@ int CALLBACK WinMain(
 					double const AvgElapsedTimeMillis = (
 						SampleSizeInv * SumElapsedTimeMillis
 					);
-					double const AvgCycleCount = (SampleSizeInv * SumCycleElapsed);
+					double const AvgCycleCount = (SampleSizeInv * SumCycleCount);
 					double const AvgClockSpeedMHz = (
 						1.0e-3 * (AvgCycleCount / AvgElapsedTimeMillis)
 					);
