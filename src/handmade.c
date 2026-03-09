@@ -286,7 +286,7 @@ int CALLBACK WinMain(
 					OutputDebugString(Output);
 
 					SumElapsedTimeMillis = 0;
-					SumCycleElapsed = 0;
+					SumCycleCount = 0;
 				}
 
 				LastCounter = EndCounter;
