@@ -234,7 +234,7 @@ int CALLBACK WinMain(
 		if (WindowHandle) {
 			int64 LastCounter = 0;
 			int64 Countrate = 1;
-			uint64 LastCycleCount __rdtsc();
+			uint64 LastCycleCount = __rdtsc();
 			QueryPerformanceCounter(&LastCounter);
 			QueryPerformanceFrequency(&Countrate);
 			double const Clockrate = Countrate;
@@ -255,7 +255,7 @@ int CALLBACK WinMain(
 					break;
 				}
 				int64 EndCounter = 0;
-				uint64 EndCycleCount __rdtsc();
+				uint64 EndCycleCount = __rdtsc();
 				QueryPerformanceCounter(&EndCounter);
 
 				double const CounterElapsed = (EndCounter - LastCounter);
