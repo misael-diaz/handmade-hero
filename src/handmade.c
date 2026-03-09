@@ -277,7 +277,7 @@ int CALLBACK WinMain(
 					);
 					char Output[256];
 					char fmt[] = (
-						"CPU-Clockspeed (GHz): %.2lf"
+						"CPU-Clockspeed (GHz): %.2lf "
 						"elapsed-time (ms): %.1lf\n"
 						);
 					sprintf(
