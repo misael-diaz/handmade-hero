@@ -273,7 +273,10 @@ int CALLBACK WinMain(
 						1.0e-3 * (AvgCycleCount / AvgElapsedTimeMillis)
 					);
 					char Output[256];
-					char fmt = "CPU-Clockspeed (GHz): %.2lf\n elapsed-time (ms): %.0lf\n";
+					char fmt[] = (
+						"CPU-Clockspeed (GHz): %.2lf \n"
+						"elapsed-time (ms): %.0lf\n";
+						);
 					sprintf(
 							Output,
 							fmt,
