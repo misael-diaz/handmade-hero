@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <windows.h>
@@ -9,6 +10,7 @@
 
 typedef uint8_t uint8;
 typedef uint32_t uint32;
+typedef uint64_t uint64;
 typedef int64_t int64;
 
 // TODO this are global for now
@@ -232,6 +234,7 @@ int CALLBACK WinMain(
 		if (WindowHandle) {
 			int64 LastCounter = 0;
 			int64 Countrate = 1;
+			uint64 LastCycleCount __rdtsc();
 			QueryPerformanceCounter(&LastCounter);
 			QueryPerformanceFrequency(&Countrate);
 			double const Clockrate = Countrate;
@@ -242,6 +245,7 @@ int CALLBACK WinMain(
 			uint8 SampleCount = 0;
 			double const SampleSizeInv = 1.0 / 256.0;
 			double SumElapsedTimeMillis = 0;
+			double SumCycleElapsed = 0;
 			while (running) {
 				BOOL MessageResult = GetMessage(&Message, 0, 0, 0);
 				if (0 < MessageResult) {
@@ -251,19 +255,35 @@ int CALLBACK WinMain(
 					break;
 				}
 				int64 EndCounter = 0;
+				uint64 EndCycleCount __rdtsc();
 				QueryPerformanceCounter(&EndCounter);
 
 				double const CounterElapsed = (EndCounter - LastCounter);
+				double const CycleCountElapsed = (EndCycleCount - LastCycleCount);
 				double const ElapsedTimeMillis = (CounterElapsed * InvClockrate);
 				SumElapsedTimeMillis += ElapsedTimeMillis;
+				SumCycleCount = += CycleCountElapsed;
 
 				if (0 == SampleCount) {
-					double const AvgElapsedTimeMillis = SampleSizeInv * SumElapsedTimeMillis;
-					int64 const AvgElapsedTimeMillisInt = AvgElapsedTimeMillis;
-					char OutputElapsedTime[256];
-					wsprintf(OutputElapsedTime, "elapsed-time (ms): %d\n", AvgElapsedTimeMillisInt);
-					OutputDebugString(OutputElapsedTime);
-					SumElapsedTime = 0;
+					double const AvgElapsedTimeMillis = (
+						SampleSizeInv * SumElapsedTimeMillis
+					);
+					double const AvgCycleCount = (SampleSizeInv * SumCycleElapsed);
+					double const AvgClockSpeedMHz = (
+						1.0e-3 * (AvgCycleCount / AvgElapsedTimeMillis)
+					);
+					char Output[256];
+					char fmt = "CPU-Clockspeed (GHz): %.2lf\n elapsed-time (ms): %.0lf\n";
+					sprintf(
+							Output,
+							fmt,
+							AvgClockSpeedMHz,
+							AvgElapsedTimeMillis
+						);
+					OutputDebugString(Output);
+
+					SumElapsedTimeMillis = 0;
+					SumCycleElapsed = 0;
 				}
 
 				LastCounter = EndCounter;
