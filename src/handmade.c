@@ -245,7 +245,7 @@ int CALLBACK WinMain(
 			uint8 SampleCount = 0;
 			double const SampleSizeInv = 1.0 / 256.0;
 			double SumElapsedTimeMillis = 0;
-			double SumCycleElapsed = 0;
+			double SumCycleCount = 0;
 			while (running) {
 				BOOL MessageResult = GetMessage(&Message, 0, 0, 0);
 				if (0 < MessageResult) {
@@ -262,7 +262,7 @@ int CALLBACK WinMain(
 				double const CycleCountElapsed = (EndCycleCount - LastCycleCount);
 				double const ElapsedTimeMillis = (CounterElapsed * InvClockrate);
 				SumElapsedTimeMillis += ElapsedTimeMillis;
-				SumCycleCount = += CycleCountElapsed;
+				SumCycleCount += CycleCountElapsed;
 
 				if (0 == SampleCount) {
 					double const AvgElapsedTimeMillis = (
@@ -275,7 +275,7 @@ int CALLBACK WinMain(
 					char Output[256];
 					char fmt[] = (
 						"CPU-Clockspeed (GHz): %.2lf \n"
-						"elapsed-time (ms): %.0lf\n";
+						"elapsed-time (ms): %.0lf\n"
 						);
 					sprintf(
 							Output,
