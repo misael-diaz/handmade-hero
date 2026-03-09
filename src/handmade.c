@@ -1,15 +1,13 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include <intrin.h>
+#include <x86intrin.h>
 #include <windows.h>
 
 #define global static
 #define local_persist static
 #define internal static
 #define BITMAP_DEPTH 32
-
-#pragma intrinsic(__rdtsc)
 
 typedef uint8_t uint8;
 typedef uint32_t uint32;
