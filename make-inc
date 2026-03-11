@@ -1,0 +1,28 @@
+#
+# handmade-hero				March 11, 2026
+#
+# source: make-inc
+# author: @misael-diaz
+#
+# Synopsis:
+# Defines the include file for building the program with GNU make.
+#
+# Copyright (c) 2025 Misael Diaz-Maldonado
+#
+# This file is released under the MIT License.
+#
+
+CC = gcc
+
+CCOPT = -std=gnu99 \
+	-g \
+	-Wall \
+	-Wextra \
+	-Wformat \
+	-gdwarf-4 \
+	-O0
+
+LIBS = -lX11
+
+# supported platforms: possible values (case sensitive): win32 and linux
+PLATFORM = linux
