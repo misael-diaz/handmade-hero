@@ -42,7 +42,18 @@ int main()
 		CWBackPixel | CWEventMask,
 		&attributes
 	);
+	GC gc = DefaultGC(display, screeno);
+	XEvent ev = {};
+	XStoreName(display, window, "Handmade Hero");
+	XMapWindow(display, window);
+	XWindowEvent(display, window, ExposureMask, &ev);
 
+	// we pause here so that we can try to resize the window and not exit right away
+	char c = 0;
+	fprintf(stdout, "%s", "press any key to exit the game\n");
+	fread(&c, sizeof(c), 1, stdin);
+
+	XDestroyWindow(display, window);
 	XCloseDisplay(display);
 	return 0;
 }
