@@ -20,7 +20,7 @@ MAIN_O = ../../obj/linux_handmade.o
 all: $(GAME) 
 
 $(GAME): $(MAIN_O)
-	$(CC) $(COPTS) $(MAIN_O) -o $(GAME) $(LIBS)
+	$(CC) $(COPTS) $(MAIN_O) -o $(GAME) $(LIBS) -lX11
 
 $(MAIN_O): $(MAIN_C)
 	$(CC) $(COPTS) -c $(MAIN_C) -o $(MAIN_O)

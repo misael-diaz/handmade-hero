@@ -22,7 +22,7 @@ CCOPT = -std=gnu99 \
 	-gdwarf-4 \
 	-O0
 
-LIBS = -lX11
+LIBS =
 
 # supported platforms: possible values (case sensitive): win32 and linux
 PLATFORM = linux
