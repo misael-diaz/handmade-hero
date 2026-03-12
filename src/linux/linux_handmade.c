@@ -1,6 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <X11/Xlib.h>
+#include <stdbool.h>
+
+static bool X11Error;
+
+static int linux_X11ErrorHandler(Display *display, XErrorEvent *ev)
+{
+	char errmsg[256];
+	XGetErrorText(display, ev->error_code, errmsg, sizeof(errmsg));
+	fprintf(stderr, "%s\n", errmsg);
+	X11Error = true;
+}
 
 int main()
 {
@@ -10,6 +21,7 @@ int main()
 		fprintf(stdout, "%s", "XErrorOpenDisplay\n");
 		exit(EXIT_FAILURE);
 	}
+	XSetErrorHandler(linux_X11ErrorHandler);
 	Window root = DefaultRootWindow(display);
 	Screen *screen = DefaultScreenOfDisplay(display);
 	int screeno = DefaultScreen(display);
@@ -42,6 +54,14 @@ int main()
 		CWBackPixel | CWEventMask,
 		&attributes
 	);
+
+	if (X11Error) {
+		fprintf(stderr, "%s", "Fatal Xlib Error\n");
+		XCloseDisplay(display);
+		display = NULL;
+		exit(EXIT_FAILURE);
+	}
+
 	GC gc = DefaultGC(display, screeno);
 	XEvent ev = {};
 	XStoreName(display, window, "Handmade Hero");
