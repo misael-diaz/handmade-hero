@@ -13,9 +13,9 @@
 # This file is released under the MIT License.
 #
 
-GAME = ../../exe/win32-handmade.exe
+GAME = ..\..\exe\win32-handmade.exe
 MAIN_C = win32_handmade.c
-MAIN_O = ../../obj/win32_handmade.o
+MAIN_O = ..\..\obj\win32_handmade.o
 
 all: $(GAME)
 
@@ -25,4 +25,4 @@ $(GAME): $(MAIN_O)
 $(MAIN_O): $(MAIN_C)
 	$(CC) $(COPTS) -c $(MAIN_C) -o $(MAIN_O)
 clean:
-	rm -f $(MAIN_O) $(GAME)
+	del /f /q $(MAIN_O) $(GAME)

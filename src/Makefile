@@ -22,6 +22,14 @@ platform_win32:
 platform_linux:
 	@mkdir -p ../obj && mkdir -p ../bin
 	@$(MAKE) -C linux
+
+ifeq ($(PLATFORM),win32)
 clean:
 	@$(MAKE) -C win32 clean
+else ifeq ($(PLATFORM),linux)
+clean:
 	@$(MAKE) -C linux clean
+else
+clean:
+	@echo "ux clean on unsupported platform"
+endif
