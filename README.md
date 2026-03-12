@@ -22,14 +22,28 @@ This is because you can build the game with makefiles on both Windows and GNU/Li
 Clone the project with `git` and edit the `make-inc` file. What you want to set is the PLATFORM
 to either `win32` or `linux`.
 
+If you don't provide a platform you will run into a build error, essentially there won't a be a rule
+to perform the build and `make` will complain about that (this was in part a design decision).
+
 ## Compilation
 
 Go to the top level directory of the project in your machine from your
-terminal and execute the following command to compile the project:
+terminal and execute the following command to compile the project in Windows:
+
+```sh
+mingw32-make
+```
+
+where we are assuming that you are going to build the project with MinGW in Windows.
+
+And in GNU/Linux you can simply use:
 
 ```sh
 make
 ```
+
+note that GNU make should be part of the tools that your distro provides by default and so
+you should not need to install anything else really.
 
 ## Libraries
 
