@@ -20,9 +20,9 @@ MAIN_O = ..\..\obj\win32_handmade.o
 all: $(GAME)
 
 $(GAME): $(MAIN_O)
-	$(CC) $(COPTS) $(MAIN_O) -o $(GAME) -Wl,--subsystem,windows $(LIBS) -lgdi32
+	$(CC) $(CCOPT) $(MAIN_O) -o $(GAME) -Wl,--subsystem,windows $(LIBS) -lgdi32
 
 $(MAIN_O): $(MAIN_C)
-	$(CC) $(COPTS) -c $(MAIN_C) -o $(MAIN_O)
+	$(CC) $(CCOPT) -c $(MAIN_C) -o $(MAIN_O)
 clean:
 	del /f /q $(MAIN_O) $(GAME)

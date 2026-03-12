@@ -15,18 +15,23 @@
 
 TARGET = platform_$(PLATFORM)
 
-all: $(TARGET)
+all: shared $(TARGET)
 
-platform_win32:
+shared:
+	@$(MAKE) -C common
+
+platform_win32: shared
 	@$(MAKE) -C win32
-platform_linux:
+platform_linux: shared
 	@mkdir -p ../obj && mkdir -p ../bin
 	@$(MAKE) -C linux
 
 ifeq ($(PLATFORM),linux)
 clean:
 	@$(MAKE) -C linux clean
+	@$(MAKE) -C common clean
 else
 clean:
 	@$(MAKE) -C win32 clean
+	@$(MAKE) -C common clean
 endif
