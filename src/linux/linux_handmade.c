@@ -3,6 +3,7 @@
 #include <X11/Xlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <sys/mman.h>
 #include "handmade.h"
 
 static bool X11Error;
@@ -73,6 +74,7 @@ int main()
 
 	struct game_memory Memory = {};
 	Memory.PermanentStorageSize = MegaBytes(64);
+	Memory.TransientStorageSize = GigaBytes(4);
 	Memory.PermanentStorage = malloc(Memory.PermanentStorageSize);
 	if (!Memory.PermanentStorage) {
 		fprintf(stderr, "%s", "error: failed to allocate the game permanent storage\n");
@@ -81,7 +83,20 @@ int main()
 		display = NULL;
 		exit(EXIT_FAILURE);
 	}
+
+	Memory.TransientStorage = malloc(Memory.TransientStorageSize);
+	if (!Memory.TransientStorage) {
+		fprintf(stderr, "%s", "error: failed to allocate the game transient storage\n");
+		free(Memory.PermanentStorage);
+		XDestroyWindow(display, window);
+		XCloseDisplay(display);
+		display = NULL;
+		Memory.PermanentStorage = NULL;
+		exit(EXIT_FAILURE);
+	}
+
 	memset(Memory.PermanentStorage, 0, Memory.PermanentStorageSize);
+	memset(Memory.TransientStorage, 0, Memory.TransientStorageSize);
 
 	// TODO: allocate the bitmap
 	struct game_offscreen_buffer Buffer = {};
@@ -95,9 +110,12 @@ int main()
 	fread(&c, sizeof(c), 1, stdin);
 
 	free(Memory.PermanentStorage);
-	Memory.PermanentStorage = NULL;
-	Memory.PermanentStorageSize = 0;
+	free(Memory.TransientStorage);
 	XDestroyWindow(display, window);
 	XCloseDisplay(display);
+	Memory.PermanentStorage = NULL;
+	Memory.TransientStorage = NULL;
+	Memory.PermanentStorageSize = 0;
+	Memory.TransientStorageSize = 0;
 	return 0;
 }
