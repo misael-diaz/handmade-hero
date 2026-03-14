@@ -80,14 +80,14 @@ int main()
 	errno = 0;
 	Memory.PermanentStorage = mmap(
 		NULL,
-		Memory.PermanentStorageSize,
+		Memory.PermanentStorageSize + Memory.TransientStorageSize,
 		PROT_READ | PROT_WRITE,
 		MAP_ANONYMOUS | MAP_PRIVATE,
 		-1,
 		0
 	);
 	if (!Memory.PermanentStorage || (((void*)-1) == Memory.PermanentStorage)) {
-		fprintf(stderr, "%s", "error: failed to allocate the game permanent storage\n");
+		fprintf(stderr, "%s", "error: failed to allocate the game storage\n");
 		if (errno) {
 			fprintf(stderr, "%s\n", strerror(errno));
 		}
@@ -97,22 +97,7 @@ int main()
 		exit(EXIT_FAILURE);
 	}
 
-	errno = 0;
-	Memory.TransientStorage = mmap(
-		NULL,
-		Memory.TransientStorageSize,
-		PROT_READ | PROT_WRITE,
-		MAP_ANONYMOUS | MAP_PRIVATE,
-		-1,
-		0
-	);
-	if (!Memory.TransientStorage || (((void*)-1) == Memory.TransientStorage)) {
-		fprintf(stderr, "%s", "error: failed to allocate the game transient storage\n");
-		XDestroyWindow(display, window);
-		XCloseDisplay(display);
-		display = NULL;
-		exit(EXIT_FAILURE);
-	}
+	Memory.TransientStorage = Memory.PermanentStorage + Memory.PermanentStorageSize;
 
 	// TODO: allocate the bitmap
 	struct game_offscreen_buffer Buffer = {};
