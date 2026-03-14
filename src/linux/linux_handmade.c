@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <sys/mman.h>
+#include <unistd.h>
 #include "handmade.h"
 
 static bool X11Error;
@@ -21,6 +22,14 @@ static int linux_X11ErrorHandler(Display *display, XErrorEvent *ev)
 
 int main()
 {
+#if HANDMADE_DEV
+	long const pagesz = sysconf(_SC_PAGESIZE);
+	void * const BaseAddress = (void * const) ((pagesz * pagesz) * (pagesz / 2));
+	int const MMapFlags = MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED;
+#else
+	void *BaseAddress = NULL;
+	int const MMapFlags = MAP_ANONYMOUS | MAP_PRIVATE;
+#endif
 	fprintf(stdout, "%s", "Linux - HandMade Hero\n");
 	Display *display = XOpenDisplay(NULL);
 	if (!display) {
@@ -126,10 +135,10 @@ int main()
 
 	errno = 0;
 	Memory.PermanentStorage = mmap(
-		NULL,
+		BaseAddress,
 		Memory.PermanentStorageSize + Memory.TransientStorageSize,
 		PROT_READ | PROT_WRITE,
-		MAP_ANONYMOUS | MAP_PRIVATE,
+		MMapFlags,
 		-1,
 		0
 	);
@@ -146,6 +155,7 @@ int main()
 	}
 
 	Memory.TransientStorage = Memory.PermanentStorage + Memory.PermanentStorageSize;
+	memset(Memory.PermanentStorage, 0, Memory.PermanentStorageSize + Memory.TransientStorageSize);
 
 	uint8_t const red = 0;
 	uint8_t const green = 0xff;

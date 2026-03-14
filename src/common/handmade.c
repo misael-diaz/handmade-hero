@@ -5,6 +5,7 @@ void GameUpdate(
 	struct game_offscreen_buffer *Buffer
 ) {
 	struct game_state *GameState = Memory->PermanentStorage;
+	Assert((sizeof(*GameState) <= Memory->PermanentStorageSize));
 	if (!Memory->Initialized) {
 		GameState->GreenOffset = 0;
 		GameState->BlueOffset = 0;

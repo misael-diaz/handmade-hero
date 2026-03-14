@@ -15,6 +15,7 @@
 CC = gcc
 
 CCOPT = -std=gnu99 \
+	-DHANDMADE_DEV=1 \
 	-g \
 	-Wall \
 	-Wextra \

@@ -4,6 +4,16 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#if HANDMADE_DEV
+// portable way of crashing the application if assertion fails
+#define Assert(expr) \
+	if (!(expr)) {\
+		*((int *) 0) = 0;\
+	}
+#else
+#define Assert(expr)
+#endif
+
 #define KiloBytes(x) (1024LU * (x))
 #define MegaBytes(x) (1024LU * 1024LU * (x))
 #define GigaBytes(x) (1024LU * 1024LU * 1024LU * (x))
