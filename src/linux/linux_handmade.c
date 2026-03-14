@@ -1,3 +1,4 @@
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <X11/Xlib.h>
@@ -75,28 +76,43 @@ int main()
 	struct game_memory Memory = {};
 	Memory.PermanentStorageSize = MegaBytes(64);
 	Memory.TransientStorageSize = GigaBytes(4);
-	Memory.PermanentStorage = malloc(Memory.PermanentStorageSize);
-	if (!Memory.PermanentStorage) {
+
+	errno = 0;
+	Memory.PermanentStorage = mmap(
+		NULL,
+		Memory.PermanentStorageSize,
+		PROT_READ | PROT_WRITE,
+		MAP_ANONYMOUS | MAP_PRIVATE,
+		-1,
+		0
+	);
+	if (!Memory.PermanentStorage || (((void*)-1) == Memory.PermanentStorage)) {
 		fprintf(stderr, "%s", "error: failed to allocate the game permanent storage\n");
+		if (errno) {
+			fprintf(stderr, "%s\n", strerror(errno));
+		}
 		XDestroyWindow(display, window);
 		XCloseDisplay(display);
 		display = NULL;
 		exit(EXIT_FAILURE);
 	}
 
-	Memory.TransientStorage = malloc(Memory.TransientStorageSize);
-	if (!Memory.TransientStorage) {
+	errno = 0;
+	Memory.TransientStorage = mmap(
+		NULL,
+		Memory.TransientStorageSize,
+		PROT_READ | PROT_WRITE,
+		MAP_ANONYMOUS | MAP_PRIVATE,
+		-1,
+		0
+	);
+	if (!Memory.TransientStorage || (((void*)-1) == Memory.TransientStorage)) {
 		fprintf(stderr, "%s", "error: failed to allocate the game transient storage\n");
-		free(Memory.PermanentStorage);
 		XDestroyWindow(display, window);
 		XCloseDisplay(display);
 		display = NULL;
-		Memory.PermanentStorage = NULL;
 		exit(EXIT_FAILURE);
 	}
-
-	memset(Memory.PermanentStorage, 0, Memory.PermanentStorageSize);
-	memset(Memory.TransientStorage, 0, Memory.TransientStorageSize);
 
 	// TODO: allocate the bitmap
 	struct game_offscreen_buffer Buffer = {};
@@ -109,13 +125,7 @@ int main()
 	fprintf(stdout, "%s", "press any key to exit the game\n");
 	fread(&c, sizeof(c), 1, stdin);
 
-	free(Memory.PermanentStorage);
-	free(Memory.TransientStorage);
 	XDestroyWindow(display, window);
 	XCloseDisplay(display);
-	Memory.PermanentStorage = NULL;
-	Memory.TransientStorage = NULL;
-	Memory.PermanentStorageSize = 0;
-	Memory.TransientStorageSize = 0;
 	return 0;
 }
