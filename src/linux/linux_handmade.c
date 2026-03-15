@@ -7,7 +7,16 @@
 #include <string.h>
 #include <sys/mman.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include "handmade.h"
+
+// STUDY: familiarize with the Linux kernel io_uring API for async io, we are going to use this as we advance
+//        with the game-dev series
+//
+//        https://man7.org/linux/man-pages/man7/io_uring.7.html
+//
 
 static bool X11Error;
 
@@ -18,6 +27,64 @@ static int linux_X11ErrorHandler(Display *display, XErrorEvent *ev)
 	fprintf(stderr, "%s\n", errmsg);
 	X11Error = true;
 	return 0;
+}
+
+// we map the entire file into mapped region and we can safely close the file descriptor; the caller
+// should be at a better position to handle errors so we only log to the console what went wrong
+DEBUG struct debug_read_file_result PlatformReadEntireFile(char const * const filename)
+{
+	struct debug_read_file_result res = {};
+	errno = 0;
+	int const fd = open(filename, O_RDONLY);
+	if (-1 == fd) {
+		fprintf(stderr, "failed to read file: %s", filename);
+		if (errno) {
+			fprintf(stderr, "%s\n", strerror(errno));
+		}
+		return res;
+	}
+
+	errno = 0;
+	off_t const filesz = lseek(fd, 0, SEEK_END);
+	if (-1 == filesz) {
+		fprintf(stderr, "failed to determine the size of the file: %s", filename);
+		close(fd);
+		if (errno) {
+			fprintf(stderr, "%s\n", strerror(errno));
+		}
+		return res;
+	}
+
+	errno = 0;
+	if (-1 == lseek(fd, 0, SEEK_SET)) {
+		fprintf(stderr, "failed to rewind file: %s", filename);
+		close(fd);
+		if (errno) {
+			fprintf(stderr, "%s\n", strerror(errno));
+		}
+		return res;
+	}
+
+	errno = 0;
+	void *data = mmap(NULL, filesz, PROT_READ, MAP_PRIVATE, fd, 0);
+	if (!data || ((void*)-1) == data) {
+		fprintf(stderr, "failed to read into memory the file: %s", filename);
+		close(fd);
+		if (errno) {
+			fprintf(stderr, "%s\n", strerror(errno));
+		}
+		return res;
+	}
+	close(fd);
+	res.Data = data;
+	res.FileSize = filesz;
+	return res;
+}
+
+// on GNU/Linux we don't need to do anything, the mapped region is going to be released when the app ends
+DEBUG void PlatformFreeFile(void *buffer)
+{
+	return;
 }
 
 int main()
@@ -184,6 +251,10 @@ int main()
 	);
 
 	XPutImage(display, window, gc, image, 0, 0, 0, 0, width, height);
+
+	// NOTE: we assume that the code is going to be executed from the top-level of this project and this
+	//       will go away or be replaced with a bitmap load depending on the next episodes of the series
+	struct debug_read_file_result File = PlatformReadEntireFile("src/linux/"__FILE__);
 
 	// TODO: allocate the bitmap
 	struct game_offscreen_buffer Buffer = {};

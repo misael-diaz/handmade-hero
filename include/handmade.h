@@ -2,6 +2,7 @@
 #define HANDMADE_H
 
 #include <stdint.h>
+#include <stdlib.h>
 #include <stdbool.h>
 
 #if HANDMADE_DEV
@@ -14,9 +15,23 @@
 #define Assert(expr)
 #endif
 
+// analogous to Casey's approach, making platform functions static ensures that they cannot be called from
+// the game layer and so these are effectively internal for other builds
+#if HANDMADE_INTERNAL
+#define DEBUG
+#else
+#define DEBUG static
+#endif
+
 #define KiloBytes(x) (1024LU * (x))
 #define MegaBytes(x) (1024LU * 1024LU * (x))
 #define GigaBytes(x) (1024LU * 1024LU * 1024LU * (x))
+
+// IMPORTANT: this is not meant to be used in production code
+struct debug_read_file_result {
+	void *Data;
+	size_t FileSize
+};
 
 // TODO rename these since they are just placeholders for the actual data members and maybe the typing also
 struct game_button_state {

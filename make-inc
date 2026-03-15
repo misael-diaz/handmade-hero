@@ -14,8 +14,10 @@
 
 CC = gcc
 
+# at this point the flags (the defines) are used for development builds
 CCOPT = -std=gnu99 \
 	-DHANDMADE_DEV=1 \
+	-DHANDMADE_INTERNAL=1 \
 	-g \
 	-Wall \
 	-Wextra \
