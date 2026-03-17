@@ -20,7 +20,7 @@
 
 static bool X11Error;
 
-static int linux_X11ErrorHandler(Display *display, XErrorEvent *ev)
+static int LinuxX11ErrorHandler(Display *display, XErrorEvent *ev)
 {
 	char errmsg[256];
 	XGetErrorText(display, ev->error_code, errmsg, sizeof(errmsg));
@@ -103,7 +103,7 @@ int main()
 		fprintf(stdout, "%s", "XErrorOpenDisplay\n");
 		exit(EXIT_FAILURE);
 	}
-	XSetErrorHandler(linux_X11ErrorHandler);
+	XSetErrorHandler(LinuxX11ErrorHandler);
 	Window root = DefaultRootWindow(display);
 	Screen *screen = DefaultScreenOfDisplay(display);
 	int screeno = DefaultScreen(display);
@@ -261,7 +261,7 @@ int main()
 
 	GameUpdate(&Memory, &Buffer);
 
-	// TODO: refactor this into a function called linux_pause() (not pause() because unistd.h defines one)
+	// TODO: refactor this into a function called LinuxPause() (not pause() because unistd.h defines one)
 	// we pause here so that we can try to resize the window and not exit right away
 	char c = 0;
 	fprintf(stdout, "%s", "press any key to exit the game\n");
