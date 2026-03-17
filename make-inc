@@ -28,9 +28,21 @@ CCOPT = -std=gnu99 \
 	-Wno-error=unused-parameter \
 	-Wno-error=unused-variable \
 	-gdwarf-4 \
-	-O0
+	-Og
 
 LIBS =
 
 # supported platforms: possible values (case sensitive): win32 and linux
 PLATFORM = linux
+
+# TODO: find out if it's possible to tell the compiler to use intrinsics; for example,
+#       instead of using glibc's sqrt implementation it would replace that with the
+#       x86 instruction all while maintaining debugging level code. In other words
+#       be more specific about what optimizations we want that won't interfere with
+#       the debugging experience.
+#
+#       Do we want to support 32-bit platforms? If yes, you at least need to install the
+#       32-bit version of Xlib and other libraries if any at that point for the Linux
+#       build. This can also mean modifying the code a bit like Casey did on the stream.
+#       For 32-bit Windows builds it is surprising what other steps are needed but Casey
+#       shows on the stream what you need to do, and hopefully that will still work.
