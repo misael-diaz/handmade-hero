@@ -35,8 +35,8 @@ struct debug_read_file_result {
 
 // TODO rename these since they are just placeholders for the actual data members and maybe the typing also
 struct game_button_state {
-	int Pressed;
-	int Released;
+	int HalfTransitionCount;
+	bool EndedDown;
 };
 
 struct game_controller_input {

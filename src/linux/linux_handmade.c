@@ -29,6 +29,14 @@ static int LinuxX11ErrorHandler(Display *display, XErrorEvent *ev)
 	return 0;
 }
 
+static void LinuxProcessKeyboardInput(
+	struct game_button_state * const NewState,
+	bool const IsDown
+) {
+	NewState->EndedDown = IsDown;
+	++NewState->HalfTransitionCount;
+}
+
 // we map the entire file into mapped region and we can safely close the file descriptor; the caller
 // should be at a better position to handle errors so we only log to the console what went wrong
 DEBUG struct debug_read_file_result PlatformReadEntireFile(char const * const filename)
@@ -260,6 +268,13 @@ int main()
 	struct game_offscreen_buffer Buffer = {};
 
 	GameUpdate(&Memory, &Buffer);
+
+	// NOTE: this is going to probably change based on the what to expect for the next episode, stream 17
+	struct game_input Input[2] = {};
+	struct game_input *NewInput = &Input[0];
+	struct game_input *OldInput = &Input[1];
+	struct game_controller_input *KeyboardController = &NewInput->Controllers[0];
+	memset(KeyboardController, 0, sizeof(*KeyboardController));
 
 	// TODO: refactor this into a function called LinuxPause() (not pause() because unistd.h defines one)
 	// we pause here so that we can try to resize the window and not exit right away
