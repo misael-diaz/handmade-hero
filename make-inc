@@ -22,6 +22,11 @@ CCOPT = -std=gnu99 \
 	-Wall \
 	-Wextra \
 	-Wformat \
+	-Wno-unused-parameter \
+	-Wno-unused-variable \
+	-Werror \
+	-Wno-error=unused-parameter \
+	-Wno-error=unused-variable \
 	-gdwarf-4 \
 	-O0
 

@@ -30,7 +30,7 @@
 // IMPORTANT: this is not meant to be used in production code
 struct debug_read_file_result {
 	void *Data;
-	size_t FileSize
+	size_t FileSize;
 };
 
 // TODO rename these since they are just placeholders for the actual data members and maybe the typing also
