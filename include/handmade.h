@@ -1,14 +1,18 @@
 #ifndef HANDMADE_H
 #define HANDMADE_H
 
+#include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
+#define ArrayCount(ary) (sizeof(ary) / sizeof(*ary))
+
 #if HANDMADE_DEV
 // portable way of crashing the application if assertion fails
-#define Assert(expr) \
+#define Assert(expr)\
 	if (!(expr)) {\
+		fprintf(stderr, "assertion failed at %s:%d\n", __FILE__, __LINE__);\
 		*((int *) 0) = 0;\
 	}
 #else
@@ -33,11 +37,15 @@ struct debug_read_file_result {
 	size_t FileSize;
 };
 
-// TODO rename these since they are just placeholders for the actual data members and maybe the typing also
+// Windows and GNU/Linux compatible game button state, for Linux we need to store whether the key was down
+// but that does not incur in extra memory requirements because the struct is padded anyway for alignment
 struct game_button_state {
 	int HalfTransitionCount;
 	bool EndedDown;
+	bool WasDown;
+	char _pad[2];
 };
+_Static_assert(8 == sizeof(struct game_button_state));
 
 struct game_controller_input {
 	union {
@@ -53,8 +61,9 @@ struct game_controller_input {
 	};
 };
 
+// keyboard and four Xbox controllers
 struct game_input {
-	struct game_controller_input Controllers[4];
+	struct game_controller_input Controllers[5];
 };
 
 struct game_state {

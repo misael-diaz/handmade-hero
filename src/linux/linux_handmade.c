@@ -12,13 +12,20 @@
 #include <fcntl.h>
 #include "handmade.h"
 
+#define KBD_UP XKeysymToKeycode(display, XK_Up)
+#define KBD_DOWN XKeysymToKeycode(display, XK_Down)
+#define KBD_LEFT XKeysymToKeycode(display, XK_Left)
+#define KBD_RIGHT XKeysymToKeycode(display, XK_Right)
+#define KBD_ESC XKeysymToKeycode(display, XK_Escape)
+
+static bool Running;
+static bool X11Error;
+
 // STUDY: familiarize with the Linux kernel io_uring API for async io, we are going to use this as we advance
 //        with the game-dev series
 //
 //        https://man7.org/linux/man-pages/man7/io_uring.7.html
 //
-
-static bool X11Error;
 
 static int LinuxX11ErrorHandler(Display *display, XErrorEvent *ev)
 {
@@ -33,8 +40,71 @@ static void LinuxProcessKeyboardInput(
 	struct game_button_state * const NewState,
 	bool const IsDown
 ) {
+	Assert(IsDown != NewState->EndedDown);
 	NewState->EndedDown = IsDown;
 	++NewState->HalfTransitionCount;
+}
+
+static void LinuxProcessPendingMessages(
+	Display * const display,
+	struct game_controller_input * const KeyboardController
+) {
+	XEvent ev = {};
+	// NOTE: Xlib does not store key transition states so we have to determine transition ourselves
+	while (XPending(display)) {
+		XNextEvent(display, &ev);
+		if (KeyPress == ev.type) {
+			bool const IsDown = true;
+			if (KBD_LEFT == ev.xkey.keycode) {
+				if (!KeyboardController->Left.WasDown) {
+					LinuxProcessKeyboardInput(&KeyboardController->Left, IsDown);
+					KeyboardController->Left.WasDown = true;
+				}
+			} else if (KBD_RIGHT == ev.xkey.keycode) {
+				if (!KeyboardController->Right.WasDown) {
+					LinuxProcessKeyboardInput(&KeyboardController->Right, IsDown);
+					KeyboardController->Right.WasDown = true;
+				}
+			} else if (KBD_UP == ev.xkey.keycode) {
+				if (!KeyboardController->Up.WasDown) {
+					LinuxProcessKeyboardInput(&KeyboardController->Up, IsDown);
+					KeyboardController->Up.WasDown = true;
+				}
+			} else if (KBD_DOWN == ev.xkey.keycode) {
+				if (!KeyboardController->Down.WasDown) {
+					LinuxProcessKeyboardInput(&KeyboardController->Down, IsDown);
+					KeyboardController->Down.WasDown = true;
+				}
+			} else if (KBD_ESC == ev.xkey.keycode) {
+				fprintf(stdout, "%s", "Quitting Game\n");
+				Running = false;
+				return;
+			}
+		} else if (KeyRelease == ev.type) {
+			bool const IsDown = false;
+			if (KBD_LEFT == ev.xkey.keycode) {
+				if (KeyboardController->Left.WasDown) {
+					LinuxProcessKeyboardInput(&KeyboardController->Left, IsDown);
+				}
+				KeyboardController->Left.WasDown = false;
+			} else if (KBD_RIGHT == ev.xkey.keycode) {
+				if (KeyboardController->Right.WasDown) {
+					LinuxProcessKeyboardInput(&KeyboardController->Right, IsDown);
+				}
+				KeyboardController->Right.WasDown = false;
+			} else if (KBD_UP == ev.xkey.keycode) {
+				if (KeyboardController->Up.WasDown) {
+					LinuxProcessKeyboardInput(&KeyboardController->Up, IsDown);
+				}
+				KeyboardController->Up.WasDown = false;
+			} else if (KBD_DOWN == ev.xkey.keycode) {
+				if (KeyboardController->Down.WasDown) {
+					LinuxProcessKeyboardInput(&KeyboardController->Down, IsDown);
+				}
+				KeyboardController->Down.WasDown = false;
+			}
+		}
+	}
 }
 
 // we map the entire file into mapped region and we can safely close the file descriptor; the caller
@@ -273,8 +343,18 @@ int main()
 	struct game_input Input[2] = {};
 	struct game_input *NewInput = &Input[0];
 	struct game_input *OldInput = &Input[1];
-	struct game_controller_input *KeyboardController = &NewInput->Controllers[0];
-	memset(KeyboardController, 0, sizeof(*KeyboardController));
+	struct game_controller_input *NewKeyboardController = &NewInput->Controllers[0];
+	struct game_controller_input *OldKeyboardController = &OldInput->Controllers[0];
+	memset(NewKeyboardController, 0, sizeof(*NewKeyboardController));
+
+	Running = true;
+	while (Running) {
+		memset(NewKeyboardController, 0, sizeof(*NewKeyboardController));
+		for (size_t i = 0; i != ArrayCount(NewKeyboardController->Buttons); ++i) {
+			NewKeyboardController->Buttons[i] = OldKeyboardController->Buttons[i];
+		}
+		LinuxProcessPendingMessages(display, NewKeyboardController);
+	}
 
 	// TODO: refactor this into a function called LinuxPause() (not pause() because unistd.h defines one)
 	// we pause here so that we can try to resize the window and not exit right away
