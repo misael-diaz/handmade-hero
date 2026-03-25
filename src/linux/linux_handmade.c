@@ -349,7 +349,6 @@ int main()
 		struct game_controller_input *NewKeyboardController = GetController(NewInput, 0);
 		struct game_controller_input *OldKeyboardController = GetController(OldInput, 0);
 		memset(NewKeyboardController, 0, sizeof(*NewKeyboardController));
-		memset(NewKeyboardController, 0, sizeof(*NewKeyboardController));
 		for (
 			size_t ButtonIndex = 0;
 			ButtonIndex != ArrayCount(NewKeyboardController->Buttons);
