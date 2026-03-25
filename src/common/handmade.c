@@ -4,7 +4,7 @@ struct game_controller_input *GetController(
 	struct game_input * const Input,
 	int const ControllerIndex
 ) {
-	Assert(0 < ControllerIndex);
+	Assert(0 <= ControllerIndex);
 	size_t const Index = ControllerIndex;
 	Assert(Index < ArrayCount(Input->Controllers));
 	return &Input->Controllers[Index];
