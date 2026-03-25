@@ -358,6 +358,11 @@ int main()
 			NewKeyboardController->Buttons[ButtonIndex].EndedDown = EndedDown;
 			NewKeyboardController->Buttons[ButtonIndex].WasDown = WasDown;
 		}
+		// TODO For analog input you can add (1<<15) to the input so that one
+		//      does not need to use conditionals to normalize the input to the
+		//      [-1, 1) range. This is assuming that the lowest value is
+		//      -(1<<15), so if it's different (doubt it) you can easily apply
+		//      this simple tactic for normalization.
 		LinuxProcessPendingMessages(display, NewKeyboardController);
 		GameUpdate(&Input[0], &Memory, &Buffer);
 		// TODO to move the swapping to a pointer Swap() function
