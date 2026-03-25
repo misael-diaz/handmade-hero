@@ -337,23 +337,35 @@ int main()
 	// TODO: allocate the bitmap
 	struct game_offscreen_buffer Buffer = {};
 
-	GameUpdate(&Memory, &Buffer);
-
 	// NOTE: this is going to probably change based on the what to expect for the next episode, stream 17
 	struct game_input Input[2] = {};
-	struct game_input *NewInput = &Input[0];
-	struct game_input *OldInput = &Input[1];
-	struct game_controller_input *NewKeyboardController = &NewInput->Controllers[0];
-	struct game_controller_input *OldKeyboardController = &OldInput->Controllers[0];
-	memset(NewKeyboardController, 0, sizeof(*NewKeyboardController));
+	int NewInputIdx = 0;
+	int OldInputIdx = 1;
+	struct game_input *NewInput = &Input[NewInputIdx];
+	struct game_input *OldInput = &Input[OldInputIdx];
 
 	Running = true;
 	while (Running) {
+		struct game_controller_input *NewKeyboardController = GetController(NewInput, 0);
+		struct game_controller_input *OldKeyboardController = GetController(OldInput, 0);
 		memset(NewKeyboardController, 0, sizeof(*NewKeyboardController));
-		for (size_t i = 0; i != ArrayCount(NewKeyboardController->Buttons); ++i) {
-			NewKeyboardController->Buttons[i] = OldKeyboardController->Buttons[i];
+		memset(NewKeyboardController, 0, sizeof(*NewKeyboardController));
+		for (
+			size_t ButtonIndex = 0;
+			ButtonIndex != ArrayCount(NewKeyboardController->Buttons);
+			++ButtonIndex) {
+			bool const EndedDown = OldKeyboardController->Buttons[ButtonIndex].EndedDown;
+			bool const WasDown = OldKeyboardController->Buttons[ButtonIndex].WasDown;
+			NewKeyboardController->Buttons[ButtonIndex].EndedDown = EndedDown;
+			NewKeyboardController->Buttons[ButtonIndex].WasDown = WasDown;
 		}
 		LinuxProcessPendingMessages(display, NewKeyboardController);
+		GameUpdate(&Input[0], &Memory, &Buffer);
+		// TODO to move the swapping to a pointer Swap() function
+		NewInputIdx ^= 1;
+		OldInputIdx ^= 1;
+		NewInput = &Input[NewInputIdx];
+		OldInput = &Input[OldInputIdx];
 	}
 
 	// TODO: refactor this into a function called LinuxPause() (not pause() because unistd.h defines one)

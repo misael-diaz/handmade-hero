@@ -48,6 +48,18 @@ struct game_button_state {
 _Static_assert(8 == sizeof(struct game_button_state));
 
 struct game_controller_input {
+	float StartX;
+	float StartY;
+
+	float MinX;
+	float MinY;
+
+	float MaxX;
+	float MaxY;
+
+	float EndX;
+	float EndY;
+
 	union {
 		struct game_button_state Buttons[6];
 		struct {
@@ -59,6 +71,8 @@ struct game_controller_input {
 			struct game_button_state RightShoulder;
 		};
 	};
+
+	bool IsAnalog;
 };
 
 // keyboard and four Xbox controllers
@@ -88,7 +102,13 @@ struct game_offscreen_buffer {
 	int Size;
 };
 
+struct game_controller_input *GetController(
+        struct game_input * const Input,
+        int const ControllerIndex
+);
+
 void GameUpdate(
+	struct game_input *Input,
 	struct game_memory *Memory,
 	struct game_offscreen_buffer *Buffer
 );
