@@ -22,7 +22,7 @@ HANDMADE_O = ../../obj/handmade.o
 all: $(GAME) 
 
 $(GAME): $(MAIN_O)
-	$(CC) $(CCOPT) $(HANDMADE_O) $(MAIN_O) -o $(GAME) $(LIBS) -lX11
+	$(CC) $(CCOPT) $(HANDMADE_O) $(MAIN_O) -o $(GAME) $(LIBS) -lX11 -lXrandr
 
 $(MAIN_O): $(MAIN_C) $(HANDMADE_H)
 	$(CC) $(CCOPT) -I ../../include -c $(MAIN_C) -o $(MAIN_O)

@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
+#include <X11/extensions/Xrandr.h>
 #include <stdbool.h>
 #include <string.h>
 #include <sys/mman.h>
@@ -34,6 +35,14 @@ static int LinuxX11ErrorHandler(Display *display, XErrorEvent *ev)
 	fprintf(stderr, "%s\n", errmsg);
 	X11Error = true;
 	return 0;
+}
+
+static void LinuxGetDisplayRefreshRate(Display *display, Window window)
+{
+	XRRScreenConfiguration *conf = XRRGetScreenInfo(display, window);
+	short rate = XRRConfigCurrentRate(conf);
+	XRRFreeScreenConfigInfo(conf);
+	fprintf(stdout, "display framerate: %d\n", rate);
 }
 
 static void LinuxProcessKeyboardInput(
@@ -229,6 +238,8 @@ int main()
 		display = NULL;
 		exit(EXIT_FAILURE);
 	}
+
+	LinuxGetDisplayRefreshRate(display, window);
 
 	int nvisuals = 0;
 	XVisualInfo template = {};
