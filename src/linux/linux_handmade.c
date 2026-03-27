@@ -37,6 +37,19 @@ static int LinuxX11ErrorHandler(Display *display, XErrorEvent *ev)
 	return 0;
 }
 
+// NOTE: even for multiple monitors this yields the refresh-rate of the screen (where the screen is
+//       an abstraction in xlib) so we don't need to probe for individual monitor properties; the
+//       properties of the virtual screen is what we actually need.
+// TODO: verify this with xrandr command and its API and you will want to look at the
+//       struct definition for XRRCrtcInfo in the header Xrandr.h to be able to get at
+//       the widthxheight+xoffset+yoffset data yourself which might be of interest in
+//       the future if adding support for multiple monitors. With this you can corroborate that xlib
+//       indeed uses a virtual screen and that you can use the offset data to determine
+//       the placement of the game window if you ever decide to support multiple
+//       monitors. Nevertheless it's worth looking into that, the man page for
+//       Xrandr(3) is not necessarily contain the most recent API documentation.
+//       You probably want to use XRRGetOutputPrimary() and XRRGetCrtcInfo() to get
+//       that data.
 static void LinuxGetDisplayRefreshRate(Display *display, Window window)
 {
 	XRRScreenConfiguration *conf = XRRGetScreenInfo(display, window);
