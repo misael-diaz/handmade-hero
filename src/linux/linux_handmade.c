@@ -40,22 +40,35 @@ static int LinuxX11ErrorHandler(Display *display, XErrorEvent *ev)
 // NOTE: even for multiple monitors this yields the refresh-rate of the screen (where the screen is
 //       an abstraction in xlib) so we don't need to probe for individual monitor properties; the
 //       properties of the virtual screen is what we actually need.
-// TODO: verify this with xrandr command and its API and you will want to look at the
-//       struct definition for XRRCrtcInfo in the header Xrandr.h to be able to get at
-//       the widthxheight+xoffset+yoffset data yourself which might be of interest in
-//       the future if adding support for multiple monitors. With this you can corroborate that xlib
-//       indeed uses a virtual screen and that you can use the offset data to determine
-//       the placement of the game window if you ever decide to support multiple
-//       monitors. Nevertheless it's worth looking into that, the man page for
-//       Xrandr(3) is not necessarily contain the most recent API documentation.
-//       You probably want to use XRRGetOutputPrimary() and XRRGetCrtcInfo() to get
-//       that data.
 static void LinuxGetDisplayRefreshRate(Display *display, Window window)
 {
 	XRRScreenConfiguration *conf = XRRGetScreenInfo(display, window);
 	short rate = XRRConfigCurrentRate(conf);
-	XRRFreeScreenConfigInfo(conf);
+
+	XRRScreenResources *resources = XRRGetScreenResources(display, window);
 	fprintf(stdout, "display framerate: %d\n", rate);
+	fprintf(stdout, "number of crtcs: %d\n", resources->ncrtc);
+	// NOTE: We only display crtcs that have meaningful dimensions (non-zero); if we have non-zero xoffset
+	//       or yoffset we know that we have at least one extra monitor. Either there's scarce info or
+	//       not at all on this, this is why we bothered to add this note. Now we have a reliable way
+	//       to tell if our game could be running in a machine with multiple monitors.
+	for (int idx = 0; idx != resources->ncrtc; ++idx) {
+		XID crtc = resources->crtcs[idx];
+		XRRCrtcInfo *info = XRRGetCrtcInfo(display, resources, crtc);
+		if (info->width && info->height) {
+			fprintf(
+				stdout,
+				"xoffset: %d yoffset: %d width: %d height: %d\n",
+				info->x,
+				info->y,
+				info->width,
+				info->height
+				);
+		}
+		XRRFreeCrtcInfo(info);
+	}
+	XRRFreeScreenResources(resources);
+	XRRFreeScreenConfigInfo(conf);
 }
 
 static void LinuxProcessKeyboardInput(
