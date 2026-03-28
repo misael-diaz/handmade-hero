@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <sys/mman.h>
+#include <sys/timex.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -40,7 +41,7 @@ static int LinuxX11ErrorHandler(Display *display, XErrorEvent *ev)
 // NOTE: even for multiple monitors this yields the refresh-rate of the screen (where the screen is
 //       an abstraction in xlib) so we don't need to probe for individual monitor properties; the
 //       properties of the virtual screen is what we actually need.
-static void LinuxGetDisplayRefreshRate(Display *display, Window window)
+static int LinuxGetDisplayRefreshRate(Display *display, Window window)
 {
 	XRRScreenConfiguration *conf = XRRGetScreenInfo(display, window);
 	short rate = XRRConfigCurrentRate(conf);
@@ -69,6 +70,7 @@ static void LinuxGetDisplayRefreshRate(Display *display, Window window)
 	}
 	XRRFreeScreenResources(resources);
 	XRRFreeScreenConfigInfo(conf);
+	return rate;
 }
 
 static void LinuxProcessKeyboardInput(
@@ -200,6 +202,43 @@ DEBUG void PlatformFreeFile(void *buffer)
 	return;
 }
 
+// NOTE: just showing some info so that we know how the system is going handle leap seconds (insert/remove)
+void LinuxGetNTPInfo()
+{
+	errno = 0;
+	struct timex timexbuf = {};
+	int rc = ntp_adjtime(&timexbuf);
+	if (-1 == rc) {
+		fprintf(stderr, "%s", "NTP error\n");
+		if (errno) {
+			fprintf(stderr, "%s\n", strerror(errno));
+		}
+		exit(EXIT_FAILURE);
+	} else if (TIME_OK) {
+		fprintf(stdout, "%s", "system clock synchronized\n");
+	} else if (TIME_INS) {
+		fprintf(stdout, "%s", "leap second to be added to system clock\n");
+	} else if (TIME_DEL) {
+		fprintf(stdout, "%s", "leap second to be deleted to system clock\n");
+	} else if (TIME_OOP) {
+		fprintf(stdout, "%s", "system clock adjustment in progress\n");
+	} else if (TIME_WAIT) {
+		fprintf(stdout, "%s", "system clock adjustment pending adjustment status clearing\n");
+	} else if (TIME_ERROR) {
+		fprintf(stdout, "%s", "system clock is not synchronized to a reliable server\n");
+	}
+
+	if (timexbuf.status & STA_NANO) {
+		char resolution[] = "(nsec)";
+		fprintf(stdout, "system clock offset %s: %ld\n", resolution, timexbuf.offset);
+	} else {
+		char resolution[] = "(usec)";
+		fprintf(stdout, "system clock offset %s: %ld\n", resolution, timexbuf.offset);
+	}
+	fprintf(stdout, "system clock tick (usec): %ld\n", timexbuf.tick);
+	fprintf(stdout, "system clock precision (usec): %ld\n", timexbuf.precision);
+}
+
 int main()
 {
 #if HANDMADE_DEV
@@ -210,6 +249,7 @@ int main()
 	void *BaseAddress = NULL;
 	int const MMapFlags = MAP_ANONYMOUS | MAP_PRIVATE;
 #endif
+	LinuxGetNTPInfo();
 	fprintf(stdout, "%s", "Linux - HandMade Hero\n");
 	Display *display = XOpenDisplay(NULL);
 	if (!display) {
@@ -265,7 +305,10 @@ int main()
 		exit(EXIT_FAILURE);
 	}
 
-	LinuxGetDisplayRefreshRate(display, window);
+	int const ScreenRefreshRate = LinuxGetDisplayRefreshRate(display, window);
+	int const GameRateFPS = ScreenRefreshRate / 2;
+	float const ElapsedTimePerFrameMillis = 1000.0 / ((float) GameRateFPS);
+	fprintf(stdout, "target elapsed time per frame %f\n", ElapsedTimePerFrameMillis);
 
 	int nvisuals = 0;
 	XVisualInfo template = {};
