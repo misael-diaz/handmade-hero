@@ -12,6 +12,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <time.h>
 #include "handmade.h"
 
 #define KBD_UP XKeysymToKeycode(display, XK_Up)
@@ -239,6 +240,29 @@ void LinuxGetNTPInfo()
 	fprintf(stdout, "system clock precision (usec): %ld\n", timexbuf.precision);
 }
 
+// NOTE: with this you can verify the resolution of a given clock at least in my machine the
+//       resolution of the monotonic clock is 1 nanosecond (probably the same in other machines).
+void LinuxGetClockInfo(
+		clockid_t clock_id,
+		struct timespec * const clock_resolution
+) {
+	errno = 0;
+	int rc = clock_getres(clock_id, clock_resolution);
+	if (-1 == rc) {
+		fprintf(stderr, "%s", "system clock error\n");
+		if (errno) {
+			fprintf(stderr, "%s\n", strerror(errno));
+		}
+		exit(EXIT_FAILURE);
+	}
+	fprintf(
+		stdout,
+		"clock resolution sec: %ld nsec: %ld\n",
+		clock_resolution->tv_sec,
+		clock_resolution->tv_nsec
+	);
+}
+
 int main()
 {
 #if HANDMADE_DEV
@@ -250,6 +274,8 @@ int main()
 	int const MMapFlags = MAP_ANONYMOUS | MAP_PRIVATE;
 #endif
 	LinuxGetNTPInfo();
+	struct timespec clock_monotonic_res = {};
+	LinuxGetClockInfo(CLOCK_MONOTONIC, &clock_monotonic_res);
 	fprintf(stdout, "%s", "Linux - HandMade Hero\n");
 	Display *display = XOpenDisplay(NULL);
 	if (!display) {
