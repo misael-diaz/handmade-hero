@@ -288,6 +288,38 @@ void LinuxSetDelayTime(
 	);
 }
 
+void LinuxDiffTimeSpec(
+	struct timespec * const clock_delta,
+	struct timespec const * const clock_start,
+	struct timespec const * const clock_end
+) {
+	long nsec_diff = 0;
+	long const nsec_start = 1000000000 * clock_start->tv_sec + clock_start->tv_nsec;
+	long const nsec_end   = 1000000000 *   clock_end->tv_sec +   clock_end->tv_nsec;
+	if (nsec_end > nsec_start) {
+		nsec_diff = (nsec_end - nsec_start);
+	} else {
+		nsec_diff = (nsec_start - nsec_end);
+	}
+	clock_delta->tv_sec  = (nsec_diff / 1000000000);
+	clock_delta->tv_nsec = (nsec_diff % 1000000000);
+}
+
+void LinuxCSumTimeSpec(
+	struct timespec * const clock_csum,
+	struct timespec const * const clock_delta
+) {
+	long const sec = (
+		 (clock_csum->tv_sec  + clock_delta->tv_sec) +
+		((clock_csum->tv_nsec + clock_delta->tv_nsec) / 1000000000)
+	);
+	long const nsec = (
+		((clock_csum->tv_nsec + clock_delta->tv_nsec) % 1000000000)
+	);
+	clock_csum->tv_sec = sec;
+	clock_csum->tv_nsec = nsec;
+}
+
 void LinuxDelay(
 	clockid_t clock_id,
 	struct timespec const * const clock_target
@@ -499,9 +531,15 @@ int main()
 	struct game_input *OldInput = &Input[OldInputIdx];
 
 	Running = true;
+	long frames = 0;
+	struct timespec TimeStart = {};
+	struct timespec TimeEnd = {};
+	struct timespec TimeDelta = {};
+	struct timespec TimeSum = {};
 	struct timespec ClockFrameDuration = {};
 	LinuxSetTimeSpec(&ClockFrameDuration, ElapsedTimePerFrameNanoSec);
 	while (Running) {
+		clock_gettime(CLOCK_MONOTONIC_RAW, &TimeStart);
 		struct timespec ClockLastTime = {};
 		struct timespec ClockTargetTime = {};
 		clock_gettime(clockid, &ClockLastTime);
@@ -536,7 +574,14 @@ int main()
 		// NOTE: since we swapped the inputs ahead of time for timing purposes we pass the
 		//       OldInput because it actually refers to the current input for this frame
 		GameUpdate(OldInput, &Memory, &Buffer);
+		clock_gettime(CLOCK_MONOTONIC_RAW, &TimeEnd);
+		LinuxDiffTimeSpec(&TimeDelta, &TimeStart, &TimeEnd);
+		LinuxCSumTimeSpec(&TimeSum, &TimeDelta);
+		++frames;
 	}
+
+	float OverallFPS = frames / (((float) TimeSum.tv_sec) + 1.0e-9 * ((float) TimeSum.tv_nsec));
+	fprintf(stdout, "average fps: %.1f\n", OverallFPS);
 
 	// TODO: refactor this into a function called LinuxPause() (not pause() because unistd.h defines one)
 	// we pause here so that we can try to resize the window and not exit right away
