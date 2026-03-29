@@ -263,6 +263,53 @@ void LinuxGetClockInfo(
 	);
 }
 
+// NOTE: integer division is slower that float arithmetic but we are favoring simplicity over performance
+//       here because we are doing this to determine the time period that the CPU needs to sleep to match
+//       the game frame rate. Later we can drop in the faster implementation to decrease the overhead.
+void LinuxSetTimeSpec(
+	struct timespec * const clock_time,
+	long const nsec
+) {
+	clock_time->tv_sec  = (nsec / 1000000000);
+	clock_time->tv_nsec = (nsec % 1000000000);
+}
+
+void LinuxSetDelayTime(
+	struct timespec * const clock_target,
+	struct timespec const * const clock_start,
+	struct timespec const * const clock_delta
+) {
+	clock_target->tv_sec = (
+		(clock_start->tv_sec + clock_delta->tv_sec) +
+		((clock_start->tv_nsec + clock_delta->tv_nsec) / 1000000000)
+	);
+	clock_target->tv_nsec = (
+		((clock_start->tv_nsec + clock_delta->tv_nsec) % 1000000000)
+	);
+}
+
+void LinuxDelay(
+	clockid_t clock_id,
+	struct timespec const * const clock_target
+) {
+	int rc = 0;
+	if (CLOCK_MONOTONIC != clock_id) {
+		fprintf(stderr, "%s", "unsupported clock_id\n");
+	}
+	do {
+		rc = clock_nanosleep(clock_id, TIMER_ABSTIME, clock_target, NULL);
+		if (EFAULT == rc) {
+			fprintf(stderr, "%s", "invalid address for request time 'clock_target'\n");
+		} else if (EINVAL == rc) {
+			if (CLOCK_MONOTONIC != clock_id) {
+				fprintf(stderr, "%s", "unsupported clock_id\n");
+			} else {
+				fprintf(stderr, "%s", "invalid value for 'clock_target' timespec\n");
+			}
+		}
+	} while (EINTR == rc);
+}
+
 int main()
 {
 #if HANDMADE_DEV
@@ -274,8 +321,9 @@ int main()
 	int const MMapFlags = MAP_ANONYMOUS | MAP_PRIVATE;
 #endif
 	LinuxGetNTPInfo();
+	clockid_t clockid = CLOCK_MONOTONIC;
 	struct timespec clock_monotonic_res = {};
-	LinuxGetClockInfo(CLOCK_MONOTONIC, &clock_monotonic_res);
+	LinuxGetClockInfo(clockid, &clock_monotonic_res);
 	fprintf(stdout, "%s", "Linux - HandMade Hero\n");
 	Display *display = XOpenDisplay(NULL);
 	if (!display) {
@@ -333,8 +381,8 @@ int main()
 
 	int const ScreenRefreshRate = LinuxGetDisplayRefreshRate(display, window);
 	int const GameRateFPS = ScreenRefreshRate / 2;
-	float const ElapsedTimePerFrameMillis = 1000.0 / ((float) GameRateFPS);
-	fprintf(stdout, "target elapsed time per frame %f\n", ElapsedTimePerFrameMillis);
+	float const ElapsedTimePerFrameNanoSec = 1.0e9 / ((float) GameRateFPS);
+	fprintf(stdout, "target elapsed time per frame %f\n", ElapsedTimePerFrameNanoSec);
 
 	int nvisuals = 0;
 	XVisualInfo template = {};
@@ -451,7 +499,14 @@ int main()
 	struct game_input *OldInput = &Input[OldInputIdx];
 
 	Running = true;
+	struct timespec ClockFrameDuration = {};
+	LinuxSetTimeSpec(&ClockFrameDuration, ElapsedTimePerFrameNanoSec);
 	while (Running) {
+		struct timespec ClockLastTime = {};
+		struct timespec ClockTargetTime = {};
+		clock_gettime(clockid, &ClockLastTime);
+		LinuxSetDelayTime(&ClockTargetTime, &ClockLastTime, &ClockFrameDuration);
+
 		struct game_controller_input *NewKeyboardController = GetController(NewInput, 0);
 		struct game_controller_input *OldKeyboardController = GetController(OldInput, 0);
 		memset(NewKeyboardController, 0, sizeof(*NewKeyboardController));
@@ -470,12 +525,17 @@ int main()
 		//      -(1<<15), so if it's different (doubt it) you can easily apply
 		//      this simple tactic for normalization.
 		LinuxProcessPendingMessages(display, NewKeyboardController);
-		GameUpdate(&Input[0], &Memory, &Buffer);
+
 		// TODO to move the swapping to a pointer Swap() function
 		NewInputIdx ^= 1;
 		OldInputIdx ^= 1;
 		NewInput = &Input[NewInputIdx];
 		OldInput = &Input[OldInputIdx];
+
+		LinuxDelay(clockid, &ClockTargetTime);
+		// NOTE: since we swapped the inputs ahead of time for timing purposes we pass the
+		//       OldInput because it actually refers to the current input for this frame
+		GameUpdate(OldInput, &Memory, &Buffer);
 	}
 
 	// TODO: refactor this into a function called LinuxPause() (not pause() because unistd.h defines one)
