@@ -17,12 +17,11 @@ HANDMADE_H = ../../include/handmade.h
 GAME = ../../bin/linux-handmade.bin
 MAIN_C = linux_handmade.c
 MAIN_O = ../../obj/linux_handmade.o
-HANDMADE_O = ../../obj/handmade.o
 
 all: $(GAME) 
 
 $(GAME): $(MAIN_O)
-	$(CC) $(CCOPT) $(HANDMADE_O) $(MAIN_O) -o $(GAME) $(LIBS) -lX11 -lXrandr
+	$(CC) $(CCOPT) $(MAIN_O) -o $(GAME) $(LIBS) -ldl -lX11 -lXrandr
 
 $(MAIN_O): $(MAIN_C) $(HANDMADE_H)
 	$(CC) $(CCOPT) -I ../../include -c $(MAIN_C) -o $(MAIN_O)

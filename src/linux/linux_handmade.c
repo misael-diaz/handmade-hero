@@ -1,3 +1,4 @@
+#include <dlfcn.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,6 +16,7 @@
 #include <time.h>
 #include "handmade.h"
 
+#define HANDMADE_SO "lib/handmade.so"
 #define KBD_UP XKeysymToKeycode(display, XK_Up)
 #define KBD_DOWN XKeysymToKeycode(display, XK_Down)
 #define KBD_LEFT XKeysymToKeycode(display, XK_Left)
@@ -204,7 +206,7 @@ DEBUG void PlatformFreeFile(void *buffer)
 }
 
 // NOTE: just showing some info so that we know how the system is going handle leap seconds (insert/remove)
-void LinuxGetNTPInfo()
+int LinuxGetNTPInfo()
 {
 	errno = 0;
 	struct timex timexbuf = {};
@@ -214,7 +216,7 @@ void LinuxGetNTPInfo()
 		if (errno) {
 			fprintf(stderr, "%s\n", strerror(errno));
 		}
-		exit(EXIT_FAILURE);
+		return EXIT_FAILURE;
 	} else if (TIME_OK) {
 		fprintf(stdout, "%s", "system clock synchronized\n");
 	} else if (TIME_INS) {
@@ -238,6 +240,7 @@ void LinuxGetNTPInfo()
 	}
 	fprintf(stdout, "system clock tick (usec): %ld\n", timexbuf.tick);
 	fprintf(stdout, "system clock precision (usec): %ld\n", timexbuf.precision);
+	return 0;
 }
 
 // NOTE: with this you can verify the resolution of a given clock at least in my machine the
@@ -342,6 +345,24 @@ void LinuxDelay(
 	} while (EINTR == rc);
 }
 
+internal struct game_controller_input *GetControllerStub(
+        struct game_input * const Input,
+        int const ControllerIndex
+) {
+	Assert(0 <= ControllerIndex);
+	size_t const Index = ControllerIndex;
+	Assert(Index < ArrayCount(Input->Controllers));
+	return &Input->Controllers[Index];
+}
+
+internal void GameUpdateStub(
+        struct game_input *Input,
+        struct game_memory *Memory,
+        struct game_offscreen_buffer *Buffer
+) {
+	return;
+}
+
 int main()
 {
 #if HANDMADE_DEV
@@ -352,7 +373,27 @@ int main()
 	void *BaseAddress = NULL;
 	int const MMapFlags = MAP_ANONYMOUS | MAP_PRIVATE;
 #endif
-	LinuxGetNTPInfo();
+	void *lhandmade = dlopen(HANDMADE_SO, RTLD_NOW);
+	if (!lhandmade) {
+		fprintf(stderr, "%s", "fail to open shared object handmade hero " HANDMADE_SO "\n");
+		exit(EXIT_FAILURE);
+	}
+	void *GetController = dlsym(lhandmade, "GetController");
+	if (!GetController) {
+		fprintf(stderr, "%s", "failed to load GetController()\n");
+		dlclose(lhandmade);
+		exit(EXIT_FAILURE);
+	}
+	void *GameUpdate = dlsym(lhandmade, "GameUpdate");
+	if (!GameUpdate) {
+		fprintf(stderr, "%s", "failed to load GameUpdate()\n");
+		dlclose(lhandmade);
+		exit(EXIT_FAILURE);
+	}
+	if (LinuxGetNTPInfo()) {
+		dlclose(lhandmade);
+		exit(EXIT_FAILURE);
+	}
 	clockid_t clockid = CLOCK_MONOTONIC;
 	struct timespec clock_monotonic_res = {};
 	LinuxGetClockInfo(clockid, &clock_monotonic_res);
@@ -360,6 +401,7 @@ int main()
 	Display *display = XOpenDisplay(NULL);
 	if (!display) {
 		fprintf(stdout, "%s", "XErrorOpenDisplay\n");
+		dlclose(lhandmade);
 		exit(EXIT_FAILURE);
 	}
 	XSetErrorHandler(LinuxX11ErrorHandler);
@@ -398,6 +440,7 @@ int main()
 
 	if (X11Error) {
 		fprintf(stderr, "%s", "Fatal Xlib Error\n");
+		dlclose(lhandmade);
 		XCloseDisplay(display);
 		display = NULL;
 		exit(EXIT_FAILURE);
@@ -406,6 +449,7 @@ int main()
 	// NOTE: here we are assuming data to be layout in LE
 	if (LSBFirst != ImageByteOrder(display)) {
 		fprintf(stderr, "%s", "Fatal Unsupported Display Error\n");
+		dlclose(lhandmade);
 		XCloseDisplay(display);
 		display = NULL;
 		exit(EXIT_FAILURE);
@@ -478,6 +522,7 @@ int main()
 		if (errno) {
 			fprintf(stderr, "%s\n", strerror(errno));
 		}
+		dlclose(lhandmade);
 		XFree(visinfo);
 		XDestroyWindow(display, window);
 		XCloseDisplay(display);
@@ -537,6 +582,16 @@ int main()
 	struct timespec TimeDelta = {};
 	struct timespec TimeSum = {};
 	struct timespec ClockFrameDuration = {};
+
+	struct game_controller_input *(*GetControllerFP)(
+			struct game_input * const Input,
+			int const ControllerIndex) = GetController;
+
+	void (*GameUpdateFP)(
+        struct game_input *Input,
+        struct game_memory *Memory,
+        struct game_offscreen_buffer *Buffer) = GameUpdate;
+
 	LinuxSetTimeSpec(&ClockFrameDuration, ElapsedTimePerFrameNanoSec);
 	while (Running) {
 		clock_gettime(CLOCK_MONOTONIC_RAW, &TimeStart);
@@ -545,8 +600,8 @@ int main()
 		clock_gettime(clockid, &ClockLastTime);
 		LinuxSetDelayTime(&ClockTargetTime, &ClockLastTime, &ClockFrameDuration);
 
-		struct game_controller_input *NewKeyboardController = GetController(NewInput, 0);
-		struct game_controller_input *OldKeyboardController = GetController(OldInput, 0);
+		struct game_controller_input *NewKeyboardController = GetControllerFP(NewInput, 0);
+		struct game_controller_input *OldKeyboardController = GetControllerFP(OldInput, 0);
 		memset(NewKeyboardController, 0, sizeof(*NewKeyboardController));
 		for (
 			size_t ButtonIndex = 0;
@@ -573,7 +628,7 @@ int main()
 		LinuxDelay(clockid, &ClockTargetTime);
 		// NOTE: since we swapped the inputs ahead of time for timing purposes we pass the
 		//       OldInput because it actually refers to the current input for this frame
-		GameUpdate(OldInput, &Memory, &Buffer);
+		GameUpdateFP(OldInput, &Memory, &Buffer);
 		clock_gettime(CLOCK_MONOTONIC_RAW, &TimeEnd);
 		LinuxDiffTimeSpec(&TimeDelta, &TimeStart, &TimeEnd);
 		LinuxCSumTimeSpec(&TimeSum, &TimeDelta);
@@ -599,5 +654,6 @@ int main()
 	XFree(visinfo);
 	XDestroyWindow(display, window);
 	XCloseDisplay(display);
+	dlclose(lhandmade);
 	return 0;
 }

@@ -15,11 +15,11 @@
 
 HANDMADE_H = ../../include/handmade.h
 HANDMADE_C = handmade.c
-HANDMADE_O = ../../obj/handmade.o
+HANDMADE_SO = ../../lib/handmade.so
 
-all: $(HANDMADE_O) 
+all: $(HANDMADE_SO)
 
-$(HANDMADE_O): $(HANDMADE_C) $(HANDMADE_H)
-	$(CC) $(CCOPT) -I ../../include -c $(HANDMADE_C) -o $(HANDMADE_O)
+$(HANDMADE_SO): $(HANDMADE_C) $(HANDMADE_H)
+	$(CC) $(CCOPT) -I ../../include -fpic $(HANDMADE_C) -o $(HANDMADE_SO) -shared
 clean:
-	rm -f $(HANDMADE_O)
+	rm -f $(HANDMADE_SO)

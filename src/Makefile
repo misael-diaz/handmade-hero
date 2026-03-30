@@ -17,13 +17,19 @@ TARGET = platform_$(PLATFORM)
 
 all: shared $(TARGET)
 
+ifeq ($(PLATFORM),linux)
 shared:
+	@mkdir -p ../obj
+	@mkdir -p ../lib
+	@mkdir -p ../bin
 	@$(MAKE) -C common
+else
+	@$(MAKE) -C common
+endif
 
 platform_win32: shared
 	@$(MAKE) -C win32
 platform_linux: shared
-	@mkdir -p ../obj && mkdir -p ../bin
 	@$(MAKE) -C linux
 
 ifeq ($(PLATFORM),linux)

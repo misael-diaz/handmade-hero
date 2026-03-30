@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#define internal static
 #define ArrayCount(ary) (sizeof(ary) / sizeof(*ary))
 
 #if HANDMADE_DEV
