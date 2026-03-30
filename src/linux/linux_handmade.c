@@ -733,6 +733,8 @@ int main()
 	XFree(visinfo);
 	XDestroyWindow(display, window);
 	XCloseDisplay(display);
-	dlclose(lhandmade);
+	if (lhandmade) {
+		dlclose(lhandmade);
+	}
 	return 0;
 }
