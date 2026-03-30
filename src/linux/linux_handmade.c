@@ -2,12 +2,15 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/extensions/Xrandr.h>
 #include <stdbool.h>
 #include <string.h>
 #include <sys/mman.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <sys/timex.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -363,6 +366,63 @@ internal void GameUpdateStub(
 	return;
 }
 
+// NOTE you are going to need a logger (it has become evident) but that will have to wait for now
+// TODO some of the console loggin here matters for debugging mostly so make sure to remove them for
+//      the production-grade build
+internal void LinuxUpdateHandmadeLib(
+	struct stat * const LastStatus,
+	void ** const lhandmade,
+	struct game_controller_input *(**GetController)(struct game_input * const Input, int const CtrlIdx),
+	void (**GameUpdate)(struct game_input *In, struct game_memory *Mem, struct game_offscreen_buffer *Buf)
+) {
+	struct stat CurStatus = {};
+	int rc = stat(HANDMADE_SO, &CurStatus);
+	if (-1 == rc) {
+		fprintf(stderr, "%s", "failed to get current status using stubs instead\n");
+		goto use_stubs;
+	}
+
+	if (
+		(CurStatus.st_mtim.tv_sec  != LastStatus->st_mtim.tv_sec) &&
+		(CurStatus.st_mtim.tv_nsec != LastStatus->st_mtim.tv_nsec)
+	   ) {
+		if (*lhandmade) {
+			if (dlclose(*lhandmade)) {
+				fprintf(stderr, "%s", "dlclose error\n");
+				exit(EXIT_FAILURE);
+			}
+		}
+		*lhandmade = dlopen(HANDMADE_SO, RTLD_NOW);
+		if (!*lhandmade) {
+			fprintf(stderr, "%s", "fail to open shared object handmade hero " HANDMADE_SO "\n");
+			fprintf(stderr, "%s\n", dlerror());
+			fprintf(stderr, "%s", "using stubs\n");
+			*lhandmade = NULL;
+			goto use_stubs;
+		}
+		*GetController = dlsym(*lhandmade, "GetController");
+		if (!*GetController) {
+			dlclose(*lhandmade);
+			fprintf(stderr, "%s", "dlsym error with GetController()\n");
+			exit(EXIT_FAILURE);
+		}
+		*GameUpdate = dlsym(*lhandmade, "GameUpdate");
+		if (!*GameUpdate) {
+			dlclose(*lhandmade);
+			fprintf(stderr, "%s", "dlsym error with GameUpdate()\n");
+			exit(EXIT_FAILURE);
+		}
+		fprintf(stdout, "%s", "updated Handmade Hero lib successfully\n");
+		LastStatus->st_mtim = CurStatus.st_mtim;
+	}
+	return;
+use_stubs: {
+		   *GetController = GetControllerStub;
+		   *GameUpdate = GameUpdateStub;
+		   return;
+	   }
+}
+
 int main()
 {
 #if HANDMADE_DEV
@@ -373,6 +433,18 @@ int main()
 	void *BaseAddress = NULL;
 	int const MMapFlags = MAP_ANONYMOUS | MAP_PRIVATE;
 #endif
+	errno = 0;
+	int rc = 0;
+	struct stat LastStatusHandmadeHeroLib = {};
+	rc = stat(HANDMADE_SO, &LastStatusHandmadeHeroLib);
+	if (-1 == rc) {
+		fprintf(stderr, "%s", "failed to obtain the status of the shared object " HANDMADE_SO "\n");
+		if (errno) {
+			fprintf(stderr, "%s\n", strerror(errno));
+		}
+		exit(EXIT_FAILURE);
+	}
+
 	void *lhandmade = dlopen(HANDMADE_SO, RTLD_NOW);
 	if (!lhandmade) {
 		fprintf(stderr, "%s", "fail to open shared object handmade hero " HANDMADE_SO "\n");
@@ -624,6 +696,13 @@ int main()
 		OldInputIdx ^= 1;
 		NewInput = &Input[NewInputIdx];
 		OldInput = &Input[OldInputIdx];
+
+		LinuxUpdateHandmadeLib(
+			&LastStatusHandmadeHeroLib,
+			&lhandmade,
+			&GetControllerFP,
+			&GameUpdateFP
+		);
 
 		LinuxDelay(clockid, &ClockTargetTime);
 		// NOTE: since we swapped the inputs ahead of time for timing purposes we pass the
