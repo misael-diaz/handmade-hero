@@ -372,8 +372,7 @@ internal void GameUpdateStub(
 internal void LinuxUpdateHandmadeLib(
 	struct stat * const LastStatus,
 	void ** const lhandmade,
-	struct game_controller_input *(**GetController)(struct game_input * const Input, int const CtrlIdx),
-	void (**GameUpdate)(struct game_input *In, struct game_memory *Mem, struct game_offscreen_buffer *Buf)
+	struct game_code * const GameCode
 ) {
 	struct stat CurStatus = {};
 	int rc = stat(HANDMADE_SO, &CurStatus);
@@ -400,14 +399,14 @@ internal void LinuxUpdateHandmadeLib(
 			*lhandmade = NULL;
 			goto use_stubs;
 		}
-		*GetController = dlsym(*lhandmade, "GetController");
-		if (!*GetController) {
+		GameCode->GetController = dlsym(*lhandmade, "GetController");
+		if (!GameCode->GetController) {
 			dlclose(*lhandmade);
 			fprintf(stderr, "%s", "dlsym error with GetController()\n");
 			exit(EXIT_FAILURE);
 		}
-		*GameUpdate = dlsym(*lhandmade, "GameUpdate");
-		if (!*GameUpdate) {
+		GameCode->GameUpdate = dlsym(*lhandmade, "GameUpdate");
+		if (!GameCode->GameUpdate) {
 			dlclose(*lhandmade);
 			fprintf(stderr, "%s", "dlsym error with GameUpdate()\n");
 			exit(EXIT_FAILURE);
@@ -417,8 +416,8 @@ internal void LinuxUpdateHandmadeLib(
 	}
 	return;
 use_stubs: {
-		   *GetController = GetControllerStub;
-		   *GameUpdate = GameUpdateStub;
+		   GameCode->GetController = GetControllerStub;
+		   GameCode->GameUpdate = GameUpdateStub;
 		   return;
 	   }
 }
@@ -435,6 +434,11 @@ int main()
 #endif
 	errno = 0;
 	int rc = 0;
+
+	struct game_code GameCode = {};
+	GameCode.GetController = GetControllerStub;
+	GameCode.GameUpdate = GameUpdateStub;
+
 	struct stat LastStatusHandmadeHeroLib = {};
 	rc = stat(HANDMADE_SO, &LastStatusHandmadeHeroLib);
 	if (-1 == rc) {
@@ -450,14 +454,14 @@ int main()
 		fprintf(stderr, "%s", "fail to open shared object handmade hero " HANDMADE_SO "\n");
 		exit(EXIT_FAILURE);
 	}
-	void *GetController = dlsym(lhandmade, "GetController");
-	if (!GetController) {
+	GameCode.GetController = dlsym(lhandmade, "GetController");
+	if (!GameCode.GetController) {
 		fprintf(stderr, "%s", "failed to load GetController()\n");
 		dlclose(lhandmade);
 		exit(EXIT_FAILURE);
 	}
-	void *GameUpdate = dlsym(lhandmade, "GameUpdate");
-	if (!GameUpdate) {
+	GameCode.GameUpdate = dlsym(lhandmade, "GameUpdate");
+	if (!GameCode.GameUpdate) {
 		fprintf(stderr, "%s", "failed to load GameUpdate()\n");
 		dlclose(lhandmade);
 		exit(EXIT_FAILURE);
@@ -655,15 +659,6 @@ int main()
 	struct timespec TimeSum = {};
 	struct timespec ClockFrameDuration = {};
 
-	struct game_controller_input *(*GetControllerFP)(
-			struct game_input * const Input,
-			int const ControllerIndex) = GetController;
-
-	void (*GameUpdateFP)(
-        struct game_input *Input,
-        struct game_memory *Memory,
-        struct game_offscreen_buffer *Buffer) = GameUpdate;
-
 	LinuxSetTimeSpec(&ClockFrameDuration, ElapsedTimePerFrameNanoSec);
 	while (Running) {
 		clock_gettime(CLOCK_MONOTONIC_RAW, &TimeStart);
@@ -672,8 +667,8 @@ int main()
 		clock_gettime(clockid, &ClockLastTime);
 		LinuxSetDelayTime(&ClockTargetTime, &ClockLastTime, &ClockFrameDuration);
 
-		struct game_controller_input *NewKeyboardController = GetControllerFP(NewInput, 0);
-		struct game_controller_input *OldKeyboardController = GetControllerFP(OldInput, 0);
+		struct game_controller_input *NewKeyboardController = GameCode.GetController(NewInput, 0);
+		struct game_controller_input *OldKeyboardController = GameCode.GetController(OldInput, 0);
 		memset(NewKeyboardController, 0, sizeof(*NewKeyboardController));
 		for (
 			size_t ButtonIndex = 0;
@@ -700,14 +695,13 @@ int main()
 		LinuxUpdateHandmadeLib(
 			&LastStatusHandmadeHeroLib,
 			&lhandmade,
-			&GetControllerFP,
-			&GameUpdateFP
+			&GameCode
 		);
 
 		LinuxDelay(clockid, &ClockTargetTime);
 		// NOTE: since we swapped the inputs ahead of time for timing purposes we pass the
 		//       OldInput because it actually refers to the current input for this frame
-		GameUpdateFP(OldInput, &Memory, &Buffer);
+		GameCode.GameUpdate(OldInput, &Memory, &Buffer);
 		clock_gettime(CLOCK_MONOTONIC_RAW, &TimeEnd);
 		LinuxDiffTimeSpec(&TimeDelta, &TimeStart, &TimeEnd);
 		LinuxCSumTimeSpec(&TimeSum, &TimeDelta);

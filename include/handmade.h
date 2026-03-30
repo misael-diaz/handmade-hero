@@ -114,4 +114,17 @@ void GameUpdate(
 	struct game_offscreen_buffer *Buffer
 );
 
+struct game_code {
+	struct game_controller_input *(*GetController)(
+		struct game_input * const Input,
+		int const ControllerIndex
+	);
+
+	void (*GameUpdate)(
+		struct game_input *Input,
+		struct game_memory *Memory,
+		struct game_offscreen_buffer *Buffer
+	);
+};
+
 #endif
