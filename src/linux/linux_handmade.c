@@ -456,8 +456,8 @@ int main()
 	}
 
 	int const ScreenRefreshRate = LinuxGetDisplayRefreshRate(display, window);
-	int const GameRateFPS = ScreenRefreshRate / 2;
-	float const ElapsedTimePerFrameNanoSec = 1.0e9 / ((float) GameRateFPS);
+	int const GameRateHz = ScreenRefreshRate / 2;
+	float const ElapsedTimePerFrameNanoSec = 1.0e9 / ((float) GameRateHz);
 	fprintf(stdout, "target elapsed time per frame %f\n", ElapsedTimePerFrameNanoSec);
 
 	int nvisuals = 0;
@@ -635,8 +635,8 @@ int main()
 		++frames;
 	}
 
-	float OverallFPS = frames / (((float) TimeSum.tv_sec) + 1.0e-9 * ((float) TimeSum.tv_nsec));
-	fprintf(stdout, "average fps: %.1f\n", OverallFPS);
+	float OverallGameRateHz = frames / (((float) TimeSum.tv_sec) + 1.0e-9 * ((float) TimeSum.tv_nsec));
+	fprintf(stdout, "average fps: %.1f\n", OverallGameRateHz);
 
 	// TODO: refactor this into a function called LinuxPause() (not pause() because unistd.h defines one)
 	// we pause here so that we can try to resize the window and not exit right away
