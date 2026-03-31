@@ -494,8 +494,8 @@ int main()
 
 	int const x = 0;
 	int const y = 0;
-	int const width = WidthOfScreen(screen);
-	int const height = HeightOfScreen(screen);
+	int const width = HH_GAME_WINDOW_WIDTH;
+	int const height = HH_GAME_WINDOW_HEIGHT;
 	int const window_border_width = 0;
 	int const screen_depth = DefaultDepthOfScreen(screen);
 	Visual *visual = DefaultVisual(display, screeno);
@@ -574,6 +574,14 @@ int main()
 	fprintf(stdout, "blue-shift %ld\n", blue_shift);
 
 	GC gc = DefaultGC(display, screeno);
+
+	XSizeHints hints = {};
+	hints.flags = (PMinSize | PMaxSize);
+	hints.min_width = HH_GAME_WINDOW_WIDTH;
+	hints.max_width = HH_GAME_WINDOW_WIDTH;
+	hints.min_height = HH_GAME_WINDOW_HEIGHT;
+	hints.max_height = HH_GAME_WINDOW_HEIGHT;
+	XSetWMNormalHints(display, window, &hints);
 
 	XEvent ev = {};
 	XStoreName(display, window, "Handmade Hero");

@@ -7,6 +7,8 @@
 #include <stdbool.h>
 
 #define internal static
+#define HH_GAME_WINDOW_WIDTH 1600
+#define HH_GAME_WINDOW_HEIGHT 900
 #define ArrayCount(ary) (sizeof(ary) / sizeof(*ary))
 
 #if HANDMADE_DEV
