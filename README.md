@@ -8,6 +8,16 @@ I have little experience developing GUI applications on both platforms. So as I 
 series how to develop a GUI application in Windows I have to do research of my own to develop it in GNU/Linux.
 The latter means digging through the Xlib documentation which is essentially a reference manual.
 
+At the present moment the GNU/Linux build is considerably ahead of the Windows build. We have a game window
+that we can draw rectangles into it and we can also modify the background color of the window from full green
+to black by pressing the up/down arrow keys. I am not showing a screenshot of the game window because I don't
+think that's particularly interesting to show. Thus, at this point, I have overcomed most of the initial
+hurdles of developing the platform layer in GNU/Linux for the game (Xlib programming, user input,
+memory mapping, framerate, etc.). I have yet to work on the sound but that will be done after purchasing
+the game because I think it would be more interesting to do that with actual theme of the game. If the
+game does not have a theme song I think I would borrow one from the original legend of zelda developed for
+the famicom system (also known as the NES).
+
 ## Requirements
 
 On Windows you need to install MinGW and Xlib to compile the game into an executable. It's likely that
