@@ -17,6 +17,7 @@ void GameUpdate(
 ) {
 	struct game_controller_input *Keyboard = GetController(Input, 0);
 	struct game_state *GameState = Memory->PermanentStorage;
+	int *framebuffer = Memory->TransientStorage;
 	Assert((sizeof(*GameState) <= Memory->PermanentStorageSize));
 	if (!Memory->Initialized) {
 		GameState->GreenOffset = 0;
@@ -26,7 +27,19 @@ void GameUpdate(
 		Memory->Initialized = true;
 	}
 
+	if (Keyboard->Up.EndedDown) {
+		GameState->GreenOffset += 16;
+	}
+
 	if (Keyboard->Down.EndedDown) {
-		GameState->GreenOffset++;
+		GameState->GreenOffset -= 16;
+	}
+
+	if (256 <= GameState->GreenOffset) {
+		GameState->GreenOffset = 255;
+	}
+
+	if (0 >= GameState->GreenOffset) {
+		GameState->GreenOffset = 0;
 	}
 }

@@ -617,6 +617,8 @@ int main()
 	Memory.TransientStorage = Memory.PermanentStorage + Memory.PermanentStorageSize;
 	memset(Memory.PermanentStorage, 0, Memory.PermanentStorageSize + Memory.TransientStorageSize);
 
+	struct game_state *GameState = Memory.PermanentStorage;
+
 	uint8_t const red = 0;
 	uint8_t const green = 0xff;
 	uint8_t const blue = 0;
@@ -710,6 +712,17 @@ int main()
 		// NOTE: since we swapped the inputs ahead of time for timing purposes we pass the
 		//       OldInput because it actually refers to the current input for this frame
 		GameCode.GameUpdate(OldInput, &Memory, &Buffer);
+		for(long unsigned i = 0; i != pixels; ++i) {
+			long const red = 0;
+			long const green = GameState->GreenOffset;
+			long const blue = 0;
+			framebuffer[i] = (
+				(red   << red_shift) +
+				(green << green_shift) +
+				(blue  << blue_shift)
+			);
+		}
+		XPutImage(display, window, gc, image, 0, 0, 0, 0, width, height);
 		clock_gettime(CLOCK_MONOTONIC_RAW, &TimeEnd);
 		LinuxDiffTimeSpec(&TimeDelta, &TimeStart, &TimeEnd);
 		LinuxCSumTimeSpec(&TimeSum, &TimeDelta);
