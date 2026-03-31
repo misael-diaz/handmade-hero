@@ -711,6 +711,9 @@ int main()
 		// NOTE: since we swapped the inputs ahead of time for timing purposes we pass the
 		//       OldInput because it actually refers to the current input for this frame
 		GameCode.GameUpdate(OldInput, &Memory, &Buffer);
+
+		// TODO: write to the framebuffer in the game layer so we need to add the RGB shifts to the
+		//       game state
 		for(long unsigned i = 0; i != pixels; ++i) {
 			long const red = 0;
 			long const green = GameState->GreenOffset;
