@@ -618,6 +618,9 @@ int main()
 	memset(Memory.PermanentStorage, 0, Memory.PermanentStorageSize + Memory.TransientStorageSize);
 
 	struct game_state *GameState = Memory.PermanentStorage;
+	GameState->RedShift = red_shift;
+	GameState->GreenShift = green_shift;
+	GameState->BlueShift = blue_shift;
 
 	uint8_t const red = 0;
 	uint8_t const green = 0xff;
@@ -712,18 +715,6 @@ int main()
 		//       OldInput because it actually refers to the current input for this frame
 		GameCode.GameUpdate(OldInput, &Memory, &Buffer);
 
-		// TODO: write to the framebuffer in the game layer so we need to add the RGB shifts to the
-		//       game state
-		for(long unsigned i = 0; i != pixels; ++i) {
-			long const red = 0;
-			long const green = GameState->GreenOffset;
-			long const blue = 0;
-			framebuffer[i] = (
-				(red   << red_shift) +
-				(green << green_shift) +
-				(blue  << blue_shift)
-			);
-		}
 		XPutImage(display, window, gc, image, 0, 0, 0, 0, width, height);
 		LinuxDelay(clockid, &ClockTargetTime);
 		clock_gettime(CLOCK_MONOTONIC_RAW, &TimeEnd);

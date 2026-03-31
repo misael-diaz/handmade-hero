@@ -86,6 +86,9 @@ struct game_input {
 struct game_state {
 	int GreenOffset;
 	int BlueOffset;
+	int RedShift;
+	int GreenShift;
+	int BlueShift;
 };
 
 // NOTE: we expect the permanent storage to be cleared to zero on initialization

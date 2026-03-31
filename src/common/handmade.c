@@ -42,4 +42,20 @@ void GameUpdate(
 	if (0 >= GameState->GreenOffset) {
 		GameState->GreenOffset = 0;
 	}
+
+	// NOTE: as long the game window is hardcoded this should work, we are experimenting so it's okay
+	long unsigned pixels = (HH_GAME_WINDOW_WIDTH * HH_GAME_WINDOW_HEIGHT);
+	for(long unsigned i = 0; i != pixels; ++i) {
+		int const red = 0;
+		int const green = GameState->GreenOffset;
+		int const blue = 0;
+		int const red_shift = GameState->RedShift;
+		int const green_shift = GameState->GreenShift;
+		int const blue_shift = GameState->BlueShift;
+		framebuffer[i] = (
+			(red   << red_shift) +
+			(green << green_shift) +
+			(blue  << blue_shift)
+		);
+	}
 }
