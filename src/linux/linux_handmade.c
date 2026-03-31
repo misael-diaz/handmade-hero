@@ -617,10 +617,12 @@ int main()
 	Memory.TransientStorage = Memory.PermanentStorage + Memory.PermanentStorageSize;
 	memset(Memory.PermanentStorage, 0, Memory.PermanentStorageSize + Memory.TransientStorageSize);
 
+	size_t const pitch = width * 4;
 	struct game_state *GameState = Memory.PermanentStorage;
 	GameState->RedShift = red_shift;
 	GameState->GreenShift = green_shift;
 	GameState->BlueShift = blue_shift;
+	GameState->Pitch = pitch;
 
 	uint8_t const red = 0;
 	uint8_t const green = 0xff;

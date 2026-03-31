@@ -84,6 +84,7 @@ struct game_input {
 };
 
 struct game_state {
+	size_t Pitch;
 	int GreenOffset;
 	int BlueOffset;
 	int RedShift;
