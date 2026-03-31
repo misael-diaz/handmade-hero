@@ -708,7 +708,6 @@ int main()
 			&GameCode
 		);
 
-		LinuxDelay(clockid, &ClockTargetTime);
 		// NOTE: since we swapped the inputs ahead of time for timing purposes we pass the
 		//       OldInput because it actually refers to the current input for this frame
 		GameCode.GameUpdate(OldInput, &Memory, &Buffer);
@@ -723,6 +722,7 @@ int main()
 			);
 		}
 		XPutImage(display, window, gc, image, 0, 0, 0, 0, width, height);
+		LinuxDelay(clockid, &ClockTargetTime);
 		clock_gettime(CLOCK_MONOTONIC_RAW, &TimeEnd);
 		LinuxDiffTimeSpec(&TimeDelta, &TimeStart, &TimeEnd);
 		LinuxCSumTimeSpec(&TimeSum, &TimeDelta);
