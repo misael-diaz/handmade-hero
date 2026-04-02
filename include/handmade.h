@@ -34,6 +34,15 @@
 #define MegaBytes(x) (1024LU * 1024LU * (x))
 #define GigaBytes(x) (1024LU * 1024LU * 1024LU * (x))
 
+typedef uint32_t uint32;
+typedef uint64_t uint64;
+typedef int32_t int32;
+typedef int64_t int64;
+typedef float  real32;
+typedef double real64;
+_Static_assert(sizeof(real32) == sizeof(int32), "surprising: sizeof(float) is not 32-bits\n");
+_Static_assert(sizeof(real64) == sizeof(int64), "surprising: sizeof(double) is not 64-bits\n");
+
 // IMPORTANT: this is not meant to be used in production code
 struct debug_read_file_result {
 	void *Data;
