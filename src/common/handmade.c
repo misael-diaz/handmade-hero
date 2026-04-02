@@ -71,10 +71,9 @@ internal void DrawRectangle(
 
 struct game_controller_input *GetController(
 	struct game_input * const Input,
-	int const ControllerIndex
+	uint32 const ControllerIndex
 ) {
-	Assert(0 <= ControllerIndex);
-	size_t const Index = ControllerIndex;
+	uint32 const Index = ControllerIndex;
 	Assert(Index < ArrayCount(Input->Controllers));
 	return &Input->Controllers[Index];
 }

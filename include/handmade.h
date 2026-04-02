@@ -120,7 +120,7 @@ struct game_offscreen_buffer {
 
 struct game_controller_input *GetController(
         struct game_input * const Input,
-        int const ControllerIndex
+        uint32 const ControllerIndex
 );
 
 void GameUpdate(
@@ -132,7 +132,7 @@ void GameUpdate(
 struct game_code {
 	struct game_controller_input *(*GetController)(
 		struct game_input * const Input,
-		int const ControllerIndex
+		uint32 const ControllerIndex
 	);
 
 	void (*GameUpdate)(

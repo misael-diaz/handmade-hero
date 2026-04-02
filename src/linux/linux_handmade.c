@@ -274,7 +274,7 @@ void LinuxGetClockInfo(
 //       the game frame rate. Later we can drop in the faster implementation to decrease the overhead.
 void LinuxSetTimeSpec(
 	struct timespec * const clock_time,
-	long const nsec
+	int64 const nsec
 ) {
 	clock_time->tv_sec  = (nsec / 1000000000);
 	clock_time->tv_nsec = (nsec % 1000000000);
@@ -299,9 +299,9 @@ void LinuxDiffTimeSpec(
 	struct timespec const * const clock_start,
 	struct timespec const * const clock_end
 ) {
-	long nsec_diff = 0;
-	long const nsec_start = 1000000000 * clock_start->tv_sec + clock_start->tv_nsec;
-	long const nsec_end   = 1000000000 *   clock_end->tv_sec +   clock_end->tv_nsec;
+	int64 nsec_diff = 0;
+	int64 const nsec_start = 1000000000 * clock_start->tv_sec + clock_start->tv_nsec;
+	int64 const nsec_end   = 1000000000 *   clock_end->tv_sec +   clock_end->tv_nsec;
 	if (nsec_end > nsec_start) {
 		nsec_diff = (nsec_end - nsec_start);
 	} else {
@@ -315,11 +315,11 @@ void LinuxCSumTimeSpec(
 	struct timespec * const clock_csum,
 	struct timespec const * const clock_delta
 ) {
-	long const sec = (
+	int64 const sec = (
 		 (clock_csum->tv_sec  + clock_delta->tv_sec) +
 		((clock_csum->tv_nsec + clock_delta->tv_nsec) / 1000000000)
 	);
-	long const nsec = (
+	int64 const nsec = (
 		((clock_csum->tv_nsec + clock_delta->tv_nsec) % 1000000000)
 	);
 	clock_csum->tv_sec = sec;
@@ -350,10 +350,9 @@ void LinuxDelay(
 
 internal struct game_controller_input *GetControllerStub(
         struct game_input * const Input,
-        int const ControllerIndex
+        uint32 const ControllerIndex
 ) {
-	Assert(0 <= ControllerIndex);
-	size_t const Index = ControllerIndex;
+	uint32 const Index = ControllerIndex;
 	Assert(Index < ArrayCount(Input->Controllers));
 	return &Input->Controllers[Index];
 }
@@ -552,11 +551,11 @@ int main()
 	fprintf(stdout, "green-mask 0x%lx\n", visual->green_mask);
 	fprintf(stdout, "blue-mask 0x%lx\n", visual->blue_mask);
 
-	long unsigned red_shift = 0;
-	long unsigned green_shift = 0;
-	long unsigned blue_shift = 0;
+	uint64 red_shift = 0;
+	uint64 green_shift = 0;
+	uint64 blue_shift = 0;
 
-	const long unsigned rgb_mask = 0xff;
+	uint64 const rgb_mask = 0xff;
 	while ((rgb_mask << red_shift) != visual->red_mask) {
 		red_shift += 8LU;
 	}
@@ -617,7 +616,7 @@ int main()
 	Memory.TransientStorage = Memory.PermanentStorage + Memory.PermanentStorageSize;
 	memset(Memory.PermanentStorage, 0, Memory.PermanentStorageSize + Memory.TransientStorageSize);
 
-	size_t const pitch = width * 4;
+	uint64 const pitch = width * 4;
 	struct game_state *GameState = Memory.PermanentStorage;
 	GameState->RedShift = red_shift;
 	GameState->GreenShift = green_shift;
@@ -627,10 +626,10 @@ int main()
 	uint8_t const red = 0;
 	uint8_t const green = 0xff;
 	uint8_t const blue = 0;
-	size_t const pixels = width * height;
-	size_t const framesz = pixels * 4;
+	uint64 const pixels = width * height;
+	uint64 const framesz = pixels * 4;
 	int *framebuffer = Memory.TransientStorage;
-	for (long unsigned i = 0; i != pixels; ++i) {
+	for (uint64 i = 0; i != pixels; ++i) {
 		framebuffer[i] = (
 			(red << red_shift) + (green << green_shift) + (blue << blue_shift)
 		);
@@ -667,7 +666,7 @@ int main()
 	struct game_input *OldInput = &Input[OldInputIdx];
 
 	Running = true;
-	long frames = 0;
+	uint64 frames = 0;
 	struct timespec TimeStart = {};
 	struct timespec TimeEnd = {};
 	struct timespec TimeDelta = {};
@@ -686,7 +685,7 @@ int main()
 		struct game_controller_input *OldKeyboardController = GameCode.GetController(OldInput, 0);
 		memset(NewKeyboardController, 0, sizeof(*NewKeyboardController));
 		for (
-			size_t ButtonIndex = 0;
+			uint32 ButtonIndex = 0;
 			ButtonIndex != ArrayCount(NewKeyboardController->Buttons);
 			++ButtonIndex) {
 			bool const EndedDown = OldKeyboardController->Buttons[ButtonIndex].EndedDown;
