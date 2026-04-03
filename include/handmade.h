@@ -93,12 +93,12 @@ struct game_input {
 };
 
 struct game_state {
-	size_t Pitch;
-	int GreenOffset;
-	int BlueOffset;
-	int RedShift;
-	int GreenShift;
-	int BlueShift;
+	uint64 Pitch;
+	int32 GreenOffset;
+	int32 BlueOffset;
+	int32 RedShift;
+	int32 GreenShift;
+	int32 BlueShift;
 };
 
 // NOTE: we expect the permanent storage to be cleared to zero on initialization

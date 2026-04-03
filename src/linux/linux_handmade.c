@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <limits.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/extensions/Xrandr.h>
@@ -618,6 +619,9 @@ int main()
 
 	uint64 const pitch = width * 4;
 	struct game_state *GameState = Memory.PermanentStorage;
+	Assert(INT_MAX >= red_shift);
+	Assert(INT_MAX >= green_shift);
+	Assert(INT_MAX >= blue_shift);
 	GameState->RedShift = red_shift;
 	GameState->GreenShift = green_shift;
 	GameState->BlueShift = blue_shift;

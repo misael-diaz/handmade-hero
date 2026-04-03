@@ -1,5 +1,11 @@
 #include "handmade.h"
 
+internal inline int32 TruncateReal32ToInt32(
+	real32 value
+) {
+	return ((int32) value);
+}
+
 internal inline uint32 RoundReal32ToUInt32(
 	real32 value
 ) {
@@ -28,7 +34,10 @@ internal void DrawRectangle(
 	real32 xmin,
 	real32 xmax,
 	real32 ymin,
-	real32 ymax
+	real32 ymax,
+	real32 Red,
+	real32 Green,
+	real32 Blue
 ) {
 	struct game_state *GameState = Memory->PermanentStorage;
 	char unsigned *framebuffer = Memory->TransientStorage;
@@ -68,11 +77,17 @@ internal void DrawRectangle(
 	uint32 const YMin = RoundReal32ToUInt32(ymin);
 	uint32 const YMax = RoundReal32ToUInt32(ymax);
 	uint64 const pitch = GameState->Pitch;
+	int32 const R = TruncateReal32ToInt32(255 * Red);
+	int32 const G = TruncateReal32ToInt32(255 * Green);
+	int32 const B = TruncateReal32ToInt32(255 * Blue);
+	int32 const RedShift = GameState->RedShift;
+	int32 const GreenShift = GameState->GreenShift;
+	int32 const BlueShift = GameState->BlueShift;
 	framebuffer += (YMin * pitch);
 	for (uint32 y = YMin; y != YMax; ++y) {
-		int *rect = (int*) framebuffer;
+		int32 *rect = (int32*) framebuffer;
 		for (uint32 x = XMin; x != XMax; ++x) {
-			rect[x] = 0;
+			rect[x] = ((R << RedShift) | (G << GreenShift) | (B << BlueShift));
 		}
 		framebuffer += pitch;
 	}
@@ -142,5 +157,8 @@ void GameUpdate(
 	real32 const RectangleHeight = 64;
 	real32 const xmax = xmin + RectangleWidth;
 	real32 const ymax = ymin + RectangleHeight;
-	DrawRectangle(Memory, xmin, xmax, ymin, ymax);
+	real32 const Red = 0.0f;
+	real32 const Green = 0.0f;
+	real32 const Blue = 0.0f;
+	DrawRectangle(Memory, xmin, xmax, ymin, ymax, Red, Green, Blue);
 }
