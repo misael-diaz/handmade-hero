@@ -627,9 +627,9 @@ int main()
 	GameState->BlueShift = blue_shift;
 	GameState->Pitch = pitch;
 
-	uint8_t const red = 0;
-	uint8_t const green = 0xff;
-	uint8_t const blue = 0;
+	uint8_t const red = 0x00;
+	uint8_t const green = 0x00;
+	uint8_t const blue = 0x00;
 	uint64 const pixels = width * height;
 	uint64 const framesz = pixels * 4;
 	int *framebuffer = Memory.TransientStorage;
