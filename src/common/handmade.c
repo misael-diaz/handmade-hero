@@ -3,7 +3,7 @@
 internal inline int32 TruncateReal32ToInt32(
 	real32 value
 ) {
-	return ((int32) value);
+	return ((int32) (value));
 }
 
 internal inline uint32 RoundReal32ToUInt32(
@@ -28,7 +28,12 @@ internal inline real32 Clamp(
 	}
 }
 
-// TODO: extend to set the rectangle color
+internal inline int32 Real32ColorToRGB(
+	real32 const Real32Color
+) {
+	return TruncateReal32ToInt32(255.0f * Real32Color);
+}
+
 internal void DrawRectangle(
 	struct game_memory * const Memory,
 	real32 xmin,
@@ -77,9 +82,9 @@ internal void DrawRectangle(
 	uint32 const YMin = RoundReal32ToUInt32(ymin);
 	uint32 const YMax = RoundReal32ToUInt32(ymax);
 	uint64 const pitch = GameState->Pitch;
-	int32 const R = TruncateReal32ToInt32(255 * Red);
-	int32 const G = TruncateReal32ToInt32(255 * Green);
-	int32 const B = TruncateReal32ToInt32(255 * Blue);
+	int32 const R = Real32ColorToRGB(Red);
+	int32 const G = Real32ColorToRGB(Green);
+	int32 const B = Real32ColorToRGB(Blue);
 	int32 const RedShift = GameState->RedShift;
 	int32 const GreenShift = GameState->GreenShift;
 	int32 const BlueShift = GameState->BlueShift;
