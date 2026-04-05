@@ -98,6 +98,46 @@ internal void DrawRectangle(
 	}
 }
 
+internal void DrawTilemap(
+	struct game_memory * const Memory
+) {
+	struct game_state * const GameState = Memory->PermanentStorage;
+	struct game_tilemap const * const Tilemap = &GameState->Tilemap;
+	int32 Pixels = 80;
+	real32 Red = 0.0f;
+	real32 Green = 0.0f;
+	real32 Blue = 0.0f;
+	for (int32 y = 0; y != Tilemap->YCount; ++y) {
+		real32 const ymin = Pixels * y;
+		real32 const ymax = Pixels * (y + 1);
+		for (int32 x = 0; x != Tilemap->XCount; ++x) {
+			int32 const Code = *(Tilemap->Data + (Tilemap->XCount * y) + x);
+			if (0 == Code) {
+				Red = 0.5f;
+				Green = 0.5f;
+				Blue = 0.5f;
+			} else {
+				Red = 0.0f;
+				Green = 0.0f;
+				Blue = 0.0f;
+			}
+			real32 const xmin = Pixels * x;
+			real32 const xmax = Pixels * (x + 1);
+			DrawRectangle(
+					Memory,
+					xmin,
+					xmax,
+					ymin,
+					ymax,
+					Red,
+					Green,
+					Blue
+				     );
+		}
+	}
+
+}
+
 struct game_controller_input *GetController(
 	struct game_input * const Input,
 	uint32 const ControllerIndex
@@ -162,8 +202,9 @@ void GameUpdate(
 	real32 const RectangleHeight = 64;
 	real32 const xmax = xmin + RectangleWidth;
 	real32 const ymax = ymin + RectangleHeight;
-	real32 const Red = 0.0f;
-	real32 const Green = 0.0f;
-	real32 const Blue = 0.0f;
+	real32 const Red = 1.0f;
+	real32 const Green = 1.0f;
+	real32 const Blue = 1.0f;
+	DrawTilemap(Memory);
 	DrawRectangle(Memory, xmin, xmax, ymin, ymax, Red, Green, Blue);
 }
