@@ -147,12 +147,68 @@ struct game_controller_input *GetController(
 	return &Input->Controllers[Index];
 }
 
+internal real32 HandleButtonInput(
+		struct game_button_state const * const Button
+) {
+	int32 ButtonPressCount = 0;
+	if (Button->EndedDown) {
+		ButtonPressCount = (Button->HalfTransitionCount >> 1);
+	} else {
+		if (Button->HalfTransitionCount & 1) {
+			ButtonPressCount = 1 + (Button->HalfTransitionCount >> 1);
+		} else {
+			ButtonPressCount = (Button->HalfTransitionCount >> 1);
+		}
+	}
+	return ButtonPressCount;
+}
+
+internal void DrawPlayer(
+	struct game_input * const Input,
+	struct game_memory * const Memory
+) {
+	struct game_controller_input *Keyboard = GetController(Input, 0);
+	struct game_state *GameState = Memory->PermanentStorage;
+
+	GameState->Player.XPos -= 10 * HandleButtonInput(&Keyboard->Left);
+	GameState->Player.XPos += 10 * HandleButtonInput(&Keyboard->Right);
+	GameState->Player.YPos -= 10 * HandleButtonInput(&Keyboard->Up);
+	GameState->Player.YPos += 10 * HandleButtonInput(&Keyboard->Down);
+
+	GameState->Player.XPos = Clamp(
+		GameState->Player.XPos,
+		0,
+		HH_GAME_WINDOW_WIDTH - GameState->Player.Width - 2
+	);
+
+	GameState->Player.YPos = Clamp(
+		GameState->Player.YPos,
+		0,
+		HH_GAME_WINDOW_HEIGHT - GameState->Player.Height - 2
+	);
+
+	GameState->Player.XMin = GameState->Player.XPos;
+	GameState->Player.XMax = GameState->Player.XPos + GameState->Player.Width;
+	GameState->Player.YMin = GameState->Player.YPos;
+	GameState->Player.YMax = GameState->Player.YPos + GameState->Player.Height;
+
+	DrawRectangle(
+		Memory,
+		GameState->Player.XMin,
+		GameState->Player.XMax,
+		GameState->Player.YMin,
+		GameState->Player.YMax,
+		GameState->Player.Red,
+		GameState->Player.Green,
+		GameState->Player.Blue
+	);
+}
+
 void GameUpdate(
 	struct game_input *Input,
 	struct game_memory *Memory,
 	struct game_offscreen_buffer *Buffer
 ) {
-	struct game_controller_input *Keyboard = GetController(Input, 0);
 	struct game_state *GameState = Memory->PermanentStorage;
 	int *framebuffer = Memory->TransientStorage;
 	Assert((sizeof(*GameState) <= Memory->PermanentStorageSize));
@@ -162,22 +218,6 @@ void GameUpdate(
 
 		// NOTE: this may be more appropriate to do in the platform layer
 		Memory->Initialized = true;
-	}
-
-	if (Keyboard->Up.EndedDown) {
-		GameState->GreenOffset += 16;
-	}
-
-	if (Keyboard->Down.EndedDown) {
-		GameState->GreenOffset -= 16;
-	}
-
-	if (256 <= GameState->GreenOffset) {
-		GameState->GreenOffset = 255;
-	}
-
-	if (0 >= GameState->GreenOffset) {
-		GameState->GreenOffset = 0;
 	}
 
 	// NOTE: as long the game window is hardcoded this should work, we are experimenting so it's okay
@@ -206,5 +246,5 @@ void GameUpdate(
 	real32 const Green = 1.0f;
 	real32 const Blue = 1.0f;
 	DrawTilemap(Memory);
-	DrawRectangle(Memory, xmin, xmax, ymin, ymax, Red, Green, Blue);
+	DrawPlayer(Input, Memory);
 }

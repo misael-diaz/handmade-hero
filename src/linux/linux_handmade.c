@@ -625,6 +625,17 @@ int main()
 	GameState->RedShift = red_shift;
 	GameState->GreenShift = green_shift;
 	GameState->BlueShift = blue_shift;
+	GameState->Player.XPos = 256;
+	GameState->Player.YPos = 256;
+	GameState->Player.Width = 64;
+	GameState->Player.Height = 64;
+	GameState->Player.XMin = GameState->Player.XPos;
+	GameState->Player.XMax = GameState->Player.XPos + GameState->Player.Width;
+	GameState->Player.YMin = GameState->Player.YPos;
+	GameState->Player.YMax = GameState->Player.YPos + GameState->Player.Height;
+	GameState->Player.Red = 1.0f;
+	GameState->Player.Green = 1.0f;
+	GameState->Player.Blue = 1.0f;
 	GameState->Pitch = pitch;
 	GameState->Tilemap.XCount = 17;
 	GameState->Tilemap.YCount = 9;

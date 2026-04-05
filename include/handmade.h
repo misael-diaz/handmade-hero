@@ -100,6 +100,21 @@ struct game_tilemap {
 	int32 *Data;
 };
 
+// NOTE: experimental player data
+struct game_player {
+	real32 XPos;
+	real32 YPos;
+	real32 Width;
+	real32 Height;
+	real32 XMin;
+	real32 XMax;
+	real32 YMin;
+	real32 YMax;
+	real32 Red;
+	real32 Green;
+	real32 Blue;
+};
+
 struct game_state {
 	uint64 Pitch;
 	int32 GreenOffset;
@@ -107,6 +122,7 @@ struct game_state {
 	int32 RedShift;
 	int32 GreenShift;
 	int32 BlueShift;
+	struct game_player Player;
 	struct game_tilemap Tilemap;
 };
 
