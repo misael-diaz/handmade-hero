@@ -626,6 +626,40 @@ int main()
 	GameState->GreenShift = green_shift;
 	GameState->BlueShift = blue_shift;
 	GameState->Pitch = pitch;
+	GameState->Tilemap.XCount = 17;
+	GameState->Tilemap.YCount = 9;
+	GameState->Tilemap.Length = (
+		sizeof(*(GameState->Tilemap.Data)) *
+		GameState->Tilemap.XCount *
+		GameState->Tilemap.YCount
+	);
+	// NOTE: experimenting with memory alignment, here Size means that if we wanted
+	// to stack tilemaps we can ensure memalignment this way between tilemaps for
+	// performance. And we can also ensure that the address of the first tilemap
+	// is also aligned.
+	// TODO: consider adding a MACRO for alignment to a 32-byte boundary:
+	//       Align(x) ((x) + 0x1f) & ~0x1f
+	GameState->Tilemap.Size = ((GameState->Tilemap.Length + 0x1f) & ~0x1f);
+	GameState->Tilemap.Data = (
+			((typeof(GameState->Tilemap.Data)) &GameState->Tilemap) +
+			((sizeof(GameState->Tilemap) + 0x1f) & ~0x1f)
+	);
+
+	int32 Tilemap[9][17] = {
+		{0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+		{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+		{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+		{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+		{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+		{0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+	};
+
+	// TODO consider moving the tilemap initialization to a function that checks
+	//      the tilemap dimensions
+	memcpy(GameState->Tilemap.Data, Tilemap, sizeof(Tilemap));
 
 	uint8_t const red = 0x00;
 	uint8_t const green = 0x00;

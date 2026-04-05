@@ -92,6 +92,14 @@ struct game_input {
 	struct game_controller_input Controllers[5];
 };
 
+struct game_tilemap {
+	int32 XCount;
+	int32 YCount;
+	int32 Length;
+	int32 Size;
+	int32 *Data;
+};
+
 struct game_state {
 	uint64 Pitch;
 	int32 GreenOffset;
@@ -99,6 +107,7 @@ struct game_state {
 	int32 RedShift;
 	int32 GreenShift;
 	int32 BlueShift;
+	struct game_tilemap Tilemap;
 };
 
 // NOTE: we expect the permanent storage to be cleared to zero on initialization
