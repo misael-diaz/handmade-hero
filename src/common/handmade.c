@@ -102,7 +102,7 @@ internal void DrawTilemap(
 	struct game_memory * const Memory
 ) {
 	struct game_state * const GameState = Memory->PermanentStorage;
-	struct game_tilemap const * const Tilemap = &GameState->Tilemap;
+	struct game_tilemap const * const Tilemap = &GameState->World.Tilemaps[0];
 	int32 Pixels = 80;
 	real32 Red = 0.0f;
 	real32 Green = 0.0f;

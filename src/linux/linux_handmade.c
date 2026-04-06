@@ -617,6 +617,18 @@ int main()
 	Memory.TransientStorage = Memory.PermanentStorage + Memory.PermanentStorageSize;
 	memset(Memory.PermanentStorage, 0, Memory.PermanentStorageSize + Memory.TransientStorageSize);
 
+	int32 Tilemap[HH_GAME_YTILECOUNT_TILEMAP][HH_GAME_XTILECOUNT_TILEMAP] = {
+		{0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+		{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+		{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+		{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+		{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+		{0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+	};
+
 	uint64 const pitch = width * 4;
 	struct game_state *GameState = Memory.PermanentStorage;
 	Assert(INT_MAX >= red_shift);
@@ -637,40 +649,43 @@ int main()
 	GameState->Player.Green = 1.0f;
 	GameState->Player.Blue = 1.0f;
 	GameState->Pitch = pitch;
-	GameState->Tilemap.XCount = 17;
-	GameState->Tilemap.YCount = 9;
-	GameState->Tilemap.Length = (
-		sizeof(*(GameState->Tilemap.Data)) *
-		GameState->Tilemap.XCount *
-		GameState->Tilemap.YCount
-	);
-	// NOTE: experimenting with memory alignment, here Size means that if we wanted
-	// to stack tilemaps we can ensure memalignment this way between tilemaps for
-	// performance. And we can also ensure that the address of the first tilemap
-	// is also aligned.
-	// TODO: consider adding a MACRO for alignment to a 32-byte boundary:
-	//       Align(x) ((x) + 0x1f) & ~0x1f
-	GameState->Tilemap.Size = ((GameState->Tilemap.Length + 0x1f) & ~0x1f);
-	GameState->Tilemap.Data = (
-			((typeof(GameState->Tilemap.Data)) &GameState->Tilemap) +
-			((sizeof(GameState->Tilemap) + 0x1f) & ~0x1f)
-	);
-
-	int32 Tilemap[9][17] = {
-		{0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0},
-		{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-		{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-		{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-		{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-		{0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-	};
-
-	// TODO consider moving the tilemap initialization to a function that checks
-	//      the tilemap dimensions
-	memcpy(GameState->Tilemap.Data, Tilemap, sizeof(Tilemap));
+	GameState->World.XTilemapCount = HH_GAME_XCOUNT_TILEMAP_WORLD;
+	GameState->World.YTilemapCount = HH_GAME_YCOUNT_TILEMAP_WORLD;
+	GameState->World.NumTilemaps = HH_GAME_NUM_TILEMAPS;
+	GameState->World.TileSize = HH_GAME_TILESIZE;
+	GameState->World.Width = HH_GAME_WIDTH_WORLD;
+	GameState->World.Height = HH_GAME_HEIGHT_WORLD;
+	for (int32 i = 0; i != HH_GAME_NUM_TILEMAPS; ++i) {
+		GameState->World.Tilemaps[i].XCount = HH_GAME_XTILECOUNT_TILEMAP;
+		GameState->World.Tilemaps[i].YCount = HH_GAME_YTILECOUNT_TILEMAP;
+		GameState->World.Tilemaps[i].Length = (
+			sizeof(*(GameState->World.Tilemaps[i].Data)) *
+			HH_GAME_XTILECOUNT_TILEMAP *
+			HH_GAME_YTILECOUNT_TILEMAP
+		);
+		// NOTE: experimenting with memory alignment, here Size means that if we wanted
+		// to stack tilemaps we can ensure memalignment this way between tilemaps for
+		// performance. And we can also ensure that the address of the first tilemap
+		// is also aligned.
+		// TODO: consider adding a MACRO for alignment to a 32-byte boundary:
+		//       Align(x) ((x) + 0x1f) & ~0x1f
+		GameState->World.Tilemaps[i].Size = (
+			(GameState->World.Tilemaps[i].Length + 0x1f) & ~0x1f
+		);
+		long const addr = (long) &GameState->World;
+		long const aligned = (
+			((addr +
+			((sizeof(GameState->World))) +
+			((i * GameState->World.Tilemaps[i].Size)) +
+			0x1f) & ~0x1f)
+		);
+		GameState->World.Tilemaps[i].Data = (
+			(typeof(GameState->World.Tilemaps[i].Data)) (aligned)
+		);
+		// TODO consider moving the tilemap initialization to a function that checks
+		//      the tilemap dimensions
+		memcpy(GameState->World.Tilemaps[i].Data, Tilemap, sizeof(Tilemap));
+	}
 
 	uint8_t const red = 0x00;
 	uint8_t const green = 0x00;

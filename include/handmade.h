@@ -9,6 +9,25 @@
 #define internal static
 #define HH_GAME_WINDOW_WIDTH 1600
 #define HH_GAME_WINDOW_HEIGHT 900
+#define HH_GAME_TILESIZE 80
+#define HH_GAME_XTILECOUNT_TILEMAP 17
+#define HH_GAME_YTILECOUNT_TILEMAP 9
+#define HH_GAME_XCOUNT_TILEMAP_WORLD 2
+#define HH_GAME_YCOUNT_TILEMAP_WORLD 2
+#define HH_GAME_WIDTH_WORLD (\
+	(HH_GAME_XCOUNT_TILEMAP_WORLD) *\
+	(HH_GAME_XTILECOUNT_TILEMAP) *\
+	(HH_GAME_TILESIZE)\
+)
+#define HH_GAME_HEIGHT_WORLD (\
+	(HH_GAME_YCOUNT_TILEMAP_WORLD) *\
+	(HH_GAME_YTILECOUNT_TILEMAP) *\
+	(HH_GAME_TILESIZE)\
+)
+#define HH_GAME_NUM_TILEMAPS (\
+	(HH_GAME_XCOUNT_TILEMAP_WORLD) *\
+	(HH_GAME_YCOUNT_TILEMAP_WORLD)\
+)
 #define ArrayCount(ary) (sizeof(ary) / sizeof(*ary))
 
 #if HANDMADE_DEV
@@ -98,6 +117,19 @@ struct game_tilemap {
 	int32 Length;
 	int32 Size;
 	int32 *Data;
+	int32 _pad[2];
+};
+
+_Static_assert(32 == sizeof(struct game_tilemap));
+
+struct game_world {
+	int32 XTilemapCount;
+	int32 YTilemapCount;
+	int32 NumTilemaps;
+	int32 TileSize;
+	real32 Width;
+	real32 Height;
+	struct game_tilemap Tilemaps[HH_GAME_NUM_TILEMAPS];
 };
 
 // NOTE: experimental player data
@@ -123,7 +155,7 @@ struct game_state {
 	int32 GreenShift;
 	int32 BlueShift;
 	struct game_player Player;
-	struct game_tilemap Tilemap;
+	struct game_world World;
 };
 
 // NOTE: we expect the permanent storage to be cleared to zero on initialization
