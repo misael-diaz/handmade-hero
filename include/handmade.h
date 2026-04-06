@@ -12,6 +12,12 @@
 #define HH_GAME_TILESIZE 80
 #define HH_GAME_XTILECOUNT_TILEMAP 17
 #define HH_GAME_YTILECOUNT_TILEMAP 9
+#define HH_GAME_WIDTH_TILEMAP (\
+	(HH_GAME_XTILECOUNT_TILEMAP) * (HH_GAME_TILESIZE)\
+)
+#define HH_GAME_HEIGHT_TILEMAP (\
+	(HH_GAME_YTILECOUNT_TILEMAP) * (HH_GAME_TILESIZE)\
+)
 #define HH_GAME_XCOUNT_TILEMAP_WORLD 2
 #define HH_GAME_YCOUNT_TILEMAP_WORLD 2
 #define HH_GAME_WIDTH_WORLD (\
@@ -112,6 +118,13 @@ struct game_input {
 };
 
 struct game_tilemap {
+	int32 Id;
+	int32 XId;
+	int32 YId;
+	int32 XPos;
+	int32 YPos;
+	int32 Width;
+	int32 Height;
 	int32 XCount;
 	int32 YCount;
 	int32 Length;
@@ -120,7 +133,7 @@ struct game_tilemap {
 	int32 _pad[2];
 };
 
-_Static_assert(32 == sizeof(struct game_tilemap));
+_Static_assert(64 == sizeof(struct game_tilemap));
 
 struct game_world {
 	int32 XTilemapCount;

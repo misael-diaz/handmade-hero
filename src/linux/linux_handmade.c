@@ -655,11 +655,24 @@ int main()
 	GameState->World.TileSize = HH_GAME_TILESIZE;
 	GameState->World.Width = HH_GAME_WIDTH_WORLD;
 	GameState->World.Height = HH_GAME_HEIGHT_WORLD;
-	for (int32 i = 0; i != HH_GAME_NUM_TILEMAPS; ++i) {
-		GameState->World.Tilemaps[i].XCount = HH_GAME_XTILECOUNT_TILEMAP;
-		GameState->World.Tilemaps[i].YCount = HH_GAME_YTILECOUNT_TILEMAP;
-		GameState->World.Tilemaps[i].Length = (
-			sizeof(*(GameState->World.Tilemaps[i].Data)) *
+	for (int32 idx = 0; idx != HH_GAME_NUM_TILEMAPS; ++idx) {
+		int const j = (idx / HH_GAME_XCOUNT_TILEMAP_WORLD);
+		int const i = idx - (HH_GAME_YCOUNT_TILEMAP_WORLD * j);
+		GameState->World.Tilemaps[idx].Id = idx;
+		GameState->World.Tilemaps[idx].XId = i;
+		GameState->World.Tilemaps[idx].YId = j;
+		GameState->World.Tilemaps[idx].XPos = (
+			(i * HH_GAME_WIDTH_TILEMAP)
+		);
+		GameState->World.Tilemaps[idx].YPos = (
+			(j * HH_GAME_HEIGHT_TILEMAP)
+		);
+		GameState->World.Tilemaps[idx].Width = HH_GAME_WIDTH_TILEMAP;
+		GameState->World.Tilemaps[idx].Height = HH_GAME_HEIGHT_TILEMAP;
+		GameState->World.Tilemaps[idx].XCount = HH_GAME_XTILECOUNT_TILEMAP;
+		GameState->World.Tilemaps[idx].YCount = HH_GAME_YTILECOUNT_TILEMAP;
+		GameState->World.Tilemaps[idx].Length = (
+			sizeof(*(GameState->World.Tilemaps[idx].Data)) *
 			HH_GAME_XTILECOUNT_TILEMAP *
 			HH_GAME_YTILECOUNT_TILEMAP
 		);
@@ -669,22 +682,22 @@ int main()
 		// is also aligned.
 		// TODO: consider adding a MACRO for alignment to a 32-byte boundary:
 		//       Align(x) ((x) + 0x1f) & ~0x1f
-		GameState->World.Tilemaps[i].Size = (
-			(GameState->World.Tilemaps[i].Length + 0x1f) & ~0x1f
+		GameState->World.Tilemaps[idx].Size = (
+			(GameState->World.Tilemaps[idx].Length + 0x1f) & ~0x1f
 		);
-		long const addr = (long) &GameState->World;
+		long const addr = (long) GameState;
 		long const aligned = (
 			((addr +
-			((sizeof(GameState->World))) +
-			((i * GameState->World.Tilemaps[i].Size)) +
+			((sizeof(*GameState))) +
+			((idx * GameState->World.Tilemaps[idx].Size)) +
 			0x1f) & ~0x1f)
 		);
-		GameState->World.Tilemaps[i].Data = (
-			(typeof(GameState->World.Tilemaps[i].Data)) (aligned)
+		GameState->World.Tilemaps[idx].Data = (
+			(typeof(GameState->World.Tilemaps[idx].Data)) (aligned)
 		);
 		// TODO consider moving the tilemap initialization to a function that checks
 		//      the tilemap dimensions
-		memcpy(GameState->World.Tilemaps[i].Data, Tilemap, sizeof(Tilemap));
+		memcpy(GameState->World.Tilemaps[idx].Data, Tilemap, sizeof(Tilemap));
 	}
 
 	uint8_t const red = 0x00;
