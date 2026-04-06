@@ -66,8 +66,8 @@ internal void DrawRectangle(
 		ymin = temp;
 	}
 
-	Assert(xmin < xmax);
-	Assert(ymin < ymax);
+	Assert(xmin <= xmax);
+	Assert(ymin <= ymax);
 	Assert(0.0f <= xmin);
 	Assert(0.0f <= xmax);
 	Assert(0.0f <= ymin);
@@ -178,19 +178,27 @@ internal void DrawPlayer(
 	GameState->Player.XPos = Clamp(
 		GameState->Player.XPos,
 		0,
-		HH_GAME_WINDOW_WIDTH - GameState->Player.Width - 2
+		GameState->World.XMax - GameState->Player.Width - 2
 	);
 
 	GameState->Player.YPos = Clamp(
 		GameState->Player.YPos,
 		0,
-		HH_GAME_WINDOW_HEIGHT - GameState->Player.Height - 2
+		GameState->World.YMax - GameState->Player.Height - 2
 	);
 
-	GameState->Player.XMin = GameState->Player.XPos;
-	GameState->Player.XMax = GameState->Player.XPos + GameState->Player.Width;
-	GameState->Player.YMin = GameState->Player.YPos;
-	GameState->Player.YMax = GameState->Player.YPos + GameState->Player.Height;
+	// TODO: in the future we need to do the tilemap mapping not default to zero
+	GameState->Player.XScr = (
+		GameState->Player.XPos - GameState->World.Tilemaps[0].XPos
+	);
+	GameState->Player.YScr = (
+		GameState->Player.YPos - GameState->World.Tilemaps[0].YPos
+	);
+
+	GameState->Player.XMin = GameState->Player.XScr;
+	GameState->Player.XMax = GameState->Player.XScr + GameState->Player.Width;
+	GameState->Player.YMin = GameState->Player.YScr;
+	GameState->Player.YMax = GameState->Player.YScr + GameState->Player.Height;
 
 	DrawRectangle(
 		Memory,

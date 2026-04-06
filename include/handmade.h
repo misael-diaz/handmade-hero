@@ -140,6 +140,10 @@ struct game_world {
 	int32 YTilemapCount;
 	int32 NumTilemaps;
 	int32 TileSize;
+	real32 XMin;
+	real32 XMax;
+	real32 YMin;
+	real32 YMax;
 	real32 Width;
 	real32 Height;
 	struct game_tilemap Tilemaps[HH_GAME_NUM_TILEMAPS];
@@ -147,6 +151,8 @@ struct game_world {
 
 // NOTE: experimental player data
 struct game_player {
+	real32 XScr;
+	real32 YScr;
 	real32 XPos;
 	real32 YPos;
 	real32 Width;

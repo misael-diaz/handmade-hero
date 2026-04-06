@@ -637,6 +637,11 @@ int main()
 	GameState->RedShift = red_shift;
 	GameState->GreenShift = green_shift;
 	GameState->BlueShift = blue_shift;
+	// NOTE:
+	// Screen and World coordinates are equal to one another as long the player is
+	// mapped to the first tilemap (zero-index)
+	GameState->Player.XScr = 256;
+	GameState->Player.YScr = 256;
 	GameState->Player.XPos = 256;
 	GameState->Player.YPos = 256;
 	GameState->Player.Width = 64;
@@ -655,6 +660,10 @@ int main()
 	GameState->World.TileSize = HH_GAME_TILESIZE;
 	GameState->World.Width = HH_GAME_WIDTH_WORLD;
 	GameState->World.Height = HH_GAME_HEIGHT_WORLD;
+	GameState->World.XMin = 0;
+	GameState->World.XMax = HH_GAME_WIDTH_WORLD;
+	GameState->World.YMin = 0;
+	GameState->World.YMax = HH_GAME_HEIGHT_WORLD;
 	for (int32 idx = 0; idx != HH_GAME_NUM_TILEMAPS; ++idx) {
 		int const j = (idx / HH_GAME_XCOUNT_TILEMAP_WORLD);
 		int const i = idx - (HH_GAME_YCOUNT_TILEMAP_WORLD * j);
