@@ -121,10 +121,10 @@ struct game_tilemap {
 	int32 Id;
 	int32 XId;
 	int32 YId;
-	int32 XPos;
-	int32 YPos;
-	int32 Width;
-	int32 Height;
+	real32 XPos;
+	real32 YPos;
+	real32 Width;
+	real32 Height;
 	int32 XCount;
 	int32 YCount;
 	int32 Length;
