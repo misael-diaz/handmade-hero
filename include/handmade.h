@@ -146,6 +146,10 @@ struct game_world {
 	real32 YMax;
 	real32 Width;
 	real32 Height;
+	real32 TilemapWidth;
+	real32 TilemapHeight;
+	real32 InvTilemapWidth;
+	real32 InvTilemapHeight;
 	struct game_tilemap Tilemaps[HH_GAME_NUM_TILEMAPS];
 };
 

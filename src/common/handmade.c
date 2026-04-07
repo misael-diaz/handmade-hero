@@ -102,7 +102,11 @@ internal void DrawTilemap(
 	struct game_memory * const Memory
 ) {
 	struct game_state * const GameState = Memory->PermanentStorage;
-	struct game_tilemap const * const Tilemap = &GameState->World.Tilemaps[0];
+	int32 const XIdTilemap = (int32) (GameState->Player.XPos * GameState->World.InvTilemapWidth);
+	int32 const YIdTilemap = (int32) (GameState->Player.YPos * GameState->World.InvTilemapHeight);
+	int32 const IdTilemap = XIdTilemap + (GameState->World.XTilemapCount * YIdTilemap);
+	Assert(IdTilemap == GameState->World.Tilemaps[IdTilemap].Id);
+	struct game_tilemap const * const Tilemap = &GameState->World.Tilemaps[IdTilemap];
 	int32 Pixels = 80;
 	real32 Red = 0.0f;
 	real32 Green = 0.0f;
@@ -187,12 +191,17 @@ internal void DrawPlayer(
 		GameState->World.YMax - GameState->Player.Height - 2
 	);
 
-	// TODO: in the future we need to do the tilemap mapping not default to zero
+	// TODO: do the tilemapping with respect to the center of the player
+	int32 const XIdTilemap = (int32) (GameState->Player.XPos * GameState->World.InvTilemapWidth);
+	int32 const YIdTilemap = (int32) (GameState->Player.YPos * GameState->World.InvTilemapHeight);
+	int32 const IdTilemap = XIdTilemap + (GameState->World.XTilemapCount * YIdTilemap);
+	Assert(IdTilemap == GameState->World.Tilemaps[IdTilemap].Id);
+
 	GameState->Player.XScr = (
-		GameState->Player.XPos - GameState->World.Tilemaps[0].XPos
+		GameState->Player.XPos - GameState->World.Tilemaps[IdTilemap].XPos
 	);
 	GameState->Player.YScr = (
-		GameState->Player.YPos - GameState->World.Tilemaps[0].YPos
+		GameState->Player.YPos - GameState->World.Tilemaps[IdTilemap].YPos
 	);
 
 	GameState->Player.XMin = GameState->Player.XScr;
