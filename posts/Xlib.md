@@ -1,59 +1,75 @@
-TODO:
-- need like headers and bullets for fast readers with the text (the meat) following for those interested
-in the details
+## Handmade Hero
 
+Handmade Hero has never been more relevant than this time with so many developers saying that they are
+burnedout or some other serious issue like not being able to write a single line of code on their own 
+due to heavy AI usage. For me Handmade Hero has helped me encounter a balance between using AI to
+generate code for work and keeping my problem solving and coding skills honed in my free time.
 
-A pragmatic approach for putting graphics on screen with Xlib in GNU/Linux without prior experience is to
-read code written by game developers. In my case I read Quake II's source code to see what Xlib API calls
-legendary developer John Carmack and his team used to put graphics on the screen.
+If you have never heard about Handmade Hero well today is your lucky day. Handmade Hero is a game
+development series done by legendary game engine developer Casey Muratori in which he shows how to
+build a cross-platform game from scratch, no libraries and no engine to teach you how computers work
+and how to craft performant software.
 
-NOTES: THESE REASONS SHOULD BE BROKEN DOWN AS BULLETS FOR SPEED READING
-I can identify a couple of reasons for building the platform layer of the Handmade Hero game
-with Xlib in GNU/Linux. Even though it's possible to work directly with the framebuffer
-device in Linux, which is as low as one could go in userspace land, that poses a security risk because
-the application has access to the entire screen,  can be done in console mode but switching makes for poor gaming experience, and last but not least
-it would not be similar to the development of Handmade Hero as a Win32 application.
+If this sounds appealing I would also recommend to join the Handmade Network to connect
+with other developers that might have similar experiences and ways of coping with the
+difficulties that you may be going through. Also sharing your experiences and knowledge
+can help you realize that you are not obsolete your skills are not obsolete but valuable
+to a whole community whose mantra is to build performant software.
 
- The main reason is that it's not practical to work directly with the
+## Reasons for creating a GNU/Linux port of Handmade Hero
 
+Handmade Hero is about learning about how computers work, and Casey did that by showing
+us how to use the Win32 API to build a game in Windows. And he used Windows because it's
+the platform he is most familiar with.
 
+In analogy I want to build the game in GNU/Linux because I have been coding in that
+platform and using the command line for a long time. I get that I am at home
+whenever I am using GNU/Linux but, I don't intend to try convince anyone to switch to
+GNU/Linux. And last but not least I respect the platform preferences other developers
+have. And so it is only natural to me to work on the port in GNU/Linux because I want
+to know my platform better by diving as deep as I can at my current level of systems
+programming profiency. (That does not mean that I won't do the Win32 version of
+Handmade Hero because it's truly a cross-platform development experience).
 
-FIX THIS SPECIAL PRIV EXCERPT NOT QUITE WORDED PROPERLY REGULAR USERS IN THE VIDEO GROUP
+## Why use Xlib for graphics display
 
-WHAT YOU REALLY DON'T WANT IS TO HAVE ACCESS TO DEVELOP AND APP THAT HAS ACCESS TO THE ENTIRE SCREEN
-FOR SECURITY REASONS
-Applications that can interact directly with the framebuffer device can only be run by users with special
-privileges, and that alone poses a serious security risk that I am not interested to tackle at the moment. 
-The other reason for not working directly with the framebuffer is that the application would have to run
-on console mode. (It must be executed from an actual console tty commonly accessed via Ctrl + Alt + Fn). I am disciplined enough to cope with the context switching but that
-would be a game that nobody would ever want to play because that's not how people use computers. They
-want to be able to switch among several applications seaminglessly.
+So why use Xlib for putting graphics on the game window when even the recommendation
+from Xorg developers is to not use it but instead use a toolkit such as GTK+ or Qt?
+The rational for choosing Xlib is simple, all that we need is a framebuffer to put
+the game graphics on the screen and it so happens that doing just that is not that
+difficult with Xlib. If we were to create a desktop environment then maybe we would
+reach out for the toolkits but for the purposes of doing low level systems programming
+for learning about some aspects of how computers work the Xlib pathway is the way to
+go in GNU/Linux.
 
-Another of the main reasons for using Xlib is that my desktop environment directly depends on it and this
-means that an XServer must be running in my machine for the desktop environment to even launch.
-This also means that I must develop the game with at least Xlib if I am to follow the Handmade Hero way
-of game development. Also, I don't have a spare machine to tinker around with it, so I tend to favor
-stability over running the latest version of
-the software I use. There you have it, those are some of the practical reason I am not using Wayland to put
-graphics on my screen. The last reason is academic, I cannot simply let the opportunity to learn from
-legendary game engines like the Quake engine which used Xlib to display graphics on POSIX systems to slip
-away. It's worthwhile to mention that idSoftware developers used the Win32 API for building the game in
-Windows and that this is also what Casey shows in his Handmade Hero series.
+The other reason for using Xlib is that Handmade
+Hero has not been my first game development experience for a deep systems programming
+experience. I started with Quake-II so by the time I found out about Handmade Hero I 
+knew that Quake's engine uses Xlib to put graphics on the screen in GNU/Linux. It was
+only natural to avail myself of the experience of diving into Quake engine source
+code to develop my own GNU/Linux port of Handmade Hero.
 
-NOTE FROM THIS POINT ON IT'S BETTER WRITTEN
+The last reason is that Xlib is a core component of Cinnamon my favorite desktop
+environment, and so it's only natural for me to stick with Xlib since desktop needs
+a running XServer for display.
 
 ## Installing dependencies
 
-Even though your system may as well be using X11 for displaying graphics you probably need to install the
-Xlib development packages. In debian based distros you can do so via the apt manager from the command-line:
+If you want to follow along you would probably need to install the development libraries
+for creating client X11 applications. If you have not done that before the likeliness is
+that they may not be installed in your system even if your desktop environment still
+uses Xlib.
+
+On Debian based distributions (such as Ubuntu and Linux Mint) you can do so by
+invoking the package manager from the command-line:
 
 ```sh
 sudo apt install libx11-dev libx11-doc
 ```
 
-where the `libx11-dev` package provides the client interface to Xlib and `libx11-doc` provides the
-man pages, which I strongly recommend you to install so that you can consult the Xlib documentation
-from your console.
+where the `libx11-dev` package provides the client interface to Xlib and `libx11-doc`
+provides the man pages, which I strongly recommend you to install so that you can
+consult the Xlib documentation from your console.
 
 ## Headers
 
@@ -107,6 +123,32 @@ if (!display) {
     return 1;
 }
 ```
+
+IMPORTANT TO MENTION THAT LIBXCB IS LINKED DYNAMICALLY AND YOU CAN EVEN SHOW ldd output
+
+Behind the scenes `XOpenDisplay` in Linux opens a socket in non-blocking mode to connect to the XServer
+so that the server may handle requests from multiple clients asynchronously.
+If the XServer is
+running in localhost then the connection to the XServer happens through a Unix socket for performance.
+The actual socket connection is not implemented into Xlib's `XOpenDisplay`; instead, it is implemented
+in libXCB (which is a core component of Xlib).
+
+The file descriptor of the socket is stored in the Display structure.
+Display also contains other useful
+info that's fetched from the XServer such as the minimum and maximum values of the keyboard codes
+(we care about this for handling user input), the number of screens, creates the default graphics
+context, etc.
+
+From the XServer we also get valuable information about the screens such as the defalt dimensions
+(width and height), the values of the white and black pixels, the screen depth, and the visual info.
+In particular the visuals stores the RGB masks so that we can pack the pixel data in the expected layout;
+otherwise, the colors are not going to be what you expect.
+
+Xlib also gets the default screen by parsing the DISPLAY environment variable by calling dedicated libXCB
+utils.
+
+For example if `DISPLAY` is `:0` we know that the XServer is running in localhost and that the default
+screen number is zero. This matters to us because we use the default screen for our game window.
 
 ## Creating a Window for the Game
 
@@ -353,6 +395,9 @@ TODO IT'S IMPORTANT TO STATE THAT WE DELIBERATELY STICK TO THE HH WAY OF CRASHIN
 WHILE TRUSTING THE OS TO DO THE CLEANUP.
 
 
+TODO REVISE THAT THE SOURCE CODE COMPILES
+
+
 ```
 #include <stdio.h>
 #include <X11/Xlib.h>
@@ -389,3 +434,7 @@ int main() {
     return 0;
 }
 ```
+TODO:
+- need like headers and bullets for fast readers with the text (the meat) following for those interested
+in the details
+
