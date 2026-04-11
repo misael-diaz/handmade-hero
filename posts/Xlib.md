@@ -210,8 +210,8 @@ to the source file for your convenience.
 
 The following snippet borrowed from the Xlib official documentation shows that to create a simple window
 one needs to have an active connection to the XServer (a display), a parent window, coordinates with
-respect to the top-left corner of the parent window, dimensions (width and height), a border width which
-can be zero for our purposes, and colors for the border and background:
+respect to the top-left corner of the parent window, window dimensions (width and height),
+a border width which can be zero for our purposes, and colors for the border and background:
 
 ```c
 Window XCreateSimpleWindow(
@@ -226,8 +226,8 @@ Window XCreateSimpleWindow(
     unsigned long background);
 ```
 
-For the purposes of our putting graphics on screen for our game and keeping things simple we can tell Xlib
-that we want the the root window as the parent of our game window via the macro `DefaultRootWindow(display)`
+For the purposes of putting graphics on screen for our game and keeping things simple we can tell Xlib
+that we want the root window as the parent of our game window via the macro `DefaultRootWindow()`
 which takes as argument our display. The macro will return the Window ID of the root window. We can pass
 zero for both the `x` and `y` coordinates, we could specify standard dimensions for our window such as
 1600 x 900 where the width, 1600, and the height, 900, are in pixels.
@@ -248,7 +248,7 @@ border and background colors:
 unsigned long BlackPixelValue = BlackPixelOfScreen(screen);
 ```
 
-Thus to create the window for the game you may use:
+Thus to create the window for the game you may write:
 
 ```c
 Screen *screen = DefaultScreenOfDisplay(display);
@@ -265,14 +265,15 @@ Window window = XCreateSimpleWindow(
 );
 ```
 
-TODO CHECK THESE COMMENTS
-It's worth mentioning that this alone won't make the game window visible, you will need to mapped the window.
-What happens is that the call tells the XServer to allocate sources for the window but it won't be marked
-as available for display until the `XMapWindowEvent` happens.
-READ https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Mapping_Windows
+Bear in mind that this alone will not make the window visible and this could be a little surprising
+at first because we are used to think in the OOP terms. We might expect that the `Window` is an object but
+that is not the case it is actually an Xlib resource Id `XID` 64-bits wide. What
+happens under the hood is that the request for creating a window is stored in the `Display` data structure.
+That means that the XServer knows nothing about this until we explicitly ask the server to
+process this request (more of that later because we still have work to do).
+Xlib behaves this for performance, it stacks our requests until the time is right for processing them.
 
-TODO REALLY DO TELL THE XID IS A LONG UNSIGNED THAT MEANS THAT THE WINDOW IS A RESOURCE ID THAT WE PASS TO
-THE X WINDOW SERVER SO THAT IT KNOWS WHAT TO OPERATE ON
+To make the window visible we need to make a mapping request.
 
 ## Mapping the Window
 
@@ -530,3 +531,12 @@ at the contents of the display data structure.
 From this simple example we can see that the macros that we use are used to dereference the display
 pointer, and this is an important point in Xlib because this was done by design to allow for changes
 in the display structure as the X Protocol goes from version to version. TODO NEEDS IMPROVEMENT
+
+
+MAPPING WINDOWS
+
+It's worth mentioning that this alone won't make the game window visible, you will need to mapped the window.
+What happens is that the call tells the XServer to allocate sources for the window but it won't be marked
+as available for display until the `XMapWindowEvent` happens.
+READ https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Mapping_Windows
+
