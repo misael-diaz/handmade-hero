@@ -485,9 +485,24 @@ int main() {
 }
 ```
 
-REFERENCES:
-HERE YOU SHOULD LIST
+## References
+
+Here's a list of additional resources that I have found to be useful to learn about Xlib:
+
 - https://tronche.com/gui/x/xlib-tutorial/
+- https://handmade.network/forums/articles/t/2834-tutorial_a_tour_through_xlib_and_related_technologies
+- https://github.com/Faison/xlib-learning
+- https://github.com/QMonkey/Xlib-demo
+
+NOTE MAYBE THAT'S THE BEAUTY OF OPEN SOURCE WHAT WE HAVE NOW STILL AND WHAT WE SHOULD STRIVE TO PRESERVE
+
+I am sharing them for two reasons.
+First to give credit to those that made them available and second
+because they may also be helpful to someone else.
+
+## Acknowledgements
+
+ADD HERE WHOMEVER THAT REVISED YOUR CODE
 
 TODO:
 - need like headers and bullets for fast readers with the text (the meat) following for those interested
