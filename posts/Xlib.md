@@ -1,4 +1,4 @@
-## Handmade Hero
+## Handmade Hero: Why craftmanship still matters
 
 Handmade Hero has never been more relevant than this time with so many developers saying that they are
 burnedout or some other serious issue like not being able to write a single line of code on their own 
@@ -31,6 +31,11 @@ to know my platform better by diving as deep as I can at my current level of sys
 programming profiency. (That does not mean that I won't do the Win32 version of
 Handmade Hero because it's truly a cross-platform development experience).
 
+The scope of this post is to  share what I have learned about Xlib to create a game window in GNU/Linux
+by following the way of the Handmade Hero craftman. To me that meant that I had to
+read the Xlib man pages, dive into the source code to peek at its implementation, and also
+borrow ideas from the Quake-II engine.
+
 ## Why use Xlib for graphics display
 
 So why use Xlib for putting graphics on the game window when even the recommendation
@@ -53,6 +58,19 @@ The last reason is that Xlib is a core component of Cinnamon my favorite desktop
 environment, and so it's only natural for me to stick with Xlib since desktop needs
 a running XServer for display.
 
+## Xlib's client-server architecture overview
+
+Xlib has a client-server architecture in which the client applications tell the
+XServer what they want to draw and into what window and the server responds to the
+request by performing those requests asynchronously. This solves the problem of
+multiple clients competing for the same portion of the screen for drawing graphics.
+
+The server also knows what's the window that the user is using to know to what client
+application events need to be sent to typically via the network. If both the client
+and the server are in the same machine a Unix socket is used for the communication.
+
+With these ideas in mind one can read more easily an Xlib client application.
+
 ## Installing dependencies
 
 If you want to follow along you would probably need to install the development libraries
@@ -67,33 +85,66 @@ invoking the package manager from the command-line:
 sudo apt install libx11-dev libx11-doc
 ```
 
-where the `libx11-dev` package provides the client interface to Xlib and `libx11-doc`
-provides the man pages, which I strongly recommend you to install so that you can
-consult the Xlib documentation from your console.
+- `libx11-dev` package provides the client interface to Xlib
+- `libx11-doc` provides the official Xlib documentation as man pages
+
+For example if you wish to consult the documentation for openning a display (more on that later)
+you can use the command-line string:
+
+```sh
+man XOpenDisplay
+```
+
+if that does not work use
+
+```sh
+man 3 XOpenDisplay
+```
+
+the `3` tells `man` that what follows is a function from a library.
+
+Now we can start writing our X client code to create a game window for our game.
+
+## Developing an X Client application
+
+We are going to be writing C code to develop the X client application because we don't need any of
+the facilities that C++ provides to do just that. It's worth mentioning that Casey used C++ features
+thoughtfully; for example, he reached out for operator overloading for making the vector math more
+readable. (I know that not because I have made it that far into the series but because I have seen
+mention that in other streams.)
 
 ## Headers
 
-The minimal set of headers that we may want to use for displaying graphics and logging
-useful information to the user on the console is the following:
+C programs typically start with a header section that specifies the functions and data structures that
+the program needs to compile source to machine code. 
 
-```
+The minimal set of headers that we may want to use for displaying graphics and logging
+useful information to the developer or user on the console is the following:
+
+```c
 #include <stdio.h>
 #include <X11/Xlib.h>
 ```
 
-Since we would want to display some information on the console to the user as the game runs
-we have included the standard input-output `<stdio.h>` header typically used for logging
-normal and error messages and we can channel them through the standard output and error streams
-respectively for convenience.
+The standard input-output header `<stdio.h>` provides functions for formatted printing (such as
+`fprintf`) which can be used to channel messages through the standard output `stdout` and standard error
+`stderr` streams.
+By doing this way we can redirect error messages to a file for debugging without the informative
+messages that we may want to show to the user.
 
-And the `<X11/Xlib.h>` header provides the necessary definitions for the Xlib data structures, macros, and
+The `<X11/Xlib.h>` header provides the necessary definitions for the Xlib data structures, macros, and
 functions that we need for putting our game graphics on the screen.
-It is useful to look at the contents of the header to know what the Xlib's opaque data
+It is useful to look at the contents of the header to know what the Xlib's "opaque" data
 structures contain and how some of the query macros are implemented if you wish to take
-Handmade Hero development vibe to the next level.
-The header should be located in your system in the path
-`/usr/include/X11/Xlib.h`. With those definitions we will
-be able to open a connection to the XServer, create the window for our game, and put graphics on it.
+Handmade Hero development vibe to the next level. Later we are going to see that these "opaque"
+data structures are incomplete types that the debugger won't be able to peek into. The header has
+sufficient information for any developer to know what the actual types are.
+
+The Xlib header should be located in your system in the standard path
+`/usr/include/X11/Xlib.h`.
+
+With those definitions we will be able to open a connection to the XServer, create the window for our game,
+and put graphics on it.
 
 ## Connecting to the XServer
 
@@ -107,16 +158,12 @@ peripherals for capturing the user input. On the other hand, if the connection t
 the function returns a `NULL` pointer and the code should stop and return an error
 message for the user.
 
-ABOUT MEMLEAKS THIS IS AN ISSUE IF THE GAME RUNS FOREVER .. NO MATTER WHAT WHEN THE GAME ENDS THE
-KERNEL WILL DO THE CLEANUP. THE MEMLEAK PROBLEM IS FOR SERVERS THAT RUN FOR LONG PERIODS OF TIME
-EVENTUALLY LOOSE THE MEMORY FOR OTHER PROCESSES.
-
 It's okay to put all the Xlib code in the main function, this aligns with the spirit of exploratory
 development philosophy that Casey advocates throughout the series. We are discovering what our game
-needs from the underlying platform to put graphics on the screen and handle user input from peripherals
-(keyboard, gaming console controller, etc.).
+needs from the underlying platform to put graphics on the screen and (maybe in a future post)
+handle user input from peripherals (keyboard, gaming console controller, etc.).
 
-```sh
+```c
 Display *display = XOpenDisplay(NULL);
 if (!display) {
     fprintf(stderr, "%s", "failed to connect to the X Window Server\n");
@@ -124,47 +171,49 @@ if (!display) {
 }
 ```
 
-IMPORTANT TO MENTION THAT LIBXCB IS LINKED DYNAMICALLY AND YOU CAN EVEN SHOW ldd output
-
 Behind the scenes `XOpenDisplay` in Linux opens a socket in non-blocking mode to connect to the XServer
 so that the server may handle requests from multiple clients asynchronously.
 If the XServer is
 running in localhost then the connection to the XServer happens through a Unix socket for performance.
-The actual socket connection is not implemented into Xlib's `XOpenDisplay`; instead, it is implemented
-in libXCB (which is a core component of Xlib).
+It is interesting to note that the code that performs the socket connection is not present in Xlib but
+in libXCB.
 
-The file descriptor of the socket is stored in the Display structure.
+The file descriptor of the socket is stored in the Display structure. I am mentioning it because
+Xlib keeps the file descriptor around for subsequent manipulations via `fcntl` calls, not because
+we are expected to read (write) from (to) the socket ourselves.
 Display also contains other useful
 info that's fetched from the XServer such as the minimum and maximum values of the keyboard codes
-(we care about this for handling user input), the number of screens, creates the default graphics
+(we care about this for handling user input), the number of screens, the default graphics
 context, etc.
 
-From the XServer we also get valuable information about the screens such as the defalt dimensions
-(width and height), the values of the white and black pixels, the screen depth, and the visual info.
-In particular the visuals stores the RGB masks so that we can pack the pixel data in the expected layout;
-otherwise, the colors are not going to be what you expect.
+From the XServer we also get valuable information about the screens such as the default dimensions
+(width and height), the values of the white and black pixels, the screen depth, and the visual information.
+In particular the visual info stores the RGB masks so that we know what the RGB layout that the XServer
+expects for packing the pixel data; otherwise, the colors that you see on the screen are not going to be what
+you might expect.
 
 Xlib also gets the default screen by parsing the DISPLAY environment variable by calling dedicated libXCB
-utils.
-
-For example if `DISPLAY` is `:0` we know that the XServer is running in localhost and that the default
-screen number is zero. This matters to us because we use the default screen for our game window.
+utils. For example if `DISPLAY` is `:0` we know that the XServer is running in localhost and that the default
+screen number is zero. This matters to us because we use the default screen for our game window as you
+will see shortly.
 
 ## Creating a Window for the Game
 
-This is where the fun part really begins. I strongly recommend you to familiarize yourself with the Xlib
-documentation (man pages) and also get ideas from other game engines of the likes of the Quake engine
-(which is also a cross-platform game engine) because it uses Xlib for displaying graphics for Unix like
-systems such as Linux and other POSIX systems.
+This is where the fun part really begins. I strongly recommend you to consult the Xlib
+documentation (man pages) as you read the code snippets to familiarize yourself with some aspects of Xlib
+that we cannot possibly cover in a post like this.
+
+The other recommendation is to read the source code that the Quake engine uses to display graphics on
+screen with Xlib. I am sharing the
+[link](https://github.com/id-Software/Quake-2/blob/master/linux/rw_x11.c)
+to the source file for your convenience.
 
 The following snippet borrowed from the Xlib official documentation shows that to create a simple window
 one needs to have an active connection to the XServer (a display), a parent window, coordinates with
 respect to the top-left corner of the parent window, dimensions (width and height), a border width which
 can be zero for our purposes, and colors for the border and background:
 
-NOTE WOULD BE NICE TO SAY THAT WINDOW IS AN ALIAS OF AN UNSIGNED LONG INTEGER
-
-```
+```c
 Window XCreateSimpleWindow(
     Display *display,
     Window parent,
@@ -186,7 +235,7 @@ zero for both the `x` and `y` coordinates, we could specify standard dimensions 
 If you wish to make your code more portable you may get the default screen of your display and use query
 macros to use the default dimensions:
 
-```
+```c
 Screen *screen = DefaultScreenOfDisplay(display);
 int width = WidthOfScreen(screen);
 int height = HeightOfScreen(screen);
@@ -195,13 +244,14 @@ int height = HeightOfScreen(screen);
 There is also a query function for getting the black pixel value for the screen to use it for the
 border and background colors:
 
-```
+```c
 unsigned long BlackPixelValue = BlackPixelOfScreen(screen);
 ```
 
-Thus to create the window for the game you may call:
+Thus to create the window for the game you may use:
 
-```
+```c
+Screen *screen = DefaultScreenOfDisplay(display);
 Window window = XCreateSimpleWindow(
 	display,
 	DefaultRootWindow(display),
@@ -224,11 +274,11 @@ READ https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Mapping_Wi
 TODO REALLY DO TELL THE XID IS A LONG UNSIGNED THAT MEANS THAT THE WINDOW IS A RESOURCE ID THAT WE PASS TO
 THE X WINDOW SERVER SO THAT IT KNOWS WHAT TO OPERATE ON
 
-## Peak into Xlib headers
+## Peeking into Xlib headers
 
 From the `X11/Xlib.h` header can know how the `DefaultRootWindow()` macro is defined
 
-```
+```c
 #define DefaultRootWindow(dpy)  (ScreenOfDisplay(dpy,DefaultScreen(dpy))->root)
 ```
 
@@ -238,7 +288,7 @@ a pointer to the display data structure, from the dereferencing operation we can
 
 The `Screen` data structure is defined as follows (some fields have been omitted for brevity):
 
-```
+```c
 typedef struct {
         struct _XDisplay *display;
         Window root;
@@ -255,7 +305,7 @@ from the Screen data structure definition we can see that the Window ID of the r
 present (as expected), we also see the dimensions of the screen, the values for the black and
 white pixels for the screen, and a pointer to the display data structure.
 
-```
+```c
 #define ScreenOfDisplay(dpy, scr) (((_XPrivDisplay)(dpy))->screens[scr])
 ```
 
@@ -263,7 +313,7 @@ where `_XPrivDisplay` is a pointer type to the `Display` resource;
 the display data structure is defined this way when illegal access is enabled
 (not showing all the fields for brevity):
 
-```
+```c
 typedef struct _XPrivDisplay {
     int fd;
     int proto_major_version;
@@ -281,7 +331,7 @@ the number of available screens, an array of screen structures, etc.
 
 If you wish to enable illegal access you have to modify the header section of your source in this way
 
-```
+```c
 #include <stdio.h>
 #define XLIB_ILLEGAL_ACCESS 1
 #include <X11/Xlib.h>
@@ -291,10 +341,10 @@ it's important that the definition takes place before including the `X11/Xlib.h`
 (otherwise it has no effect).
 
 You may want to enable this for debugging purposes, not to bypass the intended usage patterns to implement
-the platform layer for the game. After enabling illegal access you should be able to use GDB to peak
+the platform layer for the game. After enabling illegal access you should be able to use GDB to peek
 at the contents of the display data structure.
 
-```
+```c
 #define DefaultScreen(dpy) (((_XPrivDisplay)(dpy))->default_screen)
 ```
 
@@ -322,14 +372,14 @@ with the `ExposureMask` to state that the window will respond to those events. T
 reason for waiting for a expose event is that the window would be ready to display
 graphics on it.
 
-```
+```c
 XSetWindowAttributes template = {};
 template.event_mask = ExposureMask;
 ```
 
 The function signature of the function for changing the window attributes is the following
 
-```
+```c
 int XChangeWindowAttributes(
     Display *display,
     Window w,
@@ -341,14 +391,14 @@ int XChangeWindowAttributes(
 it takes the usual display and window id, the valuemask which must match the event mask, and a pointer
 to the XSetWindowAttributes data structure.
 
-```
+```c
 XChangeWindowAttributes(display, window, CWEventMask, &template);
 ``` 
 
 To map the window to make it elegible for display we need to call the `XMapWindow` function with the
 display and window id of our game window as parameters to the function.
 
-```   
+```c  
 XMapWindow(display, window);
 ```
 
@@ -356,14 +406,14 @@ Due to the asynchronous of the X Window system we need to wait for the exposure 
 game window to display and to do that we need to call the XWindowEvent function which has the following
 signature:
 
-```
+```c
 int XWindowEvent(Display *display, Window w, long event_mask, XEvent *event_return);
 ```
 
 again we have the display and the window id, we also need to pass the event mask that corresponds
 to the exposure event, and a pointer to the XEvent data structure.
 
-```
+```c
 XEvent ev = {};
 XWindowEvent(display, window, ExposureMask, &ev);
 ```
@@ -398,7 +448,7 @@ WHILE TRUSTING THE OS TO DO THE CLEANUP.
 TODO REVISE THAT THE SOURCE CODE COMPILES
 
 
-```
+```c
 #include <stdio.h>
 #include <X11/Xlib.h>
 
@@ -434,7 +484,16 @@ int main() {
     return 0;
 }
 ```
+
+REFERENCES:
+HERE YOU SHOULD LIST
+- https://tronche.com/gui/x/xlib-tutorial/
+
 TODO:
 - need like headers and bullets for fast readers with the text (the meat) following for those interested
 in the details
+
+IMPORTANT TO MENTION THAT LIBXCB IS LINKED DYNAMICALLY AND YOU CAN EVEN SHOW ldd output
+
+NOTE WOULD BE NICE TO SAY THAT WINDOW IS AN ALIAS OF AN UNSIGNED LONG INTEGER
 
