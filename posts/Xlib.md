@@ -494,6 +494,13 @@ Here's a list of additional resources that I have found to be useful to learn ab
 - https://github.com/Faison/xlib-learning
 - https://github.com/QMonkey/Xlib-demo
 
+## Ports
+
+- https://davidgow.net/handmadepenguin/
+- https://dailyollie.hashnode.dev/building-handmade-penguin-0-a-linux-journey-using-xlib-inspired-by-handmade-hero
+
+DON'T FORGET TO ADD THE MACPORT
+
 NOTE MAYBE THAT'S THE BEAUTY OF OPEN SOURCE WHAT WE HAVE NOW STILL AND WHAT WE SHOULD STRIVE TO PRESERVE
 
 I am sharing them for two reasons.
@@ -512,3 +519,11 @@ IMPORTANT TO MENTION THAT LIBXCB IS LINKED DYNAMICALLY AND YOU CAN EVEN SHOW ldd
 
 NOTE WOULD BE NICE TO SAY THAT WINDOW IS AN ALIAS OF AN UNSIGNED LONG INTEGER
 
+IMPORTANT
+===================
+THE DISPLAY STRUCT HAS THE LAST_REQUEST_READ AND REQUEST WHICH SHOWS CLEARLY WHEN XLIB
+HAS MADE AN ATTEMPT TO PROCESS A REQUEST
+
+IT'S NOT UNTIL WE DO A XWINDOWEVENT CALL THAT THESE TWO COUNTERS MATCH AND SO ALL EVENTS
+HAVE BEEN READ AND THIS IS WHY THE WINDOW SHOWS UP. I THINK THIS IS IMPORTANT FOR THE
+DISCUSSION
