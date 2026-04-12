@@ -281,30 +281,30 @@ To make our game window visible we need to add a window mapping request to the X
 Xlib function that allows us to place that request is `XMapWindow()`. But before doing that
 we have to modify the attributes of our game window so that it responds to graphics exposure events.
 Xlib's graphics exposure events can be thought to be analogous to Win32 `WM_PAINT` messages, this
-parallelism would resonate with those familiar with the Handmade Hero series.
+parallelism would immediately resonate with those familiar with the Handmade Hero series.
 
-By design windows do not tell the XServer that they will respond to graphics
-exposure events (or any other event for that matter) the interested reader might want to consult this
-[resource](https://tronche.com/gui/x/xlib/window/attributes/).
+By design client X window applications do not tell the XServer that they will respond to graphics
+exposure events or any other event for that matter. The interested reader might want to consult this
+[resource](https://tronche.com/gui/x/xlib/window/attributes/) for verification.
 So, if we were to call the function that traverses the
 event queue for an event it would block until one is received from the server.
-But that event will never reach our client application,
-effectively stalling the execution of our application, unless we modify the attributes
-of our window in advance.
+But that event will never reach our client application unless we modify the attributes
+of our window in advance; otherwise, we would be inadvertedly stalling the execution of our game.
 
 To change the attributes of our game window we must call `XChangeWindowAttributes` with an instance of the
-`XSetWindowAttributes` data structure (see `man XChangeWindowAttributes`).
-We set the `event_mask` field with the `ExposureMask` to state that the window will respond to those events:
+`XSetWindowAttributes` data structure. In this case all that we want is to tell the XServer that we want
+to respond to graphics exposure events and therefore we must set the `event_mask` field
+with the `ExposureMask` in this way:
 
 ```c
 XSetWindowAttributes template = {};
 template.event_mask = ExposureMask;
 ```
 
-Another reason for waiting for an expose event is that after that event the window would then be ready for
-graphics display.
+Another reason for waiting for a graphics exposusre event is that after that event the window would be ready
+for displaying graphics.
 
-The function signature of the function for changing the window attributes is the following:
+The function signature of the function that enable us to change the window attributes is the following:
 
 ```c
 int XChangeWindowAttributes(
@@ -317,9 +317,9 @@ int XChangeWindowAttributes(
 
 it takes the usual display pointer and window id,
 the valuemask for the corresponding window attribute that we want to change, and a pointer
-to the XSetWindowAttributes data structure. Since we want to only change the set of events
-that our application will respond to we pass the `CWEventMask` and a pointer to the template
-attributes shown earlier this way
+to the `XSetWindowAttributes` data structure. Since we want to only change the set of events
+that our application will respond to we pass the `CWEventMask` bitmask, and a pointer to the
+template attributes shown earlier in this way
 (see the man page for `XSetWindowAttributes` and also this
 [resource](https://tronche.com/gui/x/xlib/window/attributes/)):
 
@@ -333,6 +333,9 @@ function which takes as arguments our display and window Id:
 ```c  
 XMapWindow(display, window);
 ```
+
+It's worth noting that at this point we are still adding requests to our display structure, the XServer
+is still unaware of our intentions and this is the focus of what follows.
 
 UPDATE THE REST OF THIS SECTION
 
