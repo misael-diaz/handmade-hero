@@ -277,17 +277,14 @@ To make the window visible we need to make a mapping request.
 
 ## Mapping the Window
 
-TODO READ DOCUMENTATION FOR MAPPING WINDOW
-For the game window to show up needs to be mapped in Xlib idiom because creating the window only
-allocates the resources for it. This is in part because some applications may not want to display a
-window right away. However we have no reason to defer that operation for the game.
+To make our game window visible we need to stack a window mapping request to the XServer. The
+Xlib function that allows us to place that request is `XMapWindow()`. But before doing that
+we have to modify the attributes of our simple window so that it responds to exposure events.
+Graphics exposure events can be thought to be analogous to Win32 `WM_PAINT` messages (those
+familiar with the series would recall that from the very first few episodes).
 
-One has to take into account that Xlib operates asynchronously and so we need to wait for the
-Exposure event to happen for the window to show up. However it is necessary to change the
-window attributes of the simple window to listen to exposure events; without that configuration
-the execution of our code would block while waiting for the exposure event to happen.
-
-TODO SURELY THE WORDING CAN IMPROVE HERE
+After our game window gets a graphics exposure event it will be ready to displaying graphics.
+Because simple windows do not respond to exposure events we must change its attributes.
 
 To achieve that we have to call `XChangeWindowAttributes` with an instance of the
 `XSetWindowAttributes` data structure, the latter must set the `event_mask` field
@@ -325,8 +322,16 @@ display and window id of our game window as parameters to the function.
 XMapWindow(display, window);
 ```
 
+Under the hood these requests have been stored in the `Display` structure locally and so the server is
+unaware of all of them. This explains the asynchronous nature of the X Window system, and this makes
+perfect sense, since the network is a precious resource that must be used wisely to create performant
+applications. 
+
+Now we are ready to call
+XWindowEvent function
 Due to the asynchronous of the X Window system we need to wait for the exposure event to happen for the
-game window to display and to do that we need to call the XWindowEvent function which has the following
+game window to display and to do that we need to call the 
+ which has the following
 signature:
 
 ```c
