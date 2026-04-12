@@ -435,6 +435,21 @@ I am sharing them for two reasons.
 First to give credit to those that made them available and second
 because they may also be helpful to someone else.
 
+## Conclusions
+
+In this current world of software which is comprised by multiple layers of code that we cannot simply
+discard or choose not to use it because it is integral to the code that we write, at least we can dive
+into it to write better software. For example, if you are a frontend engineer developing with Next.js
+maybe taking your coding to the next level means to dive into React's implementation to find out what
+happens under the hood. Maybe by doing just that you will know enough about React to write better code
+and discover things about JavaScript that you did not know. And I mention this because by diving into
+Xlib's implementation I was able to see why just calling `XCreateSimpleWindow` will not just make the
+window visiable and also learned some interesting things about C such as
+[expression-based macros](
+https://github.com/mirror/libX11/blob/ff8706a5eae25b8bafce300527079f68a201d27f/include/X11/Xlibint.h#L286
+)
+(macros that leverage the comma operator by chaining multiple arithmetic operations into a single expression).
+
 ## Acknowledgements
 
 ADD HERE WHOMEVER THAT REVISED YOUR CODE
