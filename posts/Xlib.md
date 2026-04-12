@@ -277,19 +277,23 @@ To make the window visible we need to make a mapping request.
 
 ## Mapping the Window
 
-To make our game window visible we need to stack a window mapping request to the XServer. The
+To make our game window visible we need to add a window mapping request to the XServer. The
 Xlib function that allows us to place that request is `XMapWindow()`. But before doing that
-we have to modify the attributes of our simple window so that it responds to exposure events.
-Graphics exposure events can be thought to be analogous to Win32 `WM_PAINT` messages (those
-familiar with the series would recall that from the very first few episodes).
+we have to modify the attributes of our game window so that it responds to graphics exposure events.
+Xlib's graphics exposure events can be thought to be analogous to Win32 `WM_PAINT` messages, this
+parallelism would resonate with those familiar with the Handmade Hero series.
 
-After our game window gets a graphics exposure event it will be ready to displaying graphics.
-Because simple windows do not respond to exposure events we must change its attributes.
+Because by default simple windows do not tell the XServer that they will respond to graphics
+exposure events, if we were to call the function that traverses the event queue for that particular
+event it would block until one is received from the server. But that event will never reach our
+client application, effectively stalling the execution of our application, unless we modify the attributes
+of our window in advance. (We could have used `XCreateWindow` to set those attributes in advance but that
+might have been too much information to process at once and that is why I started with `XCreateSimpleWindow`.)
 
-To achieve that we have to call `XChangeWindowAttributes` with an instance of the
-`XSetWindowAttributes` data structure, the latter must set the `event_mask` field
+To change the attributes of our game window we must call `XChangeWindowAttributes` with an instance of the
+`XSetWindowAttributes` data structure. The latter must set the `event_mask` field
 with the `ExposureMask` to state that the window will respond to those events. The
-reason for waiting for a expose event is that the window would be ready to display
+other reason for waiting for a expose event is that the window would be ready to display
 graphics on it.
 
 ```c
