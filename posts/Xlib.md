@@ -360,36 +360,32 @@ XMapWindow(display, window);
 ```
 
 It's worth noting that at this point we are still adding requests to our display structure locally, the
-XServer is unaware of our intentions and this is the focus of what follows.
-
-UPDATE THE REST OF THIS SECTION
-
-Under the hood these requests have been stored in the `Display` structure locally and so the server is
-unaware of all of them. This explains the asynchronous nature of the X Window system, and this makes
-perfect sense, since the network is a precious resource that must be used wisely to create performant
-applications. 
-
-Now we are ready to call
-XWindowEvent function
-Due to the asynchronous of the X Window system we need to wait for the exposure event to happen for the
-game window to display and to do that we need to call the 
- which has the following
-signature:
+XServer is unaware of our intentions until we call `XWindowEvent` to wait for the graphics expose
+event so that our game window becomes visible. The signature of the `XWindowEvent`
+is the following:
 
 ```c
 int XWindowEvent(Display *display, Window w, long event_mask, XEvent *event_return);
 ```
 
-again we have the display and the window id, we also need to pass the event mask that corresponds
-to the exposure event, and a pointer to the XEvent data structure.
+again we have the display and the window id, we also need to pass the event-mask `ExposureMask`
+of the graphics expose event, and a pointer to the XEvent data structure:
 
 ```c
 XEvent ev = {};
 XWindowEvent(display, window, ExposureMask, &ev);
 ```
 
-This difference between this call and polling for XEvents is that the only one that gets pushed
-out of the event queue is the expose graphics event.
+This is fine to make our window visible, note that the only event
+that gets pushed out of the event queue is the expose graphics event; all the other events are preserved
+in the queue.
+
+You may also wish to name your window as Casey did to celebrate that you have successfully created a
+window for your Handmade Hero game:
+
+```c
+XStoreName(display, window, "Handmade Hero");
+```
 
 ## Compilation
 
@@ -606,3 +602,11 @@ READ https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Mapping_Wi
 ILLEGAL ACCESS and GDB
 YOU PROBABLY WANT TO SHOW OUTPUT FROM GDB TO CONVINCE THEM THAT XLIB BEHAVES ASYNC AND THAT OUR REQUESTS
 ARE JUST STORED IN DISPLAY STRUCT UNTIL WE PROCESS EVENTS
+
+
+IMPORTANT LATENCY CONSIDERATIONS WHY NO ROUNDTRIPS FOR PERFORMANCE WHY NOT TRY TO SYNC WITH THE SERVER
+ON EVERY OPERATION MENTION THAT TOO.
+
+MENTION THAT THE ACTUAL DISPLAY TYPE LIVES IN THE XLIBINTERNALS XLIBINT.H HEADER
+
+NICE TOUCH OF SHOWING THE NAME OF THE WINDOW
