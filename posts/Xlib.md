@@ -318,8 +318,8 @@ Note that these event-masks are actually bitmasks and they can be found in `/usr
 #define ExposureMask                    (1L<<15)
 ```
 
-For the purposes of displaying our game window we are going to set the `event_mask` with the `ExposureMask`
-(in the future I could post about user input).
+Just for displaying our game window we only need to set the `event_mask` with the `ExposureMask` and
+nothing else really (in the future I could post about user input).
 
 The function signature of the function that enable us to change the window attributes is the following:
 
@@ -332,7 +332,7 @@ int XChangeWindowAttributes(
 );
 ```
 
-it takes the usual display pointer and window id,
+It takes the usual display pointer and window id,
 a bitmask that corresponds to the window attributes that we want to change, and a pointer
 to the `XSetWindowAttributes` data structure.
 Because the only thing that we want to tell the server is about the events the game window will respond
@@ -342,7 +342,7 @@ to we only need to pass the `CWEventMask` bitmask, this one is also defined in t
 #define CWEventMask             (1L<<11)
 ```
 
-You may also find it worthwhile read about Xlib's window attributes
+You may also find it worthwhile to read about Xlib's window attributes
 [here](https://tronche.com/gui/x/xlib/window/attributes/).
 
 The call in our code would look like this:
@@ -602,3 +602,7 @@ What happens is that the call tells the XServer to allocate sources for the wind
 as available for display until the `XMapWindowEvent` happens.
 READ https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Mapping_Windows
 
+
+ILLEGAL ACCESS and GDB
+YOU PROBABLY WANT TO SHOW OUTPUT FROM GDB TO CONVINCE THEM THAT XLIB BEHAVES ASYNC AND THAT OUR REQUESTS
+ARE JUST STORED IN DISPLAY STRUCT UNTIL WE PROCESS EVENTS
