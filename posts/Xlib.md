@@ -492,22 +492,24 @@ that we can address them if any.
 The output for this code is the following:
 
 ```
-==16548== Memcheck, a memory error detector
-==16548== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==16548== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
-==16548== Command: ./linux-handmade.bin
-==16548== 
-==16548== 
-==16548== HEAP SUMMARY:
-==16548==     in use at exit: 0 bytes in 0 blocks
-==16548==   total heap usage: 89 allocs, 89 frees, 98,228 bytes allocated
-==16548== 
-==16548== All heap blocks were freed -- no leaks are possible
-==16548== 
-==16548== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==17063== Memcheck, a memory error detector
+==17063== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==17063== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==17063== Command: ./linux-handmade.bin
+==17063== 
+game paused, press enter to continue
+
+==17063== 
+==17063== HEAP SUMMARY:
+==17063==     in use at exit: 0 bytes in 0 blocks
+==17063==   total heap usage: 91 allocs, 91 frees, 100,276 bytes allocated
+==17063== 
+==17063== All heap blocks were freed -- no leaks are possible
+==17063== 
+==17063== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 ```
 
-We can see that in the heap summary the system reports 89 allocations (on the heap) and 89 frees and so
+We can see that in the heap summary the system reports 91 allocations (on the heap) and 91 frees and so
 this means that by calling `XCloseDisplay()` we have made sure that the client application releases
 its memory to the operating system. Even if we don't do that the operating system will reclaim the
 memory anyways but it's a good practice to do so. The edge of doing these checks periodically during
