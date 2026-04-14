@@ -439,11 +439,60 @@ I am currently using a Makefile that can be used for compiling the source in Win
 The advantage of using a Makefile is that one can extend it for other platforms -- "one Makefile
 to build them all".
 
-TODO IT'S IMPORTANT TO STATE THAT WE DELIBERATELY STICK TO THE HH WAY OF CRASHING THE GAME FOR DEBUGGING
-WHILE TRUSTING THE OS TO DO THE CLEANUP.
+## Running the Game
 
+To run the game from the command-line:
 
-TODO REVISE THAT THE SOURCE CODE COMPILES
+```sh
+./linux-handmade.bin
+```
+
+where the dot slash means execute this relative to this path. This is important because if you are new
+to GNU/Linux you don't know that commands and executables must be in the PATH in order to run them.
+By default the current working directory is in the PATH so by using that notation you are saying the
+path of the executable is relative to the current directory.
+
+## Checking for Memory Leaks with Valgrind
+
+Valgrind is a tool suite for debugging and profiling programs. I use often to check for memory leaks
+at the end of the program. In the context of our simple client application we are making sure that
+by calling `XCloseDisplay()` all the internals allocated in the heap memory are freed. In Xlib there
+are some resources that we need to free ourselves by calling `XFree`; there are others and so it
+is important to check the official documentation for the right function call to free a resource.
+
+To use the tool to check for memory leaks use the following command:
+
+```sh
+valgrind -s ./linux-handmade.bin
+```
+
+where the `-s` flag informs valgrind that we want a list of detected (and suppressed) errors so
+that we can address them if any. 
+
+The output for this code is the following:
+
+```
+==16548== Memcheck, a memory error detector
+==16548== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==16548== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==16548== Command: ./linux-handmade.bin
+==16548== 
+==16548== 
+==16548== HEAP SUMMARY:
+==16548==     in use at exit: 0 bytes in 0 blocks
+==16548==   total heap usage: 89 allocs, 89 frees, 98,228 bytes allocated
+==16548== 
+==16548== All heap blocks were freed -- no leaks are possible
+==16548== 
+==16548== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+```
+
+We can see that in the heap summary the system reports 89 allocations (on the heap) and 89 frees and so
+this means that by calling `XCloseDisplay()` we have made sure that the client application releases
+its memory to the operating system. Even if we don't do that the operating system will reclaim the
+memory anyways but it's a good practice to do so. The edge of doing these checks periodically during
+development is that you can find errors related to memory more easily, reducing the time needed to
+find the faulty line of code.
 
 
 ```c
@@ -469,6 +518,7 @@ int main() {
 	BlackPixelOfScreen(screen)
     );
 
+    XStoreName(display, window, "Handmade Hero");
     XSetWindowAttributes template = {};
     template.event_mask = ExposureMask;
     XChangeWindowAttributes(display, window, CWEventMask, &template);
