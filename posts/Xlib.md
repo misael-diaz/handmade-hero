@@ -407,6 +407,17 @@ This is fine to make our window visible, note that the only event
 that gets pushed out of the event queue is the expose graphics event; all the other events are preserved
 in the queue.
 
+## Closing the display
+
+At the end of the program you want to close the display so that Xlib's internal data structures get
+freed from the heap memory and to close the socket used for communicating with the XServer via:
+
+```c
+XCloseDisplay(display);
+```
+
+TODO MAYBE SHOW WITH VALGRIND THAT ALL HEAP BLOCKS HAVE BEEN FREED
+
 ## Compilation
 
 For simplicity we have opted to write all the source code in a single source file `linux_handmade.c`
@@ -426,8 +437,6 @@ did because my intention is to experience the cross-platform development. To hav
 I am currently using a Makefile that can be used for compiling the source in Windows (via MinGW) and Linux.
 The advantage of using a Makefile is that one can extend it for other platforms -- "one Makefile
 to build them all".
-
-## CLosing the display
 
 TODO IT'S IMPORTANT TO STATE THAT WE DELIBERATELY STICK TO THE HH WAY OF CRASHING THE GAME FOR DEBUGGING
 WHILE TRUSTING THE OS TO DO THE CLEANUP.
