@@ -407,6 +407,27 @@ This is fine to make our window visible, note that the only event
 that gets pushed out of the event queue is the expose graphics event; all the other events are preserved
 in the queue.
 
+## Pausing the Game
+
+One thing that you want to do is to pause the game to be able to see the window on your screen and this
+can be done in simply by requesting a read from standard input:
+
+```c
+char c = 0;
+fprintf(stdout, "%s", "game paused press any key to continue\n");
+fread(&c, sizeof(c), 1, stdin);
+```
+
+where the `fprintf` shows a instructive message to the user (the game is paused and to continue press
+any key) on standard output and `fread` is used to read a byte from the input stream `stdin`. The `fread` call
+is a blocking call and that means that the code will not proceed until a character has been read,
+effectively pausing our game. Note that the variable `c` is just a placeholder for the byte to be read.
+The `sizeof()` function is commonly used by Linux kernel programmers to write type independent code
+(the placeholder may change but the fact that we intend to write into the entire placeholder will not).
+The magic number one after `sizeof` tells that we only want to read one item of size `sizeof(c)`. This
+could be a little strange at first and this is why I prefer to use `read` instead but to keep things
+to a minimum I decided to stick with `fread`.
+
 ## Closing the display
 
 At the end of the program you want to close the display so that Xlib's internal data structures get
@@ -527,6 +548,10 @@ int main() {
 
     XEvent ev = {};
     XWindowEvent(display, window, ExposureMask, &ev);
+
+    char c = 0;
+    fprintf(stdout, "%s", "game paused press any key to continue\n");
+    fread(&c, sizeof(c), 1, stdin);
 
     XCloseDisplay(display);
     return 0;
