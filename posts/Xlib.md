@@ -568,8 +568,6 @@ memory anyways but it's a good practice to do so. The edge of doing these checks
 development is that you can find errors related to memory more easily, reducing the time needed to
 find the faulty line of code.
 
-
-
 ## References
 
 Here's a list of additional resources that I have found to be useful to learn about Xlib:
@@ -581,16 +579,12 @@ Here's a list of additional resources that I have found to be useful to learn ab
 
 ## Ports
 
+I would like to share some of the well known ports of Handmade Hero to GNU/Linux. I found about them while
+doing my research for writing this post. I am sharing them because it might be instructive to look at them
+also: 
+
 - https://davidgow.net/handmadepenguin/
 - https://dailyollie.hashnode.dev/building-handmade-penguin-0-a-linux-journey-using-xlib-inspired-by-handmade-hero
-
-DON'T FORGET TO ADD THE MACPORT
-
-NOTE MAYBE THAT'S THE BEAUTY OF OPEN SOURCE WHAT WE HAVE NOW STILL AND WHAT WE SHOULD STRIVE TO PRESERVE
-
-I am sharing them for two reasons.
-First to give credit to those that made them available and second
-because they may also be helpful to someone else.
 
 ## Conclusions
 
