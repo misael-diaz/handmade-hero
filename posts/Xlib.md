@@ -1,20 +1,26 @@
 ## Handmade Hero: Why craftmanship still matters
 
-Handmade Hero has never been more relevant than this time with so many developers saying that they are
-burnedout or some other serious issue like not being able to write a single line of code on their own 
-due to heavy AI usage. For me Handmade Hero has helped me encounter a balance between using AI to
+Handmade Hero has never been more relevant than now for software developers because of the pressure of
+shipping faster in part because of AI integration into software development workflows. That means that
+software developers write code less frequently and so their ability to find solutions through writing
+exploratory code diminishes. It's not hard to see that this can lead to burnout in some cases because
+the intesity of the work that the developer does has increased by orders of magnitude. Or to some
+developers it means an eventual loss of confidence in writing a single line of code when compared to
+the amount of code that AI can generate in that same time interval.
+
+A practical way of addressing this situation is to work on an engaging side project that keeps your
+ability to engineer solutions through the act of writing code sharp. This means that as the technology
+improves and we learn better ways to integrate AI into our workflow our craftmanship not only remains
+but evolves.
+
+For me that engaging project has been Handmade Hero. Handmade Hero is a low-level systems engineering series
+that legendary engine developer Casey Muratori streamed for a period of two years to teach developers
+how computers work and how to write performant software by developing a game from scratch
+(no libraries and no game engines). This series has helped me encounter a balance between using AI to
 generate code for work and keeping my problem solving and coding skills honed in my free time.
 
-If you have never heard about Handmade Hero well today is your lucky day. Handmade Hero is a game
-development series done by legendary game engine developer Casey Muratori in which he shows how to
-build a cross-platform game from scratch, no libraries and no engine to teach you how computers work
-and how to craft performant software.
-
-If this sounds appealing I would also recommend to join the Handmade Network to connect
-with other developers that might have similar experiences and ways of coping with the
-difficulties that you may be going through. Also sharing your experiences and knowledge
-can help you realize that you are not obsolete your skills are not obsolete but valuable
-to a whole community whose mantra is to build performant software.
+Even though developers have written about the series many times each post is unique and it matters because
+it is a transformative experience.
 
 ## Reasons for creating a GNU/Linux port of Handmade Hero
 
@@ -34,7 +40,16 @@ Handmade Hero because it's truly a cross-platform development experience).
 The scope of this post is to  share what I have learned about Xlib to create a game window in GNU/Linux
 by following the way of the Handmade Hero craftman. To me that meant that I had to
 read the Xlib man pages, dive into the source code to peek at its implementation, and also
-borrow ideas from the Quake-II engine.
+borrow ideas from the Quake-II engine. 
+
+There are great posts about Xlib, is another post necessary? Xlib's documentation is extensive
+but it was not written for teaching it was written by experts at a time where
+computers had very limited resources and the dominant language for systems programming was
+probably C. Now programming is more widespread and there are more languages and more domains
+that leverage software solutions and so it is not uncommon to have professionals from
+other fields than computer science or software development and also hobbyists writing code.
+And so it's better for the world to have more people from different backgrounds writing about
+code.
 
 ## Why use Xlib for graphics display
 
@@ -283,6 +298,7 @@ we have to modify the attributes of our game window so that it responds to graph
 Xlib's graphics exposure events can be thought to be analogous to Win32 `WM_PAINT` messages, this
 parallelism would immediately resonate with those familiar with the Handmade Hero series.
 
+TODO CLARIFY THAT THE SERVER WON'T SEND EVENTS UNLESS THE CLIENT REQUESTS THEM
 By design, client X window applications do not tell the XServer that they will respond to graphics
 exposure events or any other event for that matter. The interested reader might want to consult this
 [resource](https://tronche.com/gui/x/xlib/window/attributes/) for verification.
@@ -380,6 +396,8 @@ This is fine to make our window visible, note that the only event
 that gets pushed out of the event queue is the expose graphics event; all the other events are preserved
 in the queue.
 
+
+TODO MOVE THIS TO THE PREVIOUS SECTION
 You may also wish to name your window as Casey did to celebrate that you have successfully created a
 window for your Handmade Hero game:
 
@@ -490,7 +508,7 @@ https://github.com/mirror/libX11/blob/ff8706a5eae25b8bafce300527079f68a201d27f/i
 
 ## Acknowledgements
 
-ADD HERE WHOMEVER THAT REVISED YOUR CODE
+ADD HERE WHOMEVER THAT REVISED YOUR CODE NONE
 
 TODO:
 - need like headers and bullets for fast readers with the text (the meat) following for those interested
@@ -500,7 +518,7 @@ IMPORTANT TO MENTION THAT LIBXCB IS LINKED DYNAMICALLY AND YOU CAN EVEN SHOW ldd
 
 NOTE WOULD BE NICE TO SAY THAT WINDOW IS AN ALIAS OF AN UNSIGNED LONG INTEGER
 
-IMPORTANT
+IMPORTANT TODO
 ===================
 THE DISPLAY STRUCT HAS THE LAST_REQUEST_READ AND REQUEST WHICH SHOWS CLEARLY WHEN XLIB
 HAS MADE AN ATTEMPT TO PROCESS A REQUEST
@@ -599,14 +617,14 @@ as available for display until the `XMapWindowEvent` happens.
 READ https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Mapping_Windows
 
 
-ILLEGAL ACCESS and GDB
+TODO ILLEGAL ACCESS and GDB
 YOU PROBABLY WANT TO SHOW OUTPUT FROM GDB TO CONVINCE THEM THAT XLIB BEHAVES ASYNC AND THAT OUR REQUESTS
 ARE JUST STORED IN DISPLAY STRUCT UNTIL WE PROCESS EVENTS
 
 
-IMPORTANT LATENCY CONSIDERATIONS WHY NO ROUNDTRIPS FOR PERFORMANCE WHY NOT TRY TO SYNC WITH THE SERVER
+TODO IMPORTANT LATENCY CONSIDERATIONS WHY NO ROUNDTRIPS FOR PERFORMANCE WHY NOT TRY TO SYNC WITH THE SERVER
 ON EVERY OPERATION MENTION THAT TOO.
 
-MENTION THAT THE ACTUAL DISPLAY TYPE LIVES IN THE XLIBINTERNALS XLIBINT.H HEADER
+TODO MENTION THAT THE ACTUAL DISPLAY TYPE LIVES IN THE XLIBINTERNALS XLIBINT.H HEADER
 
-NICE TOUCH OF SHOWING THE NAME OF THE WINDOW
+TODO NICE TOUCH OF SHOWING THE NAME OF THE WINDOW BEFORE MAPPING SECTION
