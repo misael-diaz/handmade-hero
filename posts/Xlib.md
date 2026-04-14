@@ -601,17 +601,7 @@ https://github.com/mirror/libX11/blob/ff8706a5eae25b8bafce300527079f68a201d27f/i
 )
 (which can be used for chaining multiple arithmetic operations into a single expression).
 
-## Acknowledgements
-
-ADD HERE WHOMEVER THAT REVISED YOUR CODE NONE
-
-TODO:
-- need like headers and bullets for fast readers with the text (the meat) following for those interested
-in the details
-
 IMPORTANT TO MENTION THAT LIBXCB IS LINKED DYNAMICALLY AND YOU CAN EVEN SHOW ldd output
-
-NOTE WOULD BE NICE TO SAY THAT WINDOW IS AN ALIAS OF AN UNSIGNED LONG INTEGER
 
 IMPORTANT TODO
 ===================
