@@ -130,8 +130,6 @@ mention that in other streams.)
 
 ## Headers
 
-TODO ADD THE XLIB_ILLEGAL_ACCESS AND TALK ABOUT WHY YOU ADD IT AND WRITE THE DEBUG CODE TO ILLUSTRATE
-
 C programs typically start with a header section that specifies the functions and data structures that
 the program needs to compile source to machine code. 
 
@@ -603,6 +601,8 @@ working on this post. I am sharing them because it might be instructive to look 
 
 - https://davidgow.net/handmadepenguin/
 - https://dailyollie.hashnode.dev/building-handmade-penguin-0-a-linux-journey-using-xlib-inspired-by-handmade-hero
+
+TODO ADD DEBUGGING CODE TO REINFORCE THAT XLIB IS ASYNC
 
 TODO TODO READY FOR CLEANUP REMOVE THE APPENDING BUT STORE IT ELSEWHERE BECAUSE IT MIGHT BE USEFUL
 
