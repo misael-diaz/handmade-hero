@@ -407,7 +407,6 @@ This is fine to make our window visible, note that the only event
 that gets pushed out of the event queue is the expose graphics event; all the other events are preserved
 in the queue.
 
-
 ## Compilation
 
 For simplicity we have opted to write all the source code in a single source file `linux_handmade.c`
@@ -425,6 +424,8 @@ the linker to link the executable dynamically with Xlib.
 It's important to mention that Casey uses a batch file to compile the source code and that's what I also
 did because my intention is to experience the cross-platform development. To have a consistent build
 I am currently using a Makefile that can be used for compiling the source in Windows (via MinGW) and Linux.
+The advantage of using a Makefile is that one can extend it for other platforms -- "one Makefile
+to build them all".
 
 ## CLosing the display
 
