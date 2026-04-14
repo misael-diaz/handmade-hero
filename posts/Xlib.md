@@ -568,6 +568,21 @@ memory anyways but it's a good practice to do so. The edge of doing these checks
 development is that you can find errors related to memory more easily, reducing the time needed to
 find the faulty line of code.
 
+## Conclusions
+
+In this current world of software which is comprised by multiple layers of code that we cannot simply
+discard or choose not to use it because it is integral to the code that we write, at least we can dive
+into it to write better software. For example, if you are a frontend engineer developing with Next.js
+maybe taking your coding to the next level means to dive into React's implementation to find out what
+happens under the hood. Maybe by doing just that you will know enough about React to write better code
+and discover things about JavaScript that you did not know. And I mention this because by diving into
+Xlib's implementation I was able to see why just calling `XCreateSimpleWindow` will not just make the
+window visiable and also learned some interesting things about C such as the
+[comma-operator](
+https://github.com/mirror/libX11/blob/ff8706a5eae25b8bafce300527079f68a201d27f/include/X11/Xlibint.h#L286
+),
+which can be used for chaining multiple arithmetic operations into a single expression.
+
 ## References
 
 Here's a list of additional resources that I have found to be useful to learn about Xlib:
@@ -586,20 +601,6 @@ also:
 - https://davidgow.net/handmadepenguin/
 - https://dailyollie.hashnode.dev/building-handmade-penguin-0-a-linux-journey-using-xlib-inspired-by-handmade-hero
 
-## Conclusions
-
-In this current world of software which is comprised by multiple layers of code that we cannot simply
-discard or choose not to use it because it is integral to the code that we write, at least we can dive
-into it to write better software. For example, if you are a frontend engineer developing with Next.js
-maybe taking your coding to the next level means to dive into React's implementation to find out what
-happens under the hood. Maybe by doing just that you will know enough about React to write better code
-and discover things about JavaScript that you did not know. And I mention this because by diving into
-Xlib's implementation I was able to see why just calling `XCreateSimpleWindow` will not just make the
-window visiable and also learned some interesting things about C such as the
-[comma-operator](
-https://github.com/mirror/libX11/blob/ff8706a5eae25b8bafce300527079f68a201d27f/include/X11/Xlibint.h#L286
-)
-(which can be used for chaining multiple arithmetic operations into a single expression).
 
 IMPORTANT TO MENTION THAT LIBXCB IS LINKED DYNAMICALLY AND YOU CAN EVEN SHOW ldd output
 
