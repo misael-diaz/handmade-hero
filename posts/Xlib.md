@@ -342,7 +342,7 @@ Xlib's graphics exposure events can be thought to be analogous to Win32 `WM_PAIN
 parallelism would immediately resonate with those familiar with the Handmade Hero series.
 
 By design, the XServer will not send events unless the client application requests them. From the
-context of the ongoing discussion if our game window is not configured to handle graphics expose events
+context of the ongoing discussion if our game window is not configured to handle (graphics) expose events
 the server will not send any.
 The interested reader might want to consult this
 [resource](https://tronche.com/gui/x/xlib/window/attributes/) for verification.
@@ -420,7 +420,7 @@ XMapWindow(display, window);
 ```
 
 It's worth noting that at this point we are still adding requests to our display structure locally, the
-XServer is unaware of our intentions until we call `XWindowEvent` to wait for the graphics expose
+XServer is unaware of our intentions until we call `XWindowEvent` to wait for the expose
 event so that our game window becomes visible. This can be confirmed by looking at the display data:
 
 ```gdb
@@ -441,7 +441,7 @@ $2 = {
 }
 ```
 
-We can see that the sequence number of last request read has not muted but the request sequence number
+We can see that the sequence number of last request read has not mutated but the request sequence number
 has increased to 10 after calling `XMapWindow()`. We have requested a name for our game window, 
 requested attributes change, and performed a window mapping request; thus, the increment in the
 request sequence number adds up perfectly.
@@ -454,7 +454,7 @@ int XWindowEvent(Display *display, Window w, long event_mask, XEvent *event_retu
 ```
 
 again we have the display and the window id, we also need to pass the event-mask `ExposureMask`
-of the graphics expose event, and a pointer to the XEvent data structure:
+of the expose event, and a pointer to the XEvent data structure:
 
 ```c
 XEvent ev = {};
@@ -462,7 +462,7 @@ XWindowEvent(display, window, ExposureMask, &ev);
 ```
 
 This is fine to make our window visible, note that the only event
-that gets pushed out of the event queue is the expose graphics event; all the other events are preserved.
+that gets pushed out of the event queue is the expose event; all the other events are preserved.
 
 We can verify with gdb that the sequence number of the last request read now matches the current one:
 
