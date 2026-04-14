@@ -285,7 +285,7 @@ Window window = XCreateSimpleWindow(
 Bear in mind that this alone will not make the window visible and this could be a little surprising
 at first because we are used to think with an Object-Oriented Programming OOP mindset. 
 We might expect that the `Window` is an object but
-that is not the case, it is an Xlib resource Id `XID` of 64-bits in size. What
+that is not the case, it is an Xlib resource Id `XID` of 64-bits in size (`typedef unsigned long XID;`). What
 happens under the hood is that the request for creating a window is stored in the `Display` data structure.
 That means that the XServer knows nothing about this until we explicitly ask the server to
 process this request (more of that later because we still have work to do).
@@ -312,7 +312,8 @@ $1 = {
 }
 ```
 
-The sequence number of the last processed request is 6 (`last_request_read = 6`) and that happened when we
+The sequence number of the last request considered by the server is 6 (`last_request_read = 6`)
+and that happened when we
 called `XOpenDisplay()` and the sequence number of the current request is 7 (`request = 7`). This means
 that the request is stored locally in the display structure. The server has not seen it because we have
 not called `XFlush()` ourselves to push the requests to the server. Xlib's implementation is
