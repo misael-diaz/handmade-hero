@@ -524,20 +524,20 @@ find the faulty line of code.
 int main() {
     Display *display = XOpenDisplay(NULL);
     if (!display) {
-	fprintf(stderr, "%s", "failed to open display\n");
-	return 1;
+	    fprintf(stderr, "%s", "failed to open display\n");
+	    return 1;
     }
     Screen *screen = DefaultScreenOfDisplay(display);
     Window window = XCreateSimpleWindow(
-	display,
-	DefaultRootWindow(display),
-	0,
-	0,
-	WidthOfScreen(screen),
-	HeightOfScreen(screen),
-	0,
-	BlackPixelOfScreen(screen),
-	BlackPixelOfScreen(screen)
+		    display,
+		    DefaultRootWindow(display),
+		    0,
+		    0,
+		    WidthOfScreen(screen),
+		    HeightOfScreen(screen),
+		    0,
+		    BlackPixelOfScreen(screen),
+		    BlackPixelOfScreen(screen)
     );
 
     XStoreName(display, window, "Handmade Hero");
