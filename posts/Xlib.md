@@ -438,6 +438,58 @@ freed from the heap memory and to close the socket used for communicating with t
 XCloseDisplay(display);
 ```
 
+## Initial Platform Layer for the Game
+
+Here's the source code we have written to create a window for our game that we can use to put graphics
+on it.
+
+```c
+#include <stdio.h>
+#include <X11/Xlib.h>
+
+int main() {
+    Display *display = XOpenDisplay(NULL);
+    if (!display) {
+	    fprintf(stderr, "%s", "failed to open display\n");
+	    return 1;
+    }
+    Screen *screen = DefaultScreenOfDisplay(display);
+    Window window = XCreateSimpleWindow(
+		    display,
+		    DefaultRootWindow(display),
+		    0,
+		    0,
+		    WidthOfScreen(screen),
+		    HeightOfScreen(screen),
+		    0,
+		    BlackPixelOfScreen(screen),
+		    BlackPixelOfScreen(screen)
+    );
+
+    XStoreName(display, window, "Handmade Hero");
+    XSetWindowAttributes template = {};
+    template.event_mask = ExposureMask;
+    XChangeWindowAttributes(display, window, CWEventMask, &template);
+
+    XMapWindow(display, window);
+
+    XEvent ev = {};
+    XWindowEvent(display, window, ExposureMask, &ev);
+
+    char c = 0;
+    fprintf(stdout, "%s", "game paused, press enter to continue\n");
+    fread(&c, sizeof(c), 1, stdin);
+
+    XCloseDisplay(display);
+    return 0;
+}
+```
+
+As you can see the Xlib API is quite readable and this is why I have not added comments to the
+source code. As stressed in the stream "comments are always outdated". In this case comments should
+not be used to tell what the Xlib function does, that's the purpose of the documentation (man pages).
+And this is why I recommended you to install and consult Xlib's man pages.
+
 ## Compilation
 
 For simplicity we have opted to write all the source code in a single source file `linux_handmade.c`
@@ -517,47 +569,6 @@ development is that you can find errors related to memory more easily, reducing 
 find the faulty line of code.
 
 
-```c
-#include <stdio.h>
-#include <X11/Xlib.h>
-
-int main() {
-    Display *display = XOpenDisplay(NULL);
-    if (!display) {
-	    fprintf(stderr, "%s", "failed to open display\n");
-	    return 1;
-    }
-    Screen *screen = DefaultScreenOfDisplay(display);
-    Window window = XCreateSimpleWindow(
-		    display,
-		    DefaultRootWindow(display),
-		    0,
-		    0,
-		    WidthOfScreen(screen),
-		    HeightOfScreen(screen),
-		    0,
-		    BlackPixelOfScreen(screen),
-		    BlackPixelOfScreen(screen)
-    );
-
-    XStoreName(display, window, "Handmade Hero");
-    XSetWindowAttributes template = {};
-    template.event_mask = ExposureMask;
-    XChangeWindowAttributes(display, window, CWEventMask, &template);
-
-    XMapWindow(display, window);
-
-    XEvent ev = {};
-    XWindowEvent(display, window, ExposureMask, &ev);
-
-    char c = 0;
-    fprintf(stdout, "%s", "game paused, press enter to continue\n");
-    fread(&c, sizeof(c), 1, stdin);
-
-    XCloseDisplay(display);
-    return 0;
-}
-```
 
 ## References
 
