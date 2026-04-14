@@ -1,3 +1,7 @@
+TODO:
+
+- SHOW THE GAME WINDOW
+
 ## Handmade Hero: Why craftmanship still matters
 
 Handmade Hero has never been more relevant than now for software developers because of the pressure of
