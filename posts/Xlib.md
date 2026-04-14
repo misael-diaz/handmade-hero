@@ -577,11 +577,13 @@ maybe taking your coding to the next level means to dive into React's implementa
 happens under the hood. Maybe by doing just that you will know enough about React to write better code
 and discover things about JavaScript that you did not know. And I mention this because by diving into
 Xlib's implementation I was able to see why just calling `XCreateSimpleWindow` will not just make the
-window visiable and also learned some interesting things about C such as the
-[comma-operator](
+window visiable and also learned some interesting things about C such as the comma-operator.
+The comma operator can be used for chaining multiple arithmetic operations into a single expression
+as shown [here](
 https://github.com/mirror/libX11/blob/ff8706a5eae25b8bafce300527079f68a201d27f/include/X11/Xlibint.h#L286
-),
-which can be used for chaining multiple arithmetic operations into a single expression.
+).
+It is not hard to imagine that this technique was used by Xlib developers to write maintainable code for
+abstracting away operations that are frequently used throughout the codebase.
 
 ## References
 
