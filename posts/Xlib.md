@@ -490,6 +490,10 @@ source code. As stressed in the stream "comments are always outdated". In this c
 not be used to tell what the Xlib function does, that's the purpose of the documentation (man pages).
 And this is why I recommended you to install and consult Xlib's man pages.
 
+Note that the `XLIB_ILLEGAL_ACCESS` definition has been excluded from the source code to
+reinforce that it should not be used except when you have strong reasons for looking at Xlib's internals,
+such as debugging and learning purposes. Use Xlib's macros to write portable and readable code.
+
 ## Compilation
 
 For simplicity we have opted to write all the source code in a single source file `linux_handmade.c`
