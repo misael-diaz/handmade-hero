@@ -438,8 +438,6 @@ freed from the heap memory and to close the socket used for communicating with t
 XCloseDisplay(display);
 ```
 
-TODO MAYBE SHOW WITH VALGRIND THAT ALL HEAP BLOCKS HAVE BEEN FREED
-
 ## Compilation
 
 For simplicity we have opted to write all the source code in a single source file `linux_handmade.c`
