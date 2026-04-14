@@ -418,7 +418,32 @@ XMapWindow(display, window);
 
 It's worth noting that at this point we are still adding requests to our display structure locally, the
 XServer is unaware of our intentions until we call `XWindowEvent` to wait for the graphics expose
-event so that our game window becomes visible. The signature of the `XWindowEvent`
+event so that our game window becomes visible. This can be confirmed by looking at the display data:
+
+```gdb
+(gdb) p *display
+$2 = {
+	fd = 3,
+	proto_major_version = 11,
+	proto_minor_version = 0,
+	vendor = 0x406590 "The X.Org Foundation",
+	last_request_read = 6,
+	request = 10,
+	display_name = 0x406500 ":0",
+	default_screen = 0,
+	nscreens = 1,
+	screens = 0x406a10,
+	min_keycode = 8,
+	max_keycode = 255,
+}
+```
+
+We can see that the sequence number of last request read has not muted but the request sequence number
+has increased to 10 after calling `XMapWindow()`. We have requested a name for our game window, 
+requested attributes change, and performed a window mapping request; thus, the increment in the
+request sequence number adds up perfectly.
+
+The signature of the `XWindowEvent`
 is the following:
 
 ```c
@@ -434,8 +459,29 @@ XWindowEvent(display, window, ExposureMask, &ev);
 ```
 
 This is fine to make our window visible, note that the only event
-that gets pushed out of the event queue is the expose graphics event; all the other events are preserved
-in the queue.
+that gets pushed out of the event queue is the expose graphics event; all the other events are preserved.
+
+We can verify with gdb that the sequence number of the last request read now matches the current one:
+
+```gdb
+(gdb) p *display
+$3 = {
+	fd = 3,
+	proto_major_version = 11,
+	proto_minor_version = 0,
+	vendor = 0x406590 "The X.Org Foundation",
+	last_request_read = 10,
+	request = 10,
+	display_name = 0x406500 ":0",
+	default_screen = 0,
+	nscreens = 1,
+	screens = 0x406a10,
+	min_keycode = 8,
+	max_keycode = 255,
+}
+```
+
+The game window should now be visible.
 
 ## Pausing the Game
 
