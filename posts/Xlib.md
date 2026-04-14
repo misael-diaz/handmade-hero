@@ -135,11 +135,12 @@ TODO ADD THE XLIB_ILLEGAL_ACCESS AND TALK ABOUT WHY YOU ADD IT AND WRITE THE DEB
 C programs typically start with a header section that specifies the functions and data structures that
 the program needs to compile source to machine code. 
 
-The minimal set of headers that we may want to use for displaying graphics and logging
-useful information to the developer or user on the console is the following:
+The minimal set of headers that we may want to use for creating the game window, having an improved
+debugging experience, and logging useful information to the developer (or user) is the following:
 
 ```c
 #include <stdio.h>
+#define XLIB_ILLEGAL_ACCESS 1
 #include <X11/Xlib.h>
 ```
 
@@ -151,14 +152,15 @@ messages that we may want to show to the user.
 
 The `<X11/Xlib.h>` header provides the necessary definitions for the Xlib data structures, macros, and
 functions that we need for putting our game graphics on the screen.
-It is useful to look at the contents of the header to know what the Xlib's "opaque" data
-structures contain and how some of the query macros are implemented if you wish to take
-Handmade Hero development vibe to the next level. Later we are going to see that these "opaque"
-data structures are incomplete types that the debugger won't be able to peek into. The header has
-sufficient information for any developer to know what the actual types are.
-
 The Xlib header should be located in your system in the standard path
 `/usr/include/X11/Xlib.h`.
+If you read it you are going to find out that client X window applications that
+set the `XLIB_ILLEGAL_ACCESS` macro to a truthy value before including `<X11/Xlib.h>` obtain
+(limited) access to the `Display` data structure which contains all Xlib internals. 
+As we advance in the discussion we are going to use
+it to reinforce our understanding that Xlib is asynchronous. I do not recommend to use this hack to
+write the platform layer of the game, instead use the macros to make your client code portable, readable,
+and maintainable.
 
 With those definitions we will be able to open a connection to the XServer, create the window for our game,
 and put graphics on it.
@@ -597,12 +599,14 @@ Here's a list of additional resources that I have found to be useful to learn ab
 ## Ports
 
 I would like to share some of the well known ports of Handmade Hero to GNU/Linux. I found about them while
-doing my research for writing this post. I am sharing them because it might be instructive to look at them
-also: 
+working on this post. I am sharing them because it might be instructive to look at them also: 
 
 - https://davidgow.net/handmadepenguin/
 - https://dailyollie.hashnode.dev/building-handmade-penguin-0-a-linux-journey-using-xlib-inspired-by-handmade-hero
 
+TODO TODO READY FOR CLEANUP REMOVE THE APPENDING BUT STORE IT ELSEWHERE BECAUSE IT MIGHT BE USEFUL
+
+TODO DONT FORGET THE DEBUGGING CODE BECAUSE IT ADDS TO THE EXPLANATIONS
 
 IMPORTANT TO MENTION THAT LIBXCB IS LINKED DYNAMICALLY AND YOU CAN EVEN SHOW ldd output
 
@@ -716,3 +720,14 @@ ON EVERY OPERATION MENTION THAT TOO.
 TODO MENTION THAT THE ACTUAL DISPLAY TYPE LIVES IN THE XLIBINTERNALS XLIBINT.H HEADER
 
 TODO NICE TOUCH OF SHOWING THE NAME OF THE WINDOW BEFORE MAPPING SECTION
+
+TODO CONSIDER DROPPING FROM THE POST; TAKEN FROM FROM HEADERS
+It is useful to look at the contents of the header to know what the Xlib's "opaque" data
+structures contain and how some of the query macros are implemented if you wish to take
+Handmade Hero development vibe to the next level. Later we are going to see that these "opaque"
+data structures are incomplete types that the debugger won't be able to peek into. The header has
+sufficient information for any developer to know what the actual types are.
+
+The Xlib header should be located in your system in the standard path
+`/usr/include/X11/Xlib.h`.
+
