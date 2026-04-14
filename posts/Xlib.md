@@ -288,7 +288,15 @@ That means that the XServer knows nothing about this until we explicitly ask the
 process this request (more of that later because we still have work to do).
 Xlib behaves this for performance, it stacks our requests until the time is right for processing them.
 
-To make the window visible we need to make a mapping request.
+You may also wish to name your window as `Handmade Hero` at this point as Casey did to get that hello
+world experience when your game window appears:
+
+```c
+XStoreName(display, window, "Handmade Hero");
+```
+
+It is important to note that to make the window visible we will need to make a mapping request, and
+that is the topic of the next section.
 
 ## Mapping the Window
 
@@ -299,8 +307,10 @@ Xlib's graphics exposure events can be thought to be analogous to Win32 `WM_PAIN
 parallelism would immediately resonate with those familiar with the Handmade Hero series.
 
 TODO CLARIFY THAT THE SERVER WON'T SEND EVENTS UNLESS THE CLIENT REQUESTS THEM
-By design, client X window applications do not tell the XServer that they will respond to graphics
-exposure events or any other event for that matter. The interested reader might want to consult this
+By design, the XServer will not send events unless the client application requests them. From the
+context of the ongoing discussion if our game window is not configured to handle graphics expose events
+the server will not send any.
+The interested reader might want to consult this
 [resource](https://tronche.com/gui/x/xlib/window/attributes/) for verification.
 So, if we were to call the function that looks for events (right now without changing the window attributes)
 the call would block until the specific event is received from the server. It is not hard to see that
@@ -396,14 +406,6 @@ This is fine to make our window visible, note that the only event
 that gets pushed out of the event queue is the expose graphics event; all the other events are preserved
 in the queue.
 
-
-TODO MOVE THIS TO THE PREVIOUS SECTION
-You may also wish to name your window as Casey did to celebrate that you have successfully created a
-window for your Handmade Hero game:
-
-```c
-XStoreName(display, window, "Handmade Hero");
-```
 
 ## Compilation
 
