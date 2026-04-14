@@ -73,18 +73,18 @@ The last reason is that Xlib is a core component of Cinnamon my favorite desktop
 environment, and so it's only natural for me to stick with Xlib since desktop needs
 a running XServer for display.
 
-## Xlib's client-server architecture overview
+## Client-Server Architecture
 
-Xlib has a client-server architecture in which the client applications tell the
-XServer what they want to draw and into what window and the server responds to the
-request by performing those requests asynchronously. This solves the problem of
-multiple clients competing for the same portion of the screen for drawing graphics.
+Xlib has a client-server architecture. For example a client application tells the
+XServer what operation it wants to do (such as drawing) and the server responds to the
+request by performing that asynchronously. The motivation for this architecture is
+that it solves the problem of multiple clients competing for the same portion of the screen.
 
-The server also knows what's the window that the user is using to know to what client
-application events need to be sent to typically via the network. If both the client
-and the server are in the same machine a Unix socket is used for the communication.
+The server also knows what's the window that the user is currently using (input) 
+and also knows to what client those input events need to be sent to typically via the network.
+If both the client and the server are in the same machine a Unix socket is used for communication.
 
-With these ideas in mind one can read more easily an Xlib client application.
+It helps to bear these aspects of Xlib in mind when reading an X client application.
 
 ## Installing dependencies
 
