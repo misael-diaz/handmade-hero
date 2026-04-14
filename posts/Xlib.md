@@ -425,10 +425,11 @@ that goes with the convention established by Casey in Handmade Hero to prefix th
 for the platform layer code.
 
 ```sh
-gcc -Wall -g -Og linux_handmade.c -o linux-handmade.bin -lX11
+gcc -Wall -g -Og -gdwarf-4 linux_handmade.c -o linux-handmade.bin -lX11
 ```
 
-where we have enabled all warnings and instructed the compiler to generate debugging symbols and
+where we have enabled all warnings and instructed the compiler to generate debugging symbols in
+DWARF version 4 format that `valgrind` (memcheck tool) understands and
 apply optimizations that do not interfere with the debugging session, and the last one is for 
 the linker to link the executable dynamically with Xlib.
 
