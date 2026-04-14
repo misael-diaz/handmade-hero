@@ -289,7 +289,7 @@ that is not the case, it is an Xlib resource Id `XID` of 64-bits in size (`typed
 happens under the hood is that the request for creating a window is stored in the `Display` data structure.
 That means that the XServer knows nothing about this until we explicitly ask the server to
 process this request (more of that later because we still have work to do).
-Xlib behaves this for performance, it stacks our requests until the time is right for processing them.
+Xlib behaves this way for performance, it stacks our requests until the time is right for processing them.
 
 From looking at the display data with gdb we can determine that we have a request that has not been processed
 by the server (only showing some of the fields):
@@ -319,7 +319,9 @@ that the request is stored locally in the display structure. The server has not 
 not called `XFlush()` ourselves to push the requests to the server. Xlib's implementation is
 conservative on what function calls have the side-effect of flushing the output buffer (we will call one soon
 enough) and so client applications seldom have to call `XFlush()` directly, as stressed in the official
-documentation. I hope that this has convinced you of the asynchronous nature of the X protocol.
+documentation. Only functions that require an immediate response from the server flush the output buffer
+and block until the response has been received.
+I hope that this has convinced you of the asynchronous nature of the X protocol.
 
 You may also wish to name your window as `Handmade Hero` at this point as Casey did to get that hello
 world experience when your game window appears:
