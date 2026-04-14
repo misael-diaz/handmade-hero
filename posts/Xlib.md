@@ -2,26 +2,26 @@ TODO:
 
 - SHOW THE GAME WINDOW
 
-## Handmade Hero: Why craftmanship still matters
+## Handmade Hero: Why craftsmanship still matters
 
 Handmade Hero has never been more relevant than now for software developers because of the pressure of
 shipping faster in part because of AI integration into software development workflows. That means that
 software developers write code less frequently and so their ability to find solutions through writing
 exploratory code diminishes. It's not hard to see that this can lead to burnout in some cases because
-the intesity of the work that the developer does has increased by orders of magnitude. Or to some
+the intensity of the work that the developer does has increased by orders of magnitude. Or to some
 developers it means an eventual loss of confidence in writing a single line of code when compared to
 the amount of code that AI can generate in that same time interval.
 
 A practical way of addressing this situation is to work on an engaging side project that keeps your
 ability to engineer solutions through the act of writing code sharp. This means that as the technology
-improves and we learn better ways to integrate AI into our workflow our craftmanship not only remains
+improves and we learn better ways to integrate AI into our workflow our craftsmanship not only remains
 but evolves.
 
 For me that engaging project has been Handmade Hero. Handmade Hero is a low-level systems engineering series
 that legendary engine developer Casey Muratori streamed for a period of two years to teach developers
 how computers work and how to write performant software by developing a game from scratch
 (no libraries and no game engines). This series has helped me encounter a balance between using AI to
-generate code for work and keeping my problem solving and coding skills honed in my free time.
+generate code for work and keep my problem solving and coding skills honed in my free time.
 
 Even though developers have written about the series many times each post is unique and it matters because
 it is a transformative experience.
@@ -38,11 +38,11 @@ whenever I am using GNU/Linux but, I don't intend to try convince anyone to swit
 GNU/Linux. And last but not least I respect the platform preferences other developers
 have. And so it is only natural to me to work on the port in GNU/Linux because I want
 to know my platform better by diving as deep as I can at my current level of systems
-programming profiency. (That does not mean that I won't do the Win32 version of
+programming proficiency. (That does not mean that I won't do the Win32 version of
 Handmade Hero because it's truly a cross-platform development experience).
 
 The scope of this post is to  share what I have learned about Xlib to create a game window in GNU/Linux
-by following the way of the Handmade Hero craftman. To me that meant that I had to
+by following the way of the Handmade Hero craftsman. To me that meant that I had to
 read the Xlib man pages, dive into the source code to peek at its implementation, and also
 borrow ideas from the Quake-II engine. 
 
@@ -107,7 +107,7 @@ sudo apt install libx11-dev libx11-doc
 - `libx11-dev` package provides the client interface to Xlib
 - `libx11-doc` provides the official Xlib documentation as man pages
 
-For example if you wish to consult the documentation for openning a display (more on that later)
+For example if you wish to consult the documentation for opening a display (more on that later)
 you can use the command-line string:
 
 ```sh
@@ -287,7 +287,7 @@ Window window = XCreateSimpleWindow(
 ```
 
 Bear in mind that this alone will not make the window visible and this could be a little surprising
-at first because we are used to think with an Object-Oriented Programming OOP mindset. 
+at first because we are used to thinking with an Object-Oriented Programming OOP mindset. 
 We might expect that the `Window` is an object but
 that is not the case, it is an Xlib resource Id `XID` of 64-bits in size (`typedef unsigned long XID;`). What
 happens under the hood is that the request for creating a window is stored in the `Display` data structure.
@@ -416,7 +416,7 @@ XChangeWindowAttributes(display, window, CWEventMask, &template);
 ``` 
 
 Now we are in a good position to place the request of mapping the game window to the XServer to
-mark it as elegible for display via the `XMapWindow`.
+mark it as eligible for display via the `XMapWindow`.
 The function takes as arguments our display and Window Id:
 
 ```c  
@@ -508,7 +508,7 @@ is a blocking call and that means that the code will not proceed until a charact
 effectively pausing our game. Note that the variable `c` is just a placeholder for the byte to be read.
 The `sizeof()` function is commonly used by Linux kernel programmers to write type independent code
 (the placeholder may change but the fact that we intend to write into the entire placeholder will not).
-The magic number one after `sizeof` tells that we only want to read one item of size `sizeof(c)`. This
+The magic number one after `sizeof` tells us that we only want to read one item of size `sizeof(c)`. This
 could be a little strange at first and this is why I prefer to use `read` instead but to keep things
 to a minimum I decided to stick with `fread`.
 
@@ -593,7 +593,7 @@ apply optimizations that do not interfere with the debugging session, and the la
 the linker to link the executable dynamically with Xlib.
 
 It's important to mention that Casey uses a batch file to compile the source code and that's what I also
-did because my intention is to experience the cross-platform development. To have a consistent build
+did because my intention is to experience cross-platform development. To have a consistent build
 I am currently using a Makefile that can be used for compiling the source in Windows (via MinGW) and Linux.
 The advantage of using a Makefile is that one can extend it for other platforms -- "one Makefile
 to build them all".
