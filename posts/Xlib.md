@@ -130,8 +130,8 @@ mention that in other streams.)
 
 ## Headers
 
-C programs typically start with a header section that specifies the functions and data structures that
-the program needs to compile source to machine code. 
+C programs typically start with a header section that specifies the function prototypes (declarations) and 
+types (data structures) that the program needs to compile the source down to machine code. 
 
 The minimal set of headers that we may want to use for creating the game window, having an improved
 debugging experience, and logging useful information to the developer (or user) is the following:
