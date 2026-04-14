@@ -161,7 +161,7 @@ write the platform layer of the game, instead use the macros to make your client
 and maintainable.
 
 With those definitions we will be able to open a connection to the XServer, create the window for our game,
-and put graphics on it.
+and put graphics on it (in a future post).
 
 ## Connecting to the XServer
 
@@ -283,12 +283,42 @@ Window window = XCreateSimpleWindow(
 ```
 
 Bear in mind that this alone will not make the window visible and this could be a little surprising
-at first because we are used to think in the OOP terms. We might expect that the `Window` is an object but
-that is not the case it is actually an Xlib resource Id `XID` 64-bits wide. What
+at first because we are used to think with an Object-Oriented Programming OOP mindset. 
+We might expect that the `Window` is an object but
+that is not the case, it is an Xlib resource Id `XID` of 64-bits in size. What
 happens under the hood is that the request for creating a window is stored in the `Display` data structure.
 That means that the XServer knows nothing about this until we explicitly ask the server to
 process this request (more of that later because we still have work to do).
 Xlib behaves this for performance, it stacks our requests until the time is right for processing them.
+
+From looking at the display data with gdb we can determine that we have a request that has not been processed
+by the server (only showing some of the fields):
+
+```gdb
+(gdb) p *display
+$1 = {
+	fd = 3,
+	proto_major_version = 11,
+	proto_minor_version = 0,
+	vendor = 0x406590 "The X.Org Foundation",
+	last_request_read = 6,
+	request = 7,
+	display_name = 0x406500 ":0",
+	default_screen = 0,
+	nscreens = 1,
+	screens = 0x406a10,
+	min_keycode = 8,
+	max_keycode = 255,
+}
+```
+
+The sequence number of the last processed request is 6 (`last_request_read = 6`) and that happened when we
+called `XOpenDisplay()` and the sequence number of the current request is 7 (`request = 7`). This means
+that the request is stored locally in the display structure. The server has not seen it because we have
+not called `XFlush()` ourselves to push the requests to the server. Xlib's implementation is
+conservative on what function calls have the side-effect of flushing the output buffer (we will call one soon
+enough) and so client applications seldom have to call `XFlush()` directly, as stressed in the official
+documentation. I hope that this has convinced you of the asynchronous nature of the X protocol.
 
 You may also wish to name your window as `Handmade Hero` at this point as Casey did to get that hello
 world experience when your game window appears:
