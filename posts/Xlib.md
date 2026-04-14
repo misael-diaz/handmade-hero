@@ -130,6 +130,8 @@ mention that in other streams.)
 
 ## Headers
 
+TODO ADD THE XLIB_ILLEGAL_ACCESS AND TALK ABOUT WHY YOU ADD IT AND WRITE THE DEBUG CODE TO ILLUSTRATE
+
 C programs typically start with a header section that specifies the functions and data structures that
 the program needs to compile source to machine code. 
 
@@ -306,7 +308,6 @@ we have to modify the attributes of our game window so that it responds to graph
 Xlib's graphics exposure events can be thought to be analogous to Win32 `WM_PAINT` messages, this
 parallelism would immediately resonate with those familiar with the Handmade Hero series.
 
-TODO CLARIFY THAT THE SERVER WON'T SEND EVENTS UNLESS THE CLIENT REQUESTS THEM
 By design, the XServer will not send events unless the client application requests them. From the
 context of the ongoing discussion if our game window is not configured to handle graphics expose events
 the server will not send any.
