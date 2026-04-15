@@ -1,6 +1,17 @@
+---
+title: Handmade Hero: Why craftsmanship still matters
+published: preview 
+description: Demystifying Xlib for crafting a window for a custom software renderer targeting GNU/Linux.
+tags: xlib, linux, systems programming
+---
+
 TODO:
 
 - SHOW THE GAME WINDOW
+- CAPTION OF THE GAME WINDOW THAT SAYS NO ENGINE NO LIBRARIES JUST LOW LEVEL CODE
+- FOR THE COVER COMPOSITE THE SRC CODE WITH THE WINDOW
+- EXTEND THE REASONS FOR USING XLIB
+- CONTINUE IMPROVING THE WHY XLIB SECTION
 
 ## Handmade Hero: Why craftsmanship still matters
 
@@ -58,20 +69,45 @@ code.
 ## Why use Xlib for graphics display
 
 So why use Xlib for putting graphics on the game window when even the recommendation
-from Xorg developers is to not use it but instead use a toolkit such as GTK+ or Qt?
-The rational for choosing Xlib is simple, all that we need is a framebuffer to put
-the game graphics on the screen and it so happens that doing just that is not that
-difficult with Xlib. If we were to create a desktop environment then maybe we would
-reach out for the toolkits but for the purposes of doing low level systems programming
-for learning about some aspects of how computers work the Xlib pathway is the way to
-go in GNU/Linux.
+from Xorg developers is to not use it but instead use XCB for low-level X Window application development 
+or a toolkit such as GTK+ or Qt?
 
-The other reason for using Xlib is that Handmade
-Hero has not been my first game development experience for a deep systems programming
-experience. I started with Quake-II so by the time I found out about Handmade Hero I 
+The rationale for choosing Xlib is simple, all that we need is a framebuffer to put
+the graphics on the screen and it so happens that doing just that is straightforward
+with Xlib. The client code that one has to write reads by itself, you don't need to know the entire 
+Xlib API to understand it. I do stress that you should at least familiarize yourself with the
+functions that your client code depends on to be able to pinpoint and fix errors when they happen.
+
+Xlib has been modernized, it uses libXCB under the hood, and it also supports multi-threading
+(if `XThreads` are initialized on the client side). Surely a properly implemented client code
+with XCB will perform better than its Xlib counterpart but that depends entirely on your ability
+to write that code (as mentioned in the XCB
+[documentation](https://xcb.freedesktop.org/tutorial/)
+). Reaching for XCB does resonate with the Handmade Hero spirit only after you have determined
+that Xlib is the performance bottleneck (if you happen to go this route). Casey also advocates
+that it is best to write a working code first to get a good idea of what the platform layer should be;
+and only then work on optimizing it if there are factual reasons to do so.
+Thus my rationale for using Xlib is that I want to push it to its limits 
+and then after identifying that performance limitation stem from Xlib itself then
+develop the platform layer with XCB.
+Even though that I do find it appealing to develop the platform layer of the game with XCB,
+I think that choosing XCB over Xlib right now solely on performance grounds would be an early optimization.
+I rather spend the time to get a working game sooner with Xlib, push it to
+to the limit (multi-threaded if need be) to have a baseline for assesing if there are performance gains
+when the Xlib-based game is pitted against a formidable XCB counterpart.
+That would be something even more interesting to post about when the time comes.
+
+Another reason for using Xlib is that Handmade
+Hero has not been my first game development experience.
+I started with Quake-II so by the time I found out about Handmade Hero I 
 knew that Quake's engine uses Xlib to put graphics on the screen in GNU/Linux. It was
-only natural to avail myself of the experience of diving into Quake engine source
-code to develop my own GNU/Linux port of Handmade Hero.
+only natural to avail myself of the experience of diving into Quake's source
+code to develop my own GNU/Linux port of Handmade Hero 
+
+I am not going to use a toolkit because we are not going to develop a desktop environment.
+What I want to do is work on low-level systems programming with Xlib
+to learn computers work the Xlib pathway is the way to
+go in GNU/Linux.
 
 The last reason is that Xlib is a core component of Cinnamon my favorite desktop
 environment, and so it's only natural for me to stick with Xlib since desktop needs
