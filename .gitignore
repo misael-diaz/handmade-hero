@@ -1,6 +1,7 @@
 *.swp
 *.swo
 *.bin
+*.png
 *.exe
 *.so
 *.o
