@@ -1,9 +1,15 @@
----
-title: Handmade Hero: Why craftsmanship still matters
-published: preview 
-description: Demystifying Xlib for crafting a window for a custom software renderer targeting GNU/Linux.
-tags: xlib, linux, systems programming
----
+
+[---]: #
+
+[title: Handmade Hero: Why craftsmanship still matters]: #
+
+[published: preview]: #
+
+[description: Demystifying Xlib for crafting a window for a custom software renderer targeting GNU/Linux.]: #
+
+[tags: xlib, linux, systems programming]: #
+
+[---]: #
 
 TODO:
 
