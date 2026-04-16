@@ -87,8 +87,8 @@ Xlib API to understand it. I do stress that you should at least familiarize your
 functions that your client code depends on to be able to pinpoint and fix errors when they happen.
 
 Xlib has been modernized, it uses libXCB under the hood, it also supports multi-threading
-(if `XThreads` are initialized on the client side), and it is still maintained to this day by veteran
-contributors such as Alan Coopersmith. Surely a properly implemented client code
+(if `XThreads` are initialized on the client side), and it is still maintained to this day by 
+Alan Coopersmith, a veteran Xlib developer. Surely a properly implemented client code
 with XCB will perform better than its Xlib counterpart but that depends entirely on your ability
 to write that code (as mentioned in the XCB
 [documentation](https://xcb.freedesktop.org/tutorial/)
@@ -101,10 +101,11 @@ and then after identifying that performance limitation stem from Xlib itself the
 develop the platform layer with XCB.
 Even though that I do find it appealing to develop the platform layer of the game with XCB,
 I think that choosing XCB over Xlib right now solely on performance grounds would be an early optimization.
-I rather spend the time to get a working game sooner with Xlib, push it to
-to the limit (multi-threaded if need be) to have a baseline for assesing if there are performance gains
-when the Xlib-based game is pitted against a formidable XCB counterpart.
-That would be something even more interesting to post about when the time comes.
+I rather spend the time to get a working game sooner with Xlib and only push myself to the limit by
+leveraging Xlib multi-threading capabilities to get a robust baseline for comparison.
+Then I would be at a better position to asses performance differences
+between the Xlib-based game and its XCB counterpart.
+At that time it would be something interesting to post about the findings.
 
 Another reason for using Xlib is that Handmade
 Hero has not been my first game development experience.
@@ -731,15 +732,16 @@ And Jamey Sharp modernized Xlib with the XCB transport layer
 and contributed the Xlib project from
 [2006](https://gitlab.freedesktop.org/xorg/lib/libx11/-/commit/6b0158dfad714db5b89c04dbea3aedeafa0fb146)
 to
-[2011](https://gitlab.freedesktop.org/xorg/lib/libx11/-/commit/83e1ba59c48c79f8b0a7e7aa0b9c9cfd84fa403d)
-and has even kept reviewing code submitted to the Xlib project until
+[2011](https://gitlab.freedesktop.org/xorg/lib/libx11/-/commit/83e1ba59c48c79f8b0a7e7aa0b9c9cfd84fa403d);
+it is also remarkable that during that same time he was also developing libxcb.
+But what it is more impressive is that he kept reviewing code submitted to the Xlib project until
 [2017](https://gitlab.freedesktop.org/xorg/lib/libx11/-/commit/2d20890e7ffd3ee88a9ceb25cdd2ac1fe7aaceb6).
-It was an interesting discovery for me to find that part of the XCB transport layer that I read
-in preparation for writing this
-post was modified by two experts collaborating next to one another (Keith Packard and Jamey Sharp)
-as logged in this [commit](
+It was interesting to see a commit log from Keith Packard mentioning that Jamey Sharp was looking over his
+shoulder while he was working on fixing an issue with the XCB transport layer
+(here is the link to the commit [log](
 https://gitlab.freedesktop.org/xorg/lib/libx11/-/commit/bedfe68259037c5564fe52758c92b9c97729640a
-).
+)).
+
 By the time I began my transition
 from Windows 7 to Ubuntu 9.10 (code named Karmic Koala) that Linux desktop shipped with 
 libX11 (version [1.2.2](http://old-releases.ubuntu.com/releases/9.10/ubuntu-9.10-desktop-amd64.manifest));
