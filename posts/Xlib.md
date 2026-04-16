@@ -725,11 +725,7 @@ that laid out the foundation for the desktop envinronments for GNU/Linux. The li
 is extensive but I would like to mention some notable ones.
 Keith Packard who has worked on the [development](https://www.xfree86.org/cvs/changes_4_2.html) of the
 X Windowing since the days of the XFree86 project and has continued doing so for Xlib until
-[2022](https://gitlab.freedesktop.org/xorg/lib/libx11/-/commit/622de26180b295eddd39bd4be1528f2358885095);
-part of the work that caught my attention was the fixing of xthreads blocking when interfacing
-with the XCB transport layer in this [commit](
-https://gitlab.freedesktop.org/xorg/lib/libx11/-/commit/bedfe68259037c5564fe52758c92b9c97729640a
-).
+[2022](https://gitlab.freedesktop.org/xorg/lib/libx11/-/commit/622de26180b295eddd39bd4be1528f2358885095).
 Alan Coopersmith has authored several contributions to Xlib for over 20 years and still maintains it.
 And Jamey Sharp modernized Xlib with the XCB transport layer
 and contributed the Xlib project from
@@ -738,6 +734,12 @@ to
 [2011](https://gitlab.freedesktop.org/xorg/lib/libx11/-/commit/83e1ba59c48c79f8b0a7e7aa0b9c9cfd84fa403d)
 and has even kept reviewing code submitted to the Xlib project until
 [2017](https://gitlab.freedesktop.org/xorg/lib/libx11/-/commit/2d20890e7ffd3ee88a9ceb25cdd2ac1fe7aaceb6).
+It was an interesting discovery for me to find that part of the XCB transport layer that I read
+in preparation for writing this
+post was modified by two experts collaborating next to one another (Keith Packard and Jamey Sharp)
+as logged in this [commit](
+https://gitlab.freedesktop.org/xorg/lib/libx11/-/commit/bedfe68259037c5564fe52758c92b9c97729640a
+).
 By the time I began my transition
 from Windows 7 to Ubuntu 9.10 (code named Karmic Koala) that Linux desktop shipped with 
 libX11 (version [1.2.2](http://old-releases.ubuntu.com/releases/9.10/ubuntu-9.10-desktop-amd64.manifest));
