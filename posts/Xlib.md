@@ -755,9 +755,12 @@ I think that they deserve more credit than what they get, for the most common th
 complaints about the X Windowing system. They modernized the internal implementation while keeping the API
 intact and still support older hardware. It is impressive to find out that that some of the Xlib
 code that we considered in this post such as `XCreateSimpleWindow()` has only undergone minor changes in 
-a period of over 20 years. This makes me reflect on how starkly different was the software development world
-back then. I am assigning the readers that have made it to this point the task of answering to themselves
-what of that craftsmanship they need as a foundation to be outstanding software developers.
+a period of over 20 years. This makes me reflect on how starkly different the world of software development
+must have been in the 90's when some of the veteran Xlib developers were already involved in implementing the
+X11 protocol (for the [XFree86](https://www.xfree86.org/) project).
+I am assigning the readers that have made it up to this point the task of answering to themselves
+what of that craftsmanship evinced by these developers they need as a foundation to be outstanding
+software developers.
 
 ## References
 
