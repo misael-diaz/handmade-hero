@@ -16,8 +16,6 @@ TODO:
 - SHOW THE GAME WINDOW
 - CAPTION OF THE GAME WINDOW THAT SAYS NO ENGINE NO LIBRARIES JUST LOW LEVEL CODE
 - FOR THE COVER COMPOSITE THE SRC CODE WITH THE WINDOW
-- EXTEND THE REASONS FOR USING XLIB
-- CONTINUE IMPROVING THE WHY XLIB SECTION
 - CONCLUSIONS NEEDS AN INTRO A SUMMARY OF WHAT WE ACHIEVED
 - CONCLUSIONS NEED TO BE POLISHED I LIKE THE ESSENCE
 
@@ -81,7 +79,7 @@ from Xorg developers is to not use it but instead use XCB for low-level X Window
 or a toolkit such as GTK+ or Qt?
 
 The rationale for choosing Xlib is simple, all that we need is a framebuffer to put
-the graphics on the screen and it so happens that doing just that is straightforward
+the game graphics on the screen and it so happens that doing just that is straightforward
 with Xlib. The client code that one has to write reads by itself, you don't need to know the entire 
 Xlib API to understand it. I do stress that you should at least familiarize yourself with the
 functions that your client code depends on to be able to pinpoint and fix errors when they happen.
@@ -114,14 +112,21 @@ knew that Quake's engine uses Xlib to put graphics on the screen in GNU/Linux. I
 only natural to avail myself of the experience of diving into Quake's source
 code to develop my own GNU/Linux port of Handmade Hero 
 
-I am not going to use a toolkit because we are not going to develop a desktop environment.
-What I want to do is work on low-level systems programming with Xlib
-to learn computers work the Xlib pathway is the way to
-go in GNU/Linux.
+I am not going to use a toolkit because it hides the diffulties of dealing direclty with visuals, a lesson
+on how hardware works that I do not want to skip.
 
-The last reason is that Xlib is a core component of Cinnamon my favorite desktop
-environment, and so it's only natural for me to stick with Xlib since desktop needs
-a running XServer for display.
+The last reason is the most personal one.
+By the time I began my transition
+from Windows 7 to Ubuntu 9.10 (code named Karmic Koala) that Linux desktop shipped with 
+libX11 version 1.2.2 (that can be verified via the
+[manifest](http://old-releases.ubuntu.com/releases/9.10/ubuntu-9.10-desktop-amd64.manifest)
+).
+At that point Xlib already had the modernized XCB transport layer that made my Linux desktop experience
+so memorable. Knowing that GTK2 at that time was leveraging Xlib code heavily (as can be verified in the
+[source](https://gitlab.gnome.org/GNOME/gtk/-/tree/gtk-2-18?ref_type=heads)) to create the desktop
+environment makes me want to build the platform layer of my game with Xlib (call it nostalgia if you may).
+Also my desktop is using a version of [Cinnamon](https://github.com/linuxmint/cinnamon) (a fork of GNOME2)
+that still depends on Xlib and so it is natural for me to stick with it.
 
 ## Client-Server Architecture
 
@@ -741,13 +746,10 @@ shoulder while he was working on fixing an issue with the XCB transport layer
 (here is the link to the commit [log](
 https://gitlab.freedesktop.org/xorg/lib/libx11/-/commit/bedfe68259037c5564fe52758c92b9c97729640a
 )).
+I am certain that there are many other outstanding contributors that made possible the
+Linux desktop experience that we enjoy that should also be credited but that would probably require
+many more posts like this one.
 
-By the time I began my transition
-from Windows 7 to Ubuntu 9.10 (code named Karmic Koala) that Linux desktop shipped with 
-libX11 (version [1.2.2](http://old-releases.ubuntu.com/releases/9.10/ubuntu-9.10-desktop-amd64.manifest));
-at that point Xlib already had the modernized XCB transport layer that made my Linux desktop experience
-memorable. I am sure that I must have missed many other outstanding contributors that have made possible the
-superb Linux desktop experience that we enjoy currently.
 
 I think that they deserve more credit than what they get, for the most common thing I have found are
 complaints about the X Windowing system. They modernized the internal implementation while keeping the API
