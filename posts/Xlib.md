@@ -725,7 +725,11 @@ that laid out the foundation for the desktop envinronments for GNU/Linux. The li
 is extensive but I would like to mention some notable ones.
 Keith Packard who has worked on the [development](https://www.xfree86.org/cvs/changes_4_2.html) of the
 X Windowing since the days of the XFree86 project and has continued doing so for Xlib until
-[2022](https://gitlab.freedesktop.org/xorg/lib/libx11/-/commit/622de26180b295eddd39bd4be1528f2358885095).
+[2022](https://gitlab.freedesktop.org/xorg/lib/libx11/-/commit/622de26180b295eddd39bd4be1528f2358885095);
+part of the work that caught my attention was the fixing of xthreads blocking when interfacing
+with the XCB transport layer in this [commit](
+https://gitlab.freedesktop.org/xorg/lib/libx11/-/commit/bedfe68259037c5564fe52758c92b9c97729640a
+).
 Alan Coopersmith has authored several contributions to Xlib for over 20 years and still maintains it.
 And Jamey Sharp modernized Xlib with the XCB transport layer
 and contributed the Xlib project from
