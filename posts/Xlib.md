@@ -78,8 +78,9 @@ with Xlib. The client code that one has to write reads by itself, you don't need
 Xlib API to understand it. I do stress that you should at least familiarize yourself with the
 functions that your client code depends on to be able to pinpoint and fix errors when they happen.
 
-Xlib has been modernized, it uses libXCB under the hood, and it also supports multi-threading
-(if `XThreads` are initialized on the client side). Surely a properly implemented client code
+Xlib has been modernized, it uses libXCB under the hood, it also supports multi-threading
+(if `XThreads` are initialized on the client side), and it is still maintained to this day by veteran
+contributors such as Alan Coopersmith. Surely a properly implemented client code
 with XCB will perform better than its Xlib counterpart but that depends entirely on your ability
 to write that code (as mentioned in the XCB
 [documentation](https://xcb.freedesktop.org/tutorial/)
@@ -707,6 +708,38 @@ https://github.com/mirror/libX11/blob/ff8706a5eae25b8bafce300527079f68a201d27f/i
 ).
 It is not hard to imagine that this technique was used by Xlib developers to write maintainable code for
 abstracting away operations that are frequently used throughout the codebase.
+
+During my researching for writing this post I did not just learn how to write the X client code.
+By looking at pieces of the history of the development of Xlib from the commit logs
+I have trully developed a fondness for the Xlib project that I could not have attained otherwise.
+I discovered the dedication of the developers
+that laid out the foundation for the desktop envinronments for GNU/Linux. The list of contributors
+is extensive but I would like to mention some notable ones.
+Keith Packard who has worked on the [development](https://www.xfree86.org/cvs/changes_4_2.html) of the
+X Windowing since the days of the XFree86 project and has continued doing so for Xlib until
+[2022](https://gitlab.freedesktop.org/xorg/lib/libx11/-/commit/622de26180b295eddd39bd4be1528f2358885095).
+Alan Coopersmith has authored several contributions to Xlib for over 20 years and still maintains it.
+And Jamey Sharp modernized Xlib with the XCB transport layer
+and contributed the Xlib project from
+[2006](https://gitlab.freedesktop.org/xorg/lib/libx11/-/commit/6b0158dfad714db5b89c04dbea3aedeafa0fb146)
+to
+[2011](https://gitlab.freedesktop.org/xorg/lib/libx11/-/commit/83e1ba59c48c79f8b0a7e7aa0b9c9cfd84fa403d)
+and has even kept reviewing code submitted to the Xlib project until
+[2017](https://gitlab.freedesktop.org/xorg/lib/libx11/-/commit/2d20890e7ffd3ee88a9ceb25cdd2ac1fe7aaceb6).
+By the time I began my transition
+from Windows 7 to Ubuntu 9.10 (code named Karmic Koala) that Linux desktop shipped with 
+libX11 (version [1.2.2](http://old-releases.ubuntu.com/releases/9.10/ubuntu-9.10-desktop-amd64.manifest));
+at that point Xlib already had the modernized XCB transport layer that made my Linux desktop experience
+memorable. I am sure that I must have missed many other outstanding contributors that have made possible the
+superb Linux desktop experience that we enjoy currently.
+
+I think that they deserve more credit than what they get, for the most common thing I have found are
+complaints about the X Windowing system. They modernized the internal implementation while keeping the API
+intact and still support older hardware. It is impressive to find out that that some of the Xlib
+code that we considered in this post such as `XCreateSimpleWindow()` has only undergone minor changes in 
+a period of over 20 years. This makes me reflect on how starkly different was the software development world
+back then. I am assigning the readers that have made it to this point the task of answering to themselves
+what of that craftsmanship they need as a foundation to be outstanding software developers.
 
 ## References
 
