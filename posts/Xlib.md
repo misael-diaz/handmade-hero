@@ -95,7 +95,7 @@ that Xlib is the performance bottleneck (if you happen to go this route). Casey 
 that it is best to write a working code first to get a good idea of what the platform layer should be;
 and only then work on optimizing it if there are factual reasons to do so.
 Thus my rationale for using Xlib is that I want to push it to its limits 
-and then after identifying that performance limitation stem from Xlib itself then
+and then after identifying that performance limitation stems from Xlib itself then
 develop the platform layer with XCB.
 Even though that I do find it appealing to develop the platform layer of the game with XCB,
 I think that choosing XCB over Xlib right now solely on performance grounds would be an early optimization.
@@ -112,15 +112,14 @@ knew that Quake's engine uses Xlib to put graphics on the screen in GNU/Linux. I
 only natural to avail myself of the experience of diving into Quake's source
 code to develop my own GNU/Linux port of Handmade Hero 
 
-I am not going to use a toolkit because it hides the diffulties of dealing direclty with visuals, a lesson
+I am not going to use a toolkit because it hides the difficulties of dealing direclty with visuals, a lesson
 on how hardware works that I do not want to skip.
 
 The last reason is the most personal one.
 By the time I began my transition
 from Windows 7 to Ubuntu 9.10 (code named Karmic Koala) that Linux desktop shipped with 
 libX11 version 1.2.2 (that can be verified via the
-[manifest](http://old-releases.ubuntu.com/releases/9.10/ubuntu-9.10-desktop-amd64.manifest)
-).
+[manifest](http://old-releases.ubuntu.com/releases/9.10/ubuntu-9.10-desktop-amd64.manifest)).
 At that point Xlib already had the modernized XCB transport layer that made my Linux desktop experience
 so memorable. Knowing that GTK2 at that time was leveraging Xlib code heavily (as can be verified in the
 [source](https://gitlab.gnome.org/GNOME/gtk/-/tree/gtk-2-18?ref_type=heads)) to create the desktop
@@ -723,11 +722,12 @@ https://github.com/mirror/libX11/blob/ff8706a5eae25b8bafce300527079f68a201d27f/i
 It is not hard to imagine that this technique was used by Xlib developers to write maintainable code for
 abstracting away operations that are frequently used throughout the codebase.
 
-During my researching for writing this post I did not just learn how to write the X client code.
+During my researching for writing this post I did not just learn how to write the X client code for
+the initial platform layer of my Handmade Hero game.
 By looking at pieces of the history of the development of Xlib from the commit logs
-I have trully developed a fondness for the Xlib project that I could not have attained otherwise.
+I have trully developed a fondness for the Xlib project that I could not have obtained otherwise.
 I discovered the dedication of the developers
-that laid out the foundation for the desktop envinronments for GNU/Linux. The list of contributors
+that laid out the foundation for the desktop envinronments for GNU/Linux. The list of Xlib contributors
 is extensive but I would like to mention some notable ones.
 Keith Packard who has worked on the [development](https://www.xfree86.org/cvs/changes_4_2.html) of the
 X Windowing since the days of the XFree86 project and has continued doing so for Xlib until
@@ -750,8 +750,8 @@ I am certain that there are many other outstanding contributors that made possib
 Linux desktop experience that we enjoy that should also be credited but that would probably require
 many more posts like this one.
 
-
-I think that they deserve more credit than what they get, for the most common thing I have found are
+I think that the Xlib developers deserve more credit than what they get, for the most common thing I have
+found are
 complaints about the X Windowing system. They modernized the internal implementation while keeping the API
 intact and still support older hardware. It is impressive to find out that that some of the Xlib
 code that we considered in this post such as `XCreateSimpleWindow()` has only undergone minor changes in 
