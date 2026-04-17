@@ -43,6 +43,9 @@ This is a long post (it wouldn't be about Xlib otherwise) so it makes sense to p
 table of contents so that you can see its sections and navigate to those that you might
 want to read next time you come back.
 
+If you are here for the source code you can copy it from
+[here](#Initial-Platform-Layer-of-the-Game).
+
 - [Handmade Hero: Why craftsmanship still matters](
 	#Handmade-Hero-Why-craftsmanship-still-matters
 )
