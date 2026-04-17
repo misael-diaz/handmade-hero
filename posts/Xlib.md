@@ -136,9 +136,11 @@ It is important to mention that the
 XServer (more on that later) still does the heavy lifting to determine the properties of
 the visual, such as if the visual is a TrueColor or PseudoColor type,
 if it has a 16-bit or 24-bit depth, the RGB layout in memory (bitmasks), etc. To be
-precise, you can still experiment with RGB bitmasks with the GTK2 toolkit
-but you will also need to consider if adding another layer of abstraction
-is advantageous; however, the answer to that lies with you (or with your team).
+precise, you can still experiment with RGB bitmasks with the GTK2 toolkit (see [here](
+https://www.manpagez.com/html/gdk2/gdk2-2.24.24/gdk2-GdkRGB.php#gdk-draw-rgb-image
+))
+but you must consider the pros and cons of adding another layer of abstraction to
+your application; probably, the answer to that lies with you (or with your team).
 
 The last reason is the most personal one.
 By the time I began my transition
