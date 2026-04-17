@@ -14,6 +14,8 @@
 TODO:
 
 - ADD TOC FOR BETTER NAVIGATION
+- DON'T FORGET TO MENTION THAT EVEN THOUGH NOT CALLING XDESTROYWINDOW HAS NO EFFECT ON
+  THE CLIENT APPLICATION HEAP USAGE IT MEANS THAT THE XSERVER HAS AN ORPHANED WINDOW
 - IMPROVE RATIONALE FOR XLIB THE HARDWARE STUFF IF DEALT BY THE XSERVER
 - FIND HOW THE VISUAL STRUCT IS SET IN THE XSERVER CODE
 - MENTION THAT WINDOW IS CREATED ON THE SERVER SIDE WOULD ALSO BE INTERESTING TO CHECK
@@ -45,8 +47,57 @@ TODO:
 - [Why use Xlib for graphics display](
 	#Why-use-Xlib-for-graphics-display
 )
--  [Client-Server Architecture](
+- [Client-Server Architecture](
 	#Client-Server-Architecture
+)
+- [Installing dependencies](
+	#Installing-dependencies
+)
+- [Developing an X Client application](
+	#Developing-an-X-Client-application
+)
+- [Headers](
+	#Headers
+)
+- [Connecting to the XServer](
+	#Connecting-to-the-XServer
+)
+- [Creating a Window for the Game](
+	#Creating-a-Window-for-the-Game
+)
+
+- [Mapping the Window](
+	#Mapping-the-Window
+)
+- [Pausing the Game](
+	#Pausing-the-Game
+)
+- [Destroying the Window](
+	#Destroying-the-Window
+)
+- [Closing the Display](
+	#Closing-the-Display
+)
+- [Initial Platform Layer of the Game](
+	#Initial-Platform-Layer-of-the-Game
+)
+- [Compilation](
+	#Compilation
+)
+- [Running the Game](
+	#Running-the-Game
+)
+- [Checking Memory Leaks with Valgrind](
+	#Checking Memory Leaks with Valgrind
+)
+- [Conclusions](
+	#Conclusions
+)
+- [References](
+	#References
+)
+- [Ports](
+	#Ports
 )
 
 ## Handmade Hero: Why craftsmanship still matters
@@ -610,7 +661,9 @@ The magic number one after `sizeof` tells us that we only want to read one item 
 could be a little strange at first and this is why I prefer to use `read` instead but to keep things
 to a minimum I decided to stick with `fread`.
 
-## Closing the display
+## Destroying the Window
+
+## Closing the Display
 
 At the end of the program you want to close the display so that Xlib's internal data structures get
 freed from the heap memory and to close the socket used for communicating with the XServer via:
@@ -619,7 +672,7 @@ freed from the heap memory and to close the socket used for communicating with t
 XCloseDisplay(display);
 ```
 
-## Initial Platform Layer for the Game
+## Initial Platform Layer of the Game
 
 Here's the source code we have written to create a window for our game that we can use to put graphics
 on it.
@@ -709,7 +762,7 @@ to GNU/Linux you don't know that commands and executables must be in the PATH in
 By default the current working directory is in the PATH so by using that notation you are saying the
 path of the executable is relative to the current directory.
 
-## Checking for Memory Leaks with Valgrind
+## Checking Memory Leaks with Valgrind
 
 Valgrind is a tool suite for debugging and profiling programs. I use often to check for memory leaks
 at the end of the program. In the context of our simple client application we are making sure that
