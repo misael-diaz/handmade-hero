@@ -102,9 +102,9 @@ Xlib has been modernized, it uses libXCB under the hood, it also supports multi-
 (if `XThreads` are initialized on the client side), and it is still maintained to this day by 
 Alan Coopersmith, a veteran Xlib developer. Surely a properly implemented client code
 with XCB will perform better than its Xlib counterpart but that depends entirely on your ability
-to write that code (as mentioned in the XCB
-[documentation](https://xcb.freedesktop.org/tutorial/)
-). Reaching for XCB does resonate with the Handmade Hero spirit only after you have determined
+to write that code (as mentioned in this XCB
+[tutorial](https://xcb.freedesktop.org/tutorial/)).
+Reaching for XCB does resonate with the Handmade Hero spirit only after you have determined
 that Xlib is the performance bottleneck (if you happen to go this route). Casey also advocates
 that it is best to write a working code first to get a good idea of what the platform layer should be;
 and only then work on optimizing it if there are factual reasons to do so.
