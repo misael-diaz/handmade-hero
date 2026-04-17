@@ -370,7 +370,9 @@ that is not the case, it is an Xlib resource Id `XID` of 64-bits in size (`typed
 happens under the hood is that the request for creating a window is stored in the `Display` data structure.
 That means that the XServer knows nothing about this until we explicitly ask the server to
 process this request (more of that later because we still have work to do).
-Xlib behaves this way for performance, it stacks our requests until the time is right for processing them.
+Xlib behaves this way for performance, it stacks our requests until the time is right for processing them. When the server does process the request it will allocate memory for
+the window but that memory region is not accessible from client applications (it is
+private to the server).
 
 From looking at the display data with gdb we can determine that we have a request that has not been processed
 by the server (only showing some of the fields):
