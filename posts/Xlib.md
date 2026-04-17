@@ -39,6 +39,10 @@ TODO:
 
 ## Table of Contents
 
+This is a long post (it wouldn't be about Xlib otherwise) so it makes sense to provide a
+table of contents so that you can see its sections and navigate to those that you might
+want to read next time you come back.
+
 - [Handmade Hero: Why craftsmanship still matters](
 	#Handmade-Hero-Why-craftsmanship-still-matters
 )
