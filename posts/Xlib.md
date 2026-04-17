@@ -116,8 +116,11 @@ I think that choosing XCB over Xlib right now solely on performance grounds woul
 I rather spend the time to get a working game sooner with Xlib and only push myself to the limit by
 leveraging Xlib multi-threading capabilities to get a robust baseline for comparison.
 Then I would be at a better position to asses performance differences
-between the Xlib-based game and its XCB counterpart.
-At that time it would be something interesting to post about the findings.
+between the Xlib-based game and its XCB counterpart. Since we are talking about
+performance here it would be worthwhile to leverage the shared memory extension
+to bypass entirely the data transfer with the server over the
+network when running locally (typically Unix socket).
+At that time it would be something interesting to post about what worked best.
 
 Another reason for using Xlib is that Handmade
 Hero has not been my first game development experience.
