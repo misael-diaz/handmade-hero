@@ -13,6 +13,11 @@
 
 TODO:
 
+- IMPROVE RATIONALE FOR XLIB THE HARDWARE STUFF IF DEALT BY THE XSERVER
+- FIND HOW THE VISUAL STRUCT IS SET IN THE XSERVER CODE
+- MENTION THAT WINDOW IS CREATED ON THE SERVER SIDE WOULD ALSO BE INTERESTING TO CHECK
+  THE GLOBAL PROP TABLE
+- FIX GRAPHICS EXPOSE EVENT (WM_PAINT ANALOGOUS) IS NOT AN EXPOSE EVENT
 - ADD REASONS NOT TO USE WAYLAND BASICALLY IT PREVENTS LOW LEVEL ACCESS AS XLIB DOES
 - LINK TO OTHER POSTS THAT HAVE TALKED ABOUT THE FEATURES NOT PRESENT IN WAYLAND FOR X CLIENT APPS
   AS ANOTHER REASON FOR NOT USING IT
@@ -122,7 +127,18 @@ only natural to avail myself of the experience of diving into Quake's source
 code to develop my own GNU/Linux port of Handmade Hero 
 
 I am not going to use a toolkit because it hides the difficulties of dealing direclty with visuals, a lesson
-on how hardware works that I do not want to skip.
+on how computers work that I do not want to skip.
+Some of those difficulties
+translate to the platform layer of the game. For example, if the visual is TrueColor
+(modern monitors) one has to work direclty with RGB bitmasks so that the colors shown
+on the game window look right. 
+It is important to mention that the
+XServer (more on that later) still does the heavy lifting to determine the properties of
+the visual, such as if the visual is a TrueColor or PseudoColor type,
+if it has a 16-bit or 24-bit depth, the RGB layout in memory (bitmasks), etc. To be
+precise, you can still experiment with RGB bitmasks with the GTK2 toolkit
+but you will also need to consider if adding another layer of abstraction
+is advantageous; however, the answer to that lies with you (or with your team).
 
 The last reason is the most personal one.
 By the time I began my transition
