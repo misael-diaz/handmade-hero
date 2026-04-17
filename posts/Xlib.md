@@ -13,6 +13,7 @@
 
 TODO:
 
+- ADD TOC FOR BETTER NAVIGATION
 - IMPROVE RATIONALE FOR XLIB THE HARDWARE STUFF IF DEALT BY THE XSERVER
 - FIND HOW THE VISUAL STRUCT IS SET IN THE XSERVER CODE
 - MENTION THAT WINDOW IS CREATED ON THE SERVER SIDE WOULD ALSO BE INTERESTING TO CHECK
@@ -32,6 +33,21 @@ TODO:
 - THE WHYS CAN BE TUNED FOR FAST READERS IN THE USUAL WAY
 - CONCLUSIONS NEEDS AN INTRO A SUMMARY OF WHAT WE ACHIEVED
 - CONCLUSIONS NEED TO BE POLISHED I LIKE THE ESSENCE
+
+## Table of Contents
+
+- [Handmade Hero: Why craftsmanship still matters](
+	#Handmade-Hero:-Why-craftsmanship-still-matters
+)
+- [Reasons for creating a GNU/Linux port of Handmade Hero](
+	#Reasons-for-creating-a-GNU/Linux-port-of-Handmade-Hero
+)
+- [Why use Xlib for graphics display](
+	#Why-use-Xlib-for-graphics-display
+)
+-  [Client-Server Architecture](
+	#Client-Server-Architecture
+)
 
 ## Handmade Hero: Why craftsmanship still matters
 
