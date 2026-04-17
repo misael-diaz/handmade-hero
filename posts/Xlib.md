@@ -37,10 +37,10 @@ TODO:
 ## Table of Contents
 
 - [Handmade Hero: Why craftsmanship still matters](
-	#Handmade-Hero:-Why-craftsmanship-still-matters
+	#Handmade-Hero-Why-craftsmanship-still-matters
 )
 - [Reasons for creating a GNU/Linux port of Handmade Hero](
-	#Reasons-for-creating-a-GNU/Linux-port-of-Handmade-Hero
+	#Reasons-for-creating-a-GNU-Linux-port-of-Handmade-Hero
 )
 - [Why use Xlib for graphics display](
 	#Why-use-Xlib-for-graphics-display
