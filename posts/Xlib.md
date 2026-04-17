@@ -61,38 +61,38 @@ want to read next time you come back.
 - [Developing an X Client application](
 	#Developing-an-X-Client-application
 )
-- [Headers](
+* [Headers](
 	#Headers
 )
-- [Connecting to the XServer](
+* [Connecting to the XServer](
 	#Connecting-to-the-XServer
 )
-- [Creating a Window for the Game](
+* [Creating a Window for the Game](
 	#Creating-a-Window-for-the-Game
 )
 
-- [Mapping the Window](
+* [Mapping the Window](
 	#Mapping-the-Window
 )
-- [Pausing the Game](
+* [Pausing the Game](
 	#Pausing-the-Game
 )
-- [Destroying the Window](
+* [Destroying the Window](
 	#Destroying-the-Window
 )
-- [Closing the Display](
+* [Closing the Display](
 	#Closing-the-Display
 )
-- [Initial Platform Layer of the Game](
+* [Initial Platform Layer of the Game](
 	#Initial-Platform-Layer-of-the-Game
 )
-- [Compilation](
+* [Compilation](
 	#Compilation
 )
-- [Running the Game](
+* [Running the Game](
 	#Running-the-Game
 )
-- [Checking Memory Leaks with Valgrind](
+* [Checking Memory Leaks with Valgrind](
 	#Checking-Memory-Leaks-with-Valgrind
 )
 - [Conclusions](
