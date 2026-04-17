@@ -229,7 +229,13 @@ so memorable. Knowing that GTK2 at that time was leveraging Xlib code heavily (a
 [source](https://gitlab.gnome.org/GNOME/gtk/-/tree/gtk-2-18?ref_type=heads)) to create the desktop
 environment makes me want to build the platform layer of my game with Xlib (call it nostalgia if you may).
 Also my desktop is using a version of [Cinnamon](https://github.com/linuxmint/cinnamon) (a fork of GNOME2)
-that still depends on Xlib and so it is natural for me to stick with it.
+that still depends on Xlib and so it is natural for me to stick with it. 
+
+I just want to add here a little note about possible issues that you could stumble upon if you try to
+run the game (without modification) in a Wayland-based desktop. Xlib blocking calls, such as
+`XNextEvent` and `XWindowEvent`, must be replaced with their equivalents to avoid potential deadlocks
+due to the asynchronous nature of Wayland. The interested reader is referred to the official Wayland
+[documentation](https://wayland.freedesktop.org/docs/book/Xwayland.html).
 
 ## Client-Server Architecture
 
