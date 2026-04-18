@@ -235,16 +235,32 @@ due to the asynchronous nature of Wayland. The interested reader is referred to 
 
 ## Client-Server Architecture
 
-Xlib has a client-server architecture. For example a client application tells the
+Xlib has a client-server architecture as illustrated in the following diagram:
+
+![ClientServerArch](https://github.com/misael-diaz/handmade-hero/blob/6a752752b7d48f9e82028e3ed2a521f1f51d4e27/posts/img/client-server-architecture-diagram.png)
+
+The diagram shows that the XServer receives the user input from the keyboard, mouse, and possibly a game
+controller. The diagram shows that the applications that we use such as the browser and the console
+are clients, and even the desktop environment could be a client in some GNU/Linux distributions.
+If you look at the source code of the Cinnamon
+desktop for Linux Mint you will see that it opens a connection the XServer (see [main.c](
+https://github.com/linuxmint/cinnamon/blob/bfc454e799f0284a3c2fd3a0ec11a716b2d425bb/src/main.c#L303)).
+The communication between the client and the server happens over the network via the X11 protocol and
+so that means that the client could be in a remote machine as well. For security
+ssh forwarding (see `man ssh`) is commonly used to encrypt the communication between the client and server.
+It is worth mentioning for clarification that the server does not captures the input directly
+from the hardware, that is the job of the Linux kernel.
+
+In general, a client application tells the
 XServer what operation it wants to do (such as drawing) and the server responds to the
 request by performing that asynchronously. The motivation for this architecture is
 that it solves the problem of multiple clients competing for the same portion of the screen.
 
-The server also knows what's the window that the user is currently using (input) 
+The server also knows what is the window that the user is currently using (input) 
 and also knows to what client those input events need to be sent to typically via the network.
 If both the client and the server are in the same machine a Unix socket is used for communication.
 
-It helps to bear these aspects of Xlib in mind when reading an X client application.
+It helps to bear these aspects of Xlib in mind when reading X client applications.
 
 ## Installing dependencies
 
