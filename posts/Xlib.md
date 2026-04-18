@@ -847,7 +847,9 @@ with wich we can make a window visible in our desktop environment that an user c
 
 These are some of the most important achievements and things that we learned from going through this exercise:
 
-- We have laid out the initial foundation for the platform layer of the game with Xlib. In the process we
+- We have an initial idea of what the platform layer of the game (for graphics display) with Xlib might look like.
+
+- In the process we
 learned that Xlib has a client-server architecture that enables multiple client applications to draw to the
 screen (a shared resource) concurrently; it is the server that processes and resolves those requests to
 update the screen framebuffer.
