@@ -675,6 +675,27 @@ to a minimum I decided to stick with `fread`.
 
 ## Destroying the Window
 
+As mentioned in the [creating](#Creating-a-Window-for-the-Game) a window section the XServer allocates
+resources for the game window and so the right thing to request the server to destroy it before we close the
+connection. The server will destroy all the properties associated to that window and decrement the global
+property registry accordingly.
+
+The Xlib developers recommend calling `XDestroySubwindows()` instead of `XDestroyWindow()` for performance
+reasons (as mentioned in the man page for any of these two functions):
+
+```c
+XDestroySubwindows(display, window);
+```
+
+As you can see the function takes the usual display pointer and window resource Id. This function
+destroys the subwindows from bottom-to-top stacking order. The game has only one subwindow (the root
+or parent window must remain for other clients) and so that is the only one that is going to be destroyed.
+If you look at the implementation of `XDestroySubwindows()` in `Xlib` you will find that it stores the
+destroy subwindows request in the display structure.
+There is no implicit synchronization, it is not needed really because
+closing the display does the final synchronization. That's when the server will receive the
+destroy request.
+
 ## Closing the Display
 
 At the end of the program you want to close the display so that Xlib's internal data structures get
@@ -683,6 +704,9 @@ freed from the heap memory and to close the socket used for communicating with t
 ```c
 XCloseDisplay(display);
 ```
+
+As mentioned in the preceeding [section](#Destroying-the-Window) the XServer performs a final synchronization
+via `XSync()` to send requests in the output buffer (this feature is also mentioned in the man page).
 
 ## Initial Platform Layer of the Game
 
@@ -726,6 +750,7 @@ int main() {
     fprintf(stdout, "%s", "game paused, press enter to continue\n");
     fread(&c, sizeof(c), 1, stdin);
 
+    XDestroySubwindows(display, window);
     XCloseDisplay(display);
     return 0;
 }
