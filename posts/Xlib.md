@@ -13,10 +13,8 @@
 
 TODO:
 
-- ADD WHY YOU THINK POSTING THIS IS IMPORTANT
 - CLIENT SERVER ARCH SECTION NEEDS A DIAGRAM
 - FOR THE COVER COMPOSITE THE SRC CODE WITH THE WINDOW
-- CONCLUSIONS NEED TO BE POLISHED I LIKE THE ESSENCE
 
 # Handmade Hero
 
@@ -34,7 +32,7 @@ reference or a starting point for further study and exploration.
 
 ## Table of Contents
 
-This is a long post (it wouldn't be about Xlib otherwise) so it makes sense to provide a
+This is an academic post and so it makes sense to provide a
 table of contents so that you can see its sections and navigate to those that you might
 want to read next time you come back.
 
