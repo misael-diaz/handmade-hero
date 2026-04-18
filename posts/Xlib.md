@@ -634,7 +634,7 @@ $3 = {
 
 The game window should now be visible.
 
-<img width="638" height="344" src=https://github.com/misael-diaz/handmade-hero/blob/afadb2c7e3c2690ee6092be1e95a6d52e3ee2866/posts/img/window.png>
+![GameWindow](https://github.com/misael-diaz/handmade-hero/blob/f2264c83cdc0955ce0a34eed19c397f300c5dcdc/posts/img/window.png)
 
 ## Pausing the Game
 
