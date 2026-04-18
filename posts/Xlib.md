@@ -13,13 +13,6 @@
 
 TODO:
 
-- TALK ABOUT DESTROYING WINDOWS IN ITS OWN SECTION
-- DON'T FORGET TO MENTION THAT EVEN THOUGH NOT CALLING XDESTROYWINDOW HAS NO EFFECT ON
-  THE CLIENT APPLICATION HEAP USAGE IT MEANS THAT THE XSERVER HAS AN ORPHANED WINDOW
-- IMPROVE RATIONALE FOR XLIB THE HARDWARE STUFF IF DEALT BY THE XSERVER
-- FIND HOW THE VISUAL STRUCT IS SET IN THE XSERVER CODE
-- MENTION THAT WINDOW IS CREATED ON THE SERVER SIDE WOULD ALSO BE INTERESTING TO CHECK
-  THE GLOBAL PROP TABLE
 - FIX GRAPHICS EXPOSE EVENT (WM_PAINT ANALOGOUS) IS NOT AN EXPOSE EVENT
 - ADD REASONS NOT TO USE WAYLAND BASICALLY IT PREVENTS LOW LEVEL ACCESS AS XLIB DOES
 - LINK TO OTHER POSTS THAT HAVE TALKED ABOUT THE FEATURES NOT PRESENT IN WAYLAND FOR X CLIENT APPS
@@ -502,9 +495,7 @@ that is the topic of the next section.
 
 To make our game window visible we need to add a window mapping request to the XServer. The
 Xlib function that allows us to place that request is `XMapWindow()`. But before doing that
-we have to modify the attributes of our game window so that it responds to graphics exposure events.
-Xlib's graphics exposure events can be thought to be analogous to Win32 `WM_PAINT` messages, this
-parallelism would immediately resonate with those familiar with the Handmade Hero series.
+we have to modify the attributes of our game window so that it responds to expose events.
 
 By design, the XServer will not send events unless the client application requests them. From the
 context of the ongoing discussion if our game window is not configured to handle (graphics) expose events
