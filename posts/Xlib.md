@@ -840,18 +840,27 @@ the client and that of course includes the window.
 ## Conclusions
 
 We have laid out the initial foundation for the platform layer of the game with Xlib. In the process we
-found out that in Xlib the display refers to the screen (graphics output) along with the peripherals such
-as the keyboard, mouse, or game console controller (user input). We found out that Xlib provides convenient
-macros for getting at the screen, visuals, etc. in a portable way. Under the hood these macros
-cast the "opaque" display structure into a known type and subsequently dereferenced to get at,
+learned that Xlib has a client-server architecture that enables multiple client applications to draw to the
+screen concurrently (shared resource); it is the server that processes and resolves those requests to
+update the screen framebuffer. We also found out that in Xlib the display refers to the
+connection to the XServer which manages the screens
+(for graphics output) along with the peripherals such
+as the keyboard, mouse, or game console controller (for user input). Also Xlib provides convenient
+macros for getting at the screen, visuals, etc. in a portable way. We say that under the hood these macros
+cast the "opaque" display structure into a known type (private display) and subsequently dereferenced
+to get at,
 for example, the root window Id, screen dimensions, or the black pixel value for the screen.
+These macros have enabled the developers to change Xlib internals while not breaking the
+existing client code.
 We also learned that Xlib allocates the resources for the window on the server side and that the client
-code (our game) allocates a window resource Id behind the scenes.
-And we also used the GNU debugger to illustrate that
-client applications batch their requests into an output buffer and that only Xlib commands that
-need synchronization flush the output buffer and block until the server responds. We also used `valgrind`
-to determine that our code has no memory leaks. In the end we suceeded in making our game window
+code (our game) allocates the window resource Id (or handle).
+And we also used the GNU debugger `gdb` to demonstrate that
+client applications batch their requests into an output buffer. We also saw that Xlib commands that
+need synchronization such as `XWindowEvent` flush the output buffer and block until the server responds.
+To verify that our code has no memory leaks we used valgrind's memcheck tool.
+In the end we suceeded in making our game window
 visible and ready to put graphics on it.
+Stayed tuned for the next post.
 
 ## Final Thoughts
 
