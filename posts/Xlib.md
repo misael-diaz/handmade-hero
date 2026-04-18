@@ -82,6 +82,9 @@ If you are here for the source code you can copy it from
 - [Conclusions](
 	#Conclusions
 )
+- [Final Thoughts](
+	#Final-Thoughts
+)
 - [References](
 	#References
 )
@@ -835,6 +838,22 @@ if we miss the call (due to a crash for example) the server will free the resour
 the client and that of course includes the window.
 
 ## Conclusions
+
+We have laid out the initial foundation for the platform layer of the game with Xlib. In the process we
+found out that in Xlib the display refers to the screen (graphics output) along with the peripherals such
+as the keyboard, mouse, or game console controller (user input). We found out that Xlib provides convenient
+macros for getting at the screen, visuals, etc. in a portable way. Under the hood these macros
+cast the "opaque" display structure into a known type and subsequently dereferenced to get at,
+for example, the root window Id, screen dimensions, or the black pixel value for the screen.
+We also learned that Xlib allocates the resources for the window on the server side and that the client
+code (our game) allocates a window resource Id behind the scenes.
+And we also used the GNU debugger to illustrate that
+client applications batch their requests into an output buffer and that only Xlib commands that
+need synchronization flush the output buffer and block until the server responds. We also used `valgrind`
+to determine that our code has no memory leaks. In the end we suceeded in making our game window
+visible and ready to put graphics on it.
+
+## Final Thoughts
 
 In this current world of software which is comprised by multiple layers of code that we cannot simply
 discard or choose not to use it because it is integral to the code that we write, at least we can dive
