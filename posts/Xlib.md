@@ -13,7 +13,6 @@
 
 TODO:
 
-- ADD LINK TO GITHUB REPO
 - TALK ABOUT DESTROYING WINDOWS IN ITS OWN SECTION
 - DON'T FORGET TO MENTION THAT EVEN THOUGH NOT CALLING XDESTROYWINDOW HAS NO EFFECT ON
   THE CLIENT APPLICATION HEAP USAGE IT MEANS THAT THE XSERVER HAS AN ORPHANED WINDOW
@@ -740,6 +739,10 @@ And this is why I recommended you to install and consult Xlib's man pages.
 Note that the `XLIB_ILLEGAL_ACCESS` definition has been excluded from the source code to
 reinforce that it should not be used except when you have strong reasons for looking at Xlib's internals,
 such as debugging and learning purposes. Use Xlib's macros to write portable and readable code.
+
+The current state of the development of this project can be found in this GitHub [repository](
+https://github.com/misael-diaz/handmade-hero/
+).
 
 ## Compilation
 
