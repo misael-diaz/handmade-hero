@@ -237,7 +237,9 @@ due to the asynchronous nature of Wayland. The interested reader is referred to 
 
 Xlib has a client-server architecture as illustrated in the following diagram:
 
-![ClientServerArch](https://github.com/misael-diaz/handmade-hero/blob/6a752752b7d48f9e82028e3ed2a521f1f51d4e27/posts/img/client-server-architecture-diagram.png)
+![ClientServerArch](
+https://github.com/misael-diaz/handmade-hero/blob/c7db0971c1a95c5d8e7d243bf9214cebb7db064b/posts/img/client-server-architecture-diagram.png
+)
 
 The diagram shows that the XServer receives the user input from the keyboard, mouse, and possibly a game
 controller. The diagram shows that the applications that we use such as the browser and the console
