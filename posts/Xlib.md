@@ -676,22 +676,20 @@ to a minimum I decided to stick with `fread`.
 ## Destroying the Window
 
 As mentioned in the [creating](#Creating-a-Window-for-the-Game) a window section the XServer allocates
-resources for the game window and so the right thing to request the server to destroy it before we close the
-connection. The server will destroy all the properties associated to that window and decrement the global
+resources for the game window and so the right thing to do is to request the server to destroy it before we
+close the connection.
+The server will destroy all the properties associated to that window and decrement the global
 property registry accordingly.
 
-The Xlib developers recommend calling `XDestroySubwindows()` instead of `XDestroyWindow()` for performance
-reasons (as mentioned in the man page for any of these two functions):
+To destroy the game window use the following function:
 
 ```c
-XDestroySubwindows(display, window);
+XDestroyWindow(display, window);
 ```
 
-As you can see the function takes the usual display pointer and window resource Id. This function
-destroys the subwindows from bottom-to-top stacking order. The game has only one subwindow (the root
-or parent window must remain for other clients) and so that is the only one that is going to be destroyed.
-If you look at the implementation of `XDestroySubwindows()` in `Xlib` you will find that it stores the
-destroy subwindows request in the display structure.
+As you can see the function takes the usual display pointer and window resource Id.
+If you look at the implementation of `XDestroyWindow()` in `Xlib` you will find that it stores the
+destroy window request in the display structure.
 There is no implicit synchronization, it is not needed really because
 closing the display does the final synchronization. That's when the server will receive the
 destroy request.
@@ -750,7 +748,7 @@ int main() {
     fprintf(stdout, "%s", "game paused, press enter to continue\n");
     fread(&c, sizeof(c), 1, stdin);
 
-    XDestroySubwindows(display, window);
+    XDestroWindow(display, window);
     XCloseDisplay(display);
     return 0;
 }
