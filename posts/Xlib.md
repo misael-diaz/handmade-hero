@@ -860,7 +860,7 @@ connection to the XServer which manages the screens
 as the keyboard, mouse, or game console controller (for user input).
 
 - We have realized that Xlib provides convenient
-macros for getting at the screen, visuals, etc. in a portable way. We say that under the hood these macros
+macros for getting at the screen, visuals, etc. in a portable way. We have found that under the hood these macros
 cast the "opaque" display structure into a known type (private display) and subsequently dereferenced
 to get at,
 for example, the root window Id, screen dimensions, or the black pixel value for the screen.
