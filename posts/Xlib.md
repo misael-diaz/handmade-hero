@@ -13,7 +13,6 @@
 
 TODO:
 
-- CLIENT SERVER ARCH SECTION NEEDS A DIAGRAM
 - FOR THE COVER COMPOSITE THE SRC CODE WITH THE WINDOW
 
 # Handmade Hero: A Systems Programming Odyssey
@@ -136,8 +135,8 @@ the platform he is most familiar with.
 In analogy I want to build the game in GNU/Linux because I have been coding in that
 platform and using the command line for a long time. I get that I am at home
 whenever I am using GNU/Linux but, I don't intend to try convince anyone to switch to
-GNU/Linux. And last but not least I respect the platform preferences other developers
-have. And so it is only natural to me to work on the port in GNU/Linux because I want
+GNU/Linux. And last but not least, I respect the platform preferences other developers
+may have. And so it is only natural to me to work on the port in GNU/Linux because I want
 to know my platform better by diving as deep as I can at my current level of systems
 programming proficiency. (That does not mean that I won't do the Win32 version of
 Handmade Hero because it's truly a cross-platform development experience).
@@ -247,6 +246,7 @@ are clients, and even the desktop environment could be a client in some GNU/Linu
 If you look at the source code of the Cinnamon
 desktop for Linux Mint you will see that it opens a connection the XServer (see [main.c](
 https://github.com/linuxmint/cinnamon/blob/bfc454e799f0284a3c2fd3a0ec11a716b2d425bb/src/main.c#L303)).
+
 The communication between the client and the server happens over the network via the X11 protocol and
 so that means that the client could be in a remote machine as well. For security
 ssh forwarding (see `man ssh`) is commonly used to encrypt the communication between the client and server.
