@@ -843,7 +843,7 @@ In this post we delved into some of Xlib internals to close the gap between the 
 official documentation and what we can understand from reading it in order to be in a better position to
 build the foundation of our game based on Handmade Hero. As a result of doing this exercise we
 now have a better idea of what happends behind scenes, we no longer perceive Xlib code to be a "black box"
-with wich we can make a window visible in our desktop environment that an user can interact with.
+through which we can make a window visible in our desktop environment that an user can interact with.
 
 These are some of the most important achievements and things that we learned from going through this exercise:
 
