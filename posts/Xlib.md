@@ -16,7 +16,7 @@ TODO:
 - CLIENT SERVER ARCH SECTION NEEDS A DIAGRAM
 - FOR THE COVER COMPOSITE THE SRC CODE WITH THE WINDOW
 
-# Handmade Hero
+# Handmade Hero: A Systems Programming Odessey
 
 In this post start documenting my Handmade Hero journey. For those that do not know Handmade Hero is a
 completed game development [series](https://mollyrocket.com/#handmade) done by legendary game engine developer Casey Muratori. In the series
