@@ -731,7 +731,7 @@ int main() {
     fprintf(stdout, "%s", "game paused, press enter to continue\n");
     fread(&c, sizeof(c), 1, stdin);
 
-    XDestroWindow(display, window);
+    XDestroyWindow(display, window);
     XCloseDisplay(display);
     return 0;
 }
