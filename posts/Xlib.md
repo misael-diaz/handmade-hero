@@ -634,6 +634,8 @@ $3 = {
 
 The game window should now be visible.
 
+[Game Window](https://github.com/misael-diaz/handmade-hero/blob/afadb2c7e3c2690ee6092be1e95a6d52e3ee2866/posts/img/window.png)
+
 ## Pausing the Game
 
 One thing that you want to do is to pause the game to be able to see the window on your screen and this
