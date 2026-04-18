@@ -855,7 +855,9 @@ update the screen framebuffer.
 - We also found out that in Xlib the display refers to the
 connection to the XServer which manages the screens
 (for graphics output) along with the peripherals such
-as the keyboard, mouse, or game console controller (for user input). Also Xlib provides convenient
+as the keyboard, mouse, or game console controller (for user input).
+
+- We have realized that Xlib provides convenient
 macros for getting at the screen, visuals, etc. in a portable way. We say that under the hood these macros
 cast the "opaque" display structure into a known type (private display) and subsequently dereferenced
 to get at,
@@ -876,8 +878,6 @@ need synchronization such as `XWindowEvent` flush the output buffer and block un
 - To verify that our code has no memory leaks we used valgrind's memcheck tool.
 
 - In the end we suceeded in making our game window visible and ready to put graphics on it.
-
-Stayed tuned for the next post.
 
 ## Final Thoughts
 
@@ -935,6 +935,8 @@ X11 protocol (for the [XFree86](https://www.xfree86.org/) project).
 I am assigning the readers that have made it up to this point the task of answering to themselves
 what of that craftsmanship evinced by these developers they need as a foundation to be outstanding
 software developers.
+
+Stayed tuned for the next post.
 
 ## References
 
