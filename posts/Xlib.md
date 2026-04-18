@@ -13,11 +13,24 @@
 
 TODO:
 
-- ADD LINKS TO HANDMADE HERO
 - ADD WHY YOU THINK POSTING THIS IS IMPORTANT
 - CLIENT SERVER ARCH SECTION NEEDS A DIAGRAM
 - FOR THE COVER COMPOSITE THE SRC CODE WITH THE WINDOW
 - CONCLUSIONS NEED TO BE POLISHED I LIKE THE ESSENCE
+
+# Handmade Hero
+
+In this post start documenting my Handmade Hero journey. For those that do not know Handmade Hero is a
+completed game development [series](https://mollyrocket.com/#handmade) done by legendary game engine developer Casey Muratori. In the series
+Casey shows how to build an entire game from scratch in Windows to teach us how computers work and
+to teach us how to write performant software.
+
+For me, and many others that have followed the series, the best way to solidify the knowledge is by
+writing the code in a different platform (not Windows) and post about it. The reason for choosing
+a different platform is that you are forced to explore the platform on your own to build the game
+for the sake of learning. And because the main objective is to learn and share knowledge 
+I decided to write the post with an academic like format so that it could also be used as a
+reference or a starting point for further study and exploration.
 
 ## Table of Contents
 
@@ -107,7 +120,7 @@ ability to engineer solutions through the act of writing code sharp. This means 
 improves and we learn better ways to integrate AI into our workflow our craftsmanship not only remains
 but evolves.
 
-For me that engaging project has been Handmade Hero. Handmade Hero is a low-level systems engineering series
+For me that engaging project has been [Handmade Hero](https://www.youtube.com/watch?v=I5fNrmQYeuI&list=PLnuhp3Xd9PYTt6svyQPyRO_AAuMWGxPzU). Handmade Hero is a low-level systems engineering series
 that legendary engine developer Casey Muratori streamed for a period of two years to teach developers
 how computers work and how to write performant software by developing a game from scratch
 (no libraries and no game engines). This series has helped me encounter a balance between using AI to
