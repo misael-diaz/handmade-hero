@@ -845,6 +845,12 @@ memory anyways but it's a good practice to do so. The edge of doing these checks
 development is that you can find errors related to memory more easily, reducing the time needed to
 find the faulty line of code.
 
+I would like to mention that leaving out `XDestroyWindow()` from the client code would not affect
+the total heap usage results. The reason for that is that the memory for the window is allocated
+by the server this request instructs the server to destroy the window and its properties. And even
+if we miss the call (due to a crash for example) the server will free the resources allocated to
+the client and that of course includes the window.
+
 ## Conclusions
 
 In this current world of software which is comprised by multiple layers of code that we cannot simply
