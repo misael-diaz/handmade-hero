@@ -145,7 +145,7 @@ the command-line (gives me that "at home" feeling) and because I really want to 
 programming code. On a side note,
 I am not adamant at trying to convince anyone to switch to
 GNU/Linux. You will know if it is for you after interacting with it for a while.
-That does not mean that I will not work on the Win32 platform because
+I would like to add that I do not intend to skip the Win32 platform because
 Handmade Hero is a cross-platform development experience.
 
 The scope of this post is to  share what I have learned about Xlib to create a game window in GNU/Linux
