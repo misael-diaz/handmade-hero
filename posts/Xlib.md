@@ -13,6 +13,7 @@
 
 TODO:
 
+- ADD A WRITTEN SUMMARY AT THE START TO PREPARE READERS TO EACH SECTION.
 - FOR THE COVER COMPOSITE THE SRC CODE WITH THE WINDOW
 
 # Handmade Hero: A Systems Programming Odyssey
@@ -107,7 +108,7 @@ If you are here for the source code you can copy it from
 
 ## Handmade Hero: Why craftsmanship still matters
 
-Handmade Hero has never been more relevant than now for software developers because of the pressure of
+Handmade Hero has never been more relevant now than ever for software developers because of the pressure of
 shipping faster in part because of AI integration into software development workflows. That means that
 software developers write code less frequently and so their ability to find solutions through writing
 exploratory code diminishes. It's not hard to see that this can lead to burnout in some cases because
