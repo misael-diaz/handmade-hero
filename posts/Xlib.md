@@ -108,13 +108,17 @@ If you are here for the source code you can copy it from
 
 ## Handmade Hero: Why craftsmanship still matters
 
-Handmade Hero has never been more relevant now than ever for software developers because of the pressure of
-shipping faster in part because of AI integration into software development workflows. That means that
-software developers write code less frequently and so their ability to find solutions through writing
+Handmade Hero has never been more relevant now than ever for software developers. Largely because of
+the increasing pressure of shipping faster by integrating software development with AI, this trend
+has intensified the work without leaving much time to have developers connect directly with the problem
+space through the act of driving solutions through handmade code.
+
+As a result of this trend,
+software developers write code less frequently and their ability to find solutions through writing
 exploratory code diminishes. It's not hard to see that this can lead to burnout in some cases because
 the intensity of the work that the developer does has increased by orders of magnitude. Or to some
 developers it means an eventual loss of confidence in writing a single line of code when compared to
-the amount of code that AI can generate in that same time interval.
+the amount of code that AI can generate in that same time.
 
 A practical way of addressing this situation is to work on an engaging side project that keeps your
 ability to engineer solutions through the act of writing code sharp. This means that as the technology
