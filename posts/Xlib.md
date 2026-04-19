@@ -18,22 +18,25 @@ TODO:
 # Handmade Hero: A Systems Programming Odyssey
 
 This post is the start of my Handmade Hero journey documentation. For those that do not know what Handmade Hero is, it is a
-completed game development [series](https://mollyrocket.com/#handmade) done by legendary game engine developer Casey Muratori. In the series
+completed game development [series](https://mollyrocket.com/#handmade) done by legendary game engine developer Casey Muratori.
+In the series,
 Casey shows how to build an entire game from scratch in Windows to teach us how computers work and
-to teach us how to write performant software.
+write performant software.
 
 For me, and many others that have followed the series, the best way to solidify the knowledge is by
 writing the code in a different platform (not Windows) and post about it. The reason for choosing
-a different platform is that you are forced to explore the platform on your own to build the game
-for the sake of learning. And because the main objective is to learn and share knowledge 
-I decided to write the post with an academic like format so that it could also be used as a
-reference or a starting point for further study and exploration.
+a different platform is that you are forced to explore the platform (with its distinctive characteristics)
+on your own rather than following an established path or solution.
+However, writing this post is not all about learning but about sharing knowledge and experiences 
+that might be useful to other developers.
+
+Because of my intention to share knowledge, I have decided to write this post with an academic like format so
+that it could be used as a reference for low-level systems programming.
 
 ## Table of Contents
 
-This is an academic post and so it makes sense to provide a
-table of contents so that you can see its sections and navigate to those that you might
-want to read next time you come back.
+Use the table of contents to get an outline of the post and to navigate to the 
+sections that you might want to read next time you come back.
 
 If you are here for the source code you can copy it from
 [here](#Initial-Platform-Layer-of-the-Game).
