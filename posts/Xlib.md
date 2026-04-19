@@ -153,6 +153,7 @@ by following the way of the Handmade Hero craftsman. To me that meant that I had
 read the Xlib man pages, dive into the source code to peek at its implementation, and also
 borrow ideas from the Quake-II engine. 
 
+FIXME MAKE MORE FLUID
 There are great posts about Xlib, is another post necessary? Xlib's documentation is extensive
 but it was not written for teaching it was written by experts at a time where
 computers had very limited resources and the dominant language for systems programming was
