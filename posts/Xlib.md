@@ -140,14 +140,13 @@ Handmade Hero is about learning about how computers work, and Casey did that by 
 us how to use the Win32 API to build a game in Windows. And he used Windows because it's
 the platform he is most familiar with.
 
-In analogy I want to build the game in GNU/Linux because I have been coding in that
-platform and using the command line for a long time. I get that I am at home
-whenever I am using GNU/Linux but, I don't intend to try convince anyone to switch to
-GNU/Linux. And last but not least, I respect the platform preferences other developers
-may have. And so it is only natural to me to work on the port in GNU/Linux because I want
-to know my platform better by diving as deep as I can.
-(That does not mean that I won't do the Win32 version of
-Handmade Hero because it's truly a cross-platform development experience).
+By analogy, I want to build the game in GNU/Linux because I am comfortable with
+the command-line (at home feeling) and because I really want to know my platform better by writing systems
+programming code. On a side note,
+I am not adamant at trying to convince anyone to switch to
+GNU/Linux. You will know if it is for you after interacting with it for a while.
+That does not mean that I will not work on the Win32 platform because
+Handmade Hero is a cross-platform development experience.
 
 The scope of this post is to  share what I have learned about Xlib to create a game window in GNU/Linux
 by following the way of the Handmade Hero craftsman. To me that meant that I had to
