@@ -141,7 +141,7 @@ us how to use the Win32 API to build a game in Windows. And he used Windows beca
 the platform he is most familiar with.
 
 By analogy, I want to build the game in GNU/Linux because I am comfortable with
-the command-line (gives me that at home feeling) and because I really want to know my platform better by writing systems
+the command-line (gives me that "at home" feeling) and because I really want to know my platform better by writing systems
 programming code. On a side note,
 I am not adamant at trying to convince anyone to switch to
 GNU/Linux. You will know if it is for you after interacting with it for a while.
