@@ -145,8 +145,8 @@ platform and using the command line for a long time. I get that I am at home
 whenever I am using GNU/Linux but, I don't intend to try convince anyone to switch to
 GNU/Linux. And last but not least, I respect the platform preferences other developers
 may have. And so it is only natural to me to work on the port in GNU/Linux because I want
-to know my platform better by diving as deep as I can at my current level of systems
-programming proficiency. (That does not mean that I won't do the Win32 version of
+to know my platform better by diving as deep as I can.
+(That does not mean that I won't do the Win32 version of
 Handmade Hero because it's truly a cross-platform development experience).
 
 The scope of this post is to  share what I have learned about Xlib to create a game window in GNU/Linux
