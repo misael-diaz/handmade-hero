@@ -200,7 +200,7 @@ that goes from doing that ourselves. By following Casey we are going to learn ho
 write the software renderer, using a library for that would not align with the main
 objective which is to learn how computers work. And by doing that we have a better
 idea of what a software renderer does behind scenes. All that we need for displaying
-the graphics of our game is a framebuffer that Xlib understands, and that is not
+the graphics of our game is a framebuffer structured in a way that the screen can understand, and that is not
 that difficult to achieve.
 To realize that all that we need is to build the game on top of Xlib's implementation
 of the X11 protocol (see [xorg-wiki](https://www.x.org/wiki/guide/client-ecosystem/)).
