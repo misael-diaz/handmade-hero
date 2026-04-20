@@ -306,17 +306,18 @@ source file.
 The communication between the client and the server happens over the network via the X11 protocol and
 so that means that the client could be in a remote machine as well. For security
 ssh forwarding (see `man ssh`) is commonly used to encrypt the communication between the client and server.
-It is worth mentioning for clarification that the server does not captures the input directly
-from the hardware, that is the job of the Linux kernel.
+If both the client and the server are in the same machine, a Unix socket is commonly used for communication.
+It is worth mentioning for clarification that the server does not capture the input directly
+from the hardware, that is the job of the Linux kernel. And that is important because it hints that the
+server implementation is modular.
 
 In general, a client application tells the
 XServer what operation it wants to do (such as drawing) and the server responds to the
 request by performing that asynchronously. The motivation for this architecture is
 that it solves the problem of multiple clients competing for the same portion of the screen.
 
-The server also knows what is the window that the user is currently using (input) 
-and also knows to what client those input events need to be sent to typically via the network.
-If both the client and the server are in the same machine a Unix socket is used for communication.
+The server also knows which window the user is currently using (for input) 
+and also knows to which client the input events need to be sent to. 
 
 It helps to bear these aspects of Xlib in mind when reading X client applications.
 
