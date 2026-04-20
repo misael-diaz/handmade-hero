@@ -170,9 +170,22 @@ So why use Xlib for putting graphics on the game window when even the recommenda
 from Xorg developers is to not use it but instead use XCB for low-level X Window application development 
 or a toolkit such as GTK+ or Qt?
 
-The rationale for choosing Xlib is simple, all that we need is a framebuffer to put
-the game graphics on the screen and it so happens that doing just that is straightforward
-with Xlib. The client code that one has to write reads by itself, you don't need to know the entire 
+The rationale for working directly with Xlib is simple, it is all about the learning
+that goes from doing that ourselves. By following Casey we are going to learn how to
+write the software renderer, using a library for that would not align with the main
+objective which is to learn how computers work. And by doing that we have a better
+idea of what a software renderer does behind scenes. All that we need for displaying
+the graphics of our game is a framebuffer that Xlib understands, and that is not
+that difficult to achieve.
+To realize that all that we need is to build the game on top of Xlib's implementation
+of the X11 protocol (see [xorg-wiki](https://www.x.org/wiki/guide/client-ecosystem/)).
+What xorg developers discourage is reinventing the wheel of the entire stack which
+took years for professional developers to implement. We are not going to add widgets,
+menus, text, buttons, etc. to our game, from Xlib all that we need is just a window that
+to put our game graphics there for the delight of our players.
+
+The Xlib code is relatively straightforward to write in this case.
+ The client code that one has to write reads by itself, you don't need to know the entire 
 Xlib API to understand it. I do stress that you should at least familiarize yourself with the
 functions that your client code depends on to be able to pinpoint and fix errors when they happen.
 
