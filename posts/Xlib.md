@@ -230,7 +230,7 @@ develop the platform layer with XCB.
 Even though that I do find it appealing to develop the platform layer of the game with XCB,
 I think that choosing XCB over Xlib right now solely on performance grounds would be an early optimization.
 I rather spend the time to get a working game sooner with Xlib and only push myself to the limit by
-leveraging Xlib multi-threading capabilities to get a robust baseline for comparison.
+leveraging Xlib multi-threading capabilities (and other extensions) to get a robust baseline for comparison.
 Then I would be at a better position to asses performance differences
 between the Xlib-based game and its XCB counterpart. Since we are talking about
 performance here it would be worthwhile to leverage the shared memory extension
