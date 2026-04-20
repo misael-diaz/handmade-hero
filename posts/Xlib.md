@@ -48,6 +48,9 @@ If you are here for the source code you can copy it from
 - [Reasons for creating a GNU/Linux port of Handmade Hero](
 	#Reasons-for-creating-a-GNULinux-port-of-Handmade-Hero
 )
+- [Is yet another Xlib post necessary?](
+	#Is-yet-another-Xlib-post-necessary?
+)
 - [Why use Xlib for graphics display](
 	#Why-use-Xlib-for-graphics-display
 )
@@ -152,6 +155,8 @@ The scope of this post is to  share what I have learned about Xlib to create a g
 by following the way of the Handmade Hero craftsman. To me that meant that I had to
 read the Xlib man pages, dive into the source code to peek at its implementation, and also
 borrow ideas from the Quake-II engine. 
+
+## Is yet another Xlib post necessary?
 
 There are books and many great posts about Xlib, is there really a need for another post?
 The authors of the Xlib [guide](https://www.x.org/wiki/guide/) for new developers express that there is
