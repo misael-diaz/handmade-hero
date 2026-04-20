@@ -316,8 +316,9 @@ XServer what operation it wants to do (such as drawing) and the server responds 
 request by performing that asynchronously. The motivation for this architecture is
 that it solves the problem of multiple clients competing for the same portion of the screen.
 
-The server also knows which window the user is currently using (for input) 
-and also knows to which client the input events need to be sent to. 
+The server also knows the window the user is currently using (for input) 
+and also knows the client that owns it, and so by extension it knows the client that
+will respond to the input events.
 
 It helps to bear these aspects of Xlib in mind when reading X client applications.
 
