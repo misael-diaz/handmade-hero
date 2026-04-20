@@ -290,9 +290,18 @@ https://github.com/misael-diaz/handmade-hero/blob/c7db0971c1a95c5d8e7d243bf9214c
 The diagram shows that the XServer receives the user input from the keyboard, mouse, and possibly a game
 controller. The diagram shows that the applications that we use such as the browser and the console
 are clients, and even the desktop environment could be a client in some GNU/Linux distributions.
-If you look at the source code of the Cinnamon
-desktop for Linux Mint you will see that it opens a connection the XServer (see [main.c](
-https://github.com/linuxmint/cinnamon/blob/bfc454e799f0284a3c2fd3a0ec11a716b2d425bb/src/main.c#L303)).
+I would like to comment here that the shown diagram is a simplified illustration that does not delve
+into the fact that the server has both device independent and dependent code. If you wish to look at a
+closer depiction of the architecture see the one provided in the
+[X Window Concepts](https://www.x.org/wiki/guide/concepts/) of the guide for new developers.
+
+An interesting finding for me that helped me realize that even desktop environments can also be X clients 
+can be found in the Cinnamon desktop environment source code. In case you don't know, the Cinnamon desktop
+environment is actively developed by Linux Mint developers.
+If you do look at its source code
+you will see that a connection to the XServer (via `XOpenDisplay()`) happens in the [main](
+https://github.com/linuxmint/cinnamon/blob/bfc454e799f0284a3c2fd3a0ec11a716b2d425bb/src/main.c#L303))
+source file.
 
 The communication between the client and the server happens over the network via the X11 protocol and
 so that means that the client could be in a remote machine as well. For security
