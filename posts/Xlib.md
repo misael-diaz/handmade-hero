@@ -13,7 +13,6 @@
 
 TODO:
 
-- FIXMES
 - ADD A WRITTEN SUMMARY AT THE START TO PREPARE READERS TO EACH SECTION.
 - FOR THE COVER COMPOSITE THE SRC CODE WITH THE WINDOW
 
@@ -154,15 +153,36 @@ by following the way of the Handmade Hero craftsman. To me that meant that I had
 read the Xlib man pages, dive into the source code to peek at its implementation, and also
 borrow ideas from the Quake-II engine. 
 
-FIXME MAKE MORE FLUID
-There are great posts about Xlib, is another post necessary? Xlib's documentation is extensive
-but it was not written for teaching it was written by experts at a time where
-computers had very limited resources and the dominant language for systems programming was
-probably C. Now programming is more widespread and there are more languages and more domains
-that leverage software solutions and so it is not uncommon to have professionals from
-other fields than computer science or software development and also hobbyists writing code.
-And so it's better for the world to have more people from different backgrounds writing about
-code.
+There are books and many great posts about Xlib, is there really a need for another post?
+The authors of the Xlib [guide](https://www.x.org/wiki/guide/) for new developers express that there is
+plenty of documentation but a large portion of it is outdated or not that well written.
+They also express that learning X is tricky,
+fortunately the learning curve may not be as steep as one might think. 
+Nevertheless, if you try to dive directly into the Xlib man pages without prior exposure you will
+probably hit a wall (like it happened to me) because of the nomenclature and concepts that you need to
+understand.
+So the man pages are an excellent resource as a reference of the API; however,
+they were not written to teach you anything in a tutorial kind of way.
+Unfortunately, the new developer guide is not considered complete
+not even by the authors and for that reason there is a gap of knowledge that can be closed
+(to some extent) by studying the source code and experimenting with it. I would like to add that
+probably the best way to learn Xlib is by interacting with the X developers and contributing to
+the project. I wish I could say
+that I have had that experience but cannot say so at the time of writing this post. To answer
+the original question, any post about Xlib that tries to look at it from a new angle or that
+is written with the intention to teach or to share experiences is valuable.
+
+I strongly recommend that if you are serious about learning Xlib that you invest some time into
+reading the [guide](https://www.x.org/wiki/guide/) for new developers, for it is a great starting point
+because it provides high-level descriptions about the X Windowing system.
+
+I would like to end this section by saying that 
+now that programming is more widespread, it is more likely for professionals from different
+domains other than computer science to write code. And I think that is great because
+they learn about computers from a different standpoint that perhaps is more relatable to
+non computer scientists and software developers. So I believe it is better for the word
+to not just have people from different domains writing software but also writing about
+it.
 
 ## Why use Xlib for graphics display
 
