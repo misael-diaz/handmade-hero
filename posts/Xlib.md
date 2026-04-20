@@ -49,7 +49,7 @@ If you are here for the source code you can copy it from
 	#Reasons-for-creating-a-GNULinux-port-of-Handmade-Hero
 )
 - [Is yet another Xlib post necessary?](
-	#Is-yet-another-Xlib-post-necessary?
+	#Is-yet-another-Xlib-post-necessary
 )
 - [Why use Xlib for graphics display](
 	#Why-use-Xlib-for-graphics-display
