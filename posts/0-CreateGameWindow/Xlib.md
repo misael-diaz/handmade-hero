@@ -1,7 +1,7 @@
 
 [---]: #
 
-[title: Handmade Hero: Why craftsmanship still matters]: #
+[title: Handmade Hero: A Systems Programming Odyssey]: #
 
 [published: preview]: #
 
