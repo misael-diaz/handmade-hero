@@ -32,7 +32,7 @@ Use the table of contents to get an outline of the post and to navigate to the s
 If you are here for the source code you can copy it from [here](#Initial-Platform-Layer-of-the-Game).
 
 - [Handmade Hero: Why craftsmanship still matters](
-	#Handmade-Hero-Why-craftsmanship-still-matters
+	#handmade-hero-why-craftsmanship-still-matters
 )
 - [Reasons for creating a GNU/Linux port of Handmade Hero](
 	#Reasons-for-creating-a-GNULinux-port-of-Handmade-Hero
