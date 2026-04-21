@@ -24,7 +24,7 @@ Casey shows how to build an entire game from scratch in Windows to teach us how 
 write performant software.
 
 For me, and many others that have followed the series, the best way to solidify the knowledge is by
-writing the code in a different platform (not Windows) and post about it. The reason for choosing
+writing the code in a different platform (not Windows) and posting about it. The reason for choosing
 a different platform is that you are forced to explore the platform (with its distinctive characteristics)
 on your own rather than following an established path or solution.
 However, writing this post is not all about learning but about sharing knowledge and experiences 
@@ -49,7 +49,7 @@ highly respected X developers. After that I talk briefly about the client-server
 for developing X client applications in GNU/Linux. Then I write about X application development in
 [chunks](#Developing-an-X-Client-application). This is followed by the [conclusions](#Conclusions)
 , [final thoughts](#Final-Thoughts) on why Xlib is so important, a list of [references](#References)
-for crediting sources not included in this post but that were usefult to me, and a list of
+for crediting sources not included in this post but that were useful to me, and a list of
 Handmade Hero [ports](#Ports) that might be of interest.
 
 ## Table of Contents
@@ -221,8 +221,8 @@ idea of what a software renderer does behind scenes. All that we need for displa
 the graphics of our game is a framebuffer structured in a way that the screen can understand, and that is not
 that difficult to achieve.
 To realize that all that we need is to build the game on top of Xlib's implementation
-of the X11 protocol (see [xorg-wiki](https://www.x.org/wiki/guide/client-ecosystem/)).
-What xorg developers discourage is reinventing the wheel of the entire stack which
+of the X11 protocol (see [Xorg-wiki](https://www.x.org/wiki/guide/client-ecosystem/)).
+What Xorg developers discourage is reinventing the wheel of the entire stack which
 took years for professional developers to implement. We are not going to add widgets,
 menus, text, buttons, etc. to our game, from Xlib all that we need is just a window that
 to put our game graphics there for the delight of our players.
@@ -249,7 +249,7 @@ Even though that I do find it appealing to develop the platform layer of the gam
 I think that choosing XCB over Xlib right now solely on performance grounds would be an early optimization.
 I rather spend the time to get a working game sooner with Xlib and only push myself to the limit by
 leveraging Xlib multi-threading capabilities (and other extensions) to get a robust baseline for comparison.
-Then I would be at a better position to asses performance differences
+Then I would be at a better position to assess performance differences
 between the Xlib-based game and its XCB counterpart. Since we are talking about
 performance here it would be worthwhile to leverage the shared memory extension
 to bypass entirely the data transfer with the server over the
@@ -263,11 +263,11 @@ knew that Quake's engine uses Xlib to put graphics on the screen in GNU/Linux. I
 only natural to avail myself of the experience of diving into Quake's source
 code to develop my own GNU/Linux port of Handmade Hero 
 
-I am not going to use a toolkit because it hides the difficulties of dealing direclty with visuals, a lesson
+I am not going to use a toolkit because it hides the difficulties of dealing directly with visuals, a lesson
 on how computers work that I do not want to skip.
 Some of those difficulties
 translate to the platform layer of the game. For example, if the visual is TrueColor
-(modern monitors) one has to work direclty with RGB bitmasks so that the colors shown
+(modern monitors) one has to work directly with RGB bitmasks so that the colors shown
 on the game window look right. 
 It is important to mention that the
 XServer (more on that later) still does the heavy lifting to determine the properties of
@@ -292,7 +292,7 @@ Also my desktop is using a version of [Cinnamon](https://github.com/linuxmint/ci
 that still depends on Xlib and so it is natural for me to stick with it. 
 
 I just want to add here a little note about possible issues that you could stumble upon if you try to
-run the game (without modification) in a Wayland-based desktop. Xlib blocking calls, such as
+run the game (without modification) on a Wayland-based desktop. Xlib blocking calls, such as
 `XNextEvent` and `XWindowEvent`, must be replaced with their polling alternatives to avoid potential deadlocks
 due to the asynchronous nature of Wayland. The interested reader is referred to the official Wayland
 [documentation](https://wayland.freedesktop.org/docs/book/Xwayland.html).
@@ -801,7 +801,7 @@ freed from the heap memory and to close the socket used for communicating with t
 XCloseDisplay(display);
 ```
 
-As mentioned in the preceeding [section](#Destroying-the-Window) the XServer performs a final synchronization
+As mentioned in the preceding [section](#Destroying-the-Window) the XServer performs a final synchronization
 via `XSync()` to send requests in the output buffer (this feature is also mentioned in the man page).
 
 ## Initial Platform Layer of the Game
@@ -954,8 +954,8 @@ the client and that of course includes the window.
 In this post we delved into some of Xlib internals to close the gap between the information presented in the
 official documentation and what we can understand from reading it in order to be in a better position to
 build the foundation of our game based on [Handmade Hero](handmadehero.org). As a result of doing this exercise we
-now have a better idea of what happends behind scenes, we no longer perceive Xlib code to be a "black box"
-through which we can make a window visible in our desktop environment that an user can interact with.
+now have a better idea of what happens behind scenes, we no longer perceive Xlib code to be a "black box"
+through which we can make a window visible in our desktop environment that a user can interact with.
 
 These are some of the most important achievements and things that we learned from going through this exercise:
 
@@ -979,7 +979,7 @@ for example, the root window Id, screen dimensions, or the black pixel value for
 These macros have enabled the developers to change Xlib internals while not breaking the
 existing client code.
 
-- Additionlly, we learned that Xlib allocates the resources for the window on the server side and that the
+- Additionally, we learned that Xlib allocates the resources for the window on the server side and that the
 client
 code (our game) allocates the window resource Id (or handle).
 
@@ -991,7 +991,7 @@ need synchronization such as `XWindowEvent` flush the output buffer and block un
 
 - To verify that our code has no memory leaks we used valgrind's memcheck tool.
 
-- In the end we suceeded in making our game window visible and ready to put graphics on it.
+- In the end we succeeded in making our game window visible and ready to put graphics on it.
 
 ## Final Thoughts
 
@@ -1013,9 +1013,9 @@ abstracting away operations that are frequently used throughout the codebase.
 During my researching for writing this post I did not just learn how to write the X client code for
 the initial platform layer of my Handmade Hero game.
 By looking at pieces of the history of the development of Xlib from the commit logs
-I have trully developed a fondness for the Xlib project that I could not have obtained otherwise.
+I have truly developed a fondness for the Xlib project that I could not have obtained otherwise.
 I discovered the dedication of the developers
-that laid out the foundation for the desktop envinronments for GNU/Linux. The list of Xlib contributors
+that laid out the foundation for the desktop environments for GNU/Linux. The list of Xlib contributors
 is extensive but I would like to mention some notable ones.
 Keith Packard who has worked on the [development](https://www.xfree86.org/cvs/changes_4_2.html) of the
 X Windowing since the days of the XFree86 project and has continued doing so for Xlib until
