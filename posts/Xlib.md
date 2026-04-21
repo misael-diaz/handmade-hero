@@ -34,6 +34,25 @@ that might be useful to other developers.
 Because of my intention to share knowledge, I have decided to write this post with an academic like format so
 that it could be used as a reference for low-level systems programming.
 
+The next section presents a table of contents so that this resource can be use a reference and for
+quick navigation. The following [section](#Handmade-Hero-Why-craftsmanship-still-matters) talks about why
+Handmade Hero is so relevant even in these times were
+AI can generate code at scales never seen before.
+[Next](#Reasons-for-creating-a-GNULinux-port-of-Handmade-Hero) 
+I write about my motivation to create a GNU/Linux port of Handmade Hero.
+This is followed by a [section](#Is-yet-another-Xlib-post-necessary) that talks about the value of 
+writing about Xlib, that is, the library that we are going to use to put graphics on our game.
+[Then](#Why-use-Xlib-for-graphics-display) I try to answer the difficult question of why still using Xlib
+for graphics application development even if there are better alternatives, such as libXCB, favored even by
+highly respected X developers. After that I talk briefly about the client-server [architecture](
+#Client-Server-Architecture) of the X windowing system. Then I show how to
+[install](#Installing-dependencies) the development files
+for developing X client applications in GNU/Linux. Then I write about X application development in
+[chunks](#Developing-an-X-Client-application). This is followed by the [conclusions](#Conclusions)
+, [final thoughts](#Final-Thoughts) on why Xlib is so important, a list of [references](#References)
+for crediting sources not included in this post but that were usefult to me, and a list of
+Handmade Hero [ports](#Ports) that might be of interest.
+
 ## Table of Contents
 
 Use the table of contents to get an outline of the post and to navigate to the 
