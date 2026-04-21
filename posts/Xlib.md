@@ -1039,7 +1039,7 @@ code that we considered in this post such as `XCreateSimpleWindow()` has only un
 a period of over 20 years. This makes me reflect on how starkly different the world of software development
 must have been in the 90's when some of the veteran Xlib developers were already involved in implementing the
 X11 protocol (for the [XFree86](https://www.xfree86.org/) project).
-I am assigning the readers that have made it up to this point the task of answering to themselves
+I am assigning the readers (that have made it up to this point) the task of answering to themselves
 what of that craftsmanship evinced by these developers they need as a foundation to be outstanding
 software developers.
 
