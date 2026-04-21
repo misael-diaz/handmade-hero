@@ -376,11 +376,18 @@ Now we can start writing our X client code to create a game window for our game.
 
 ## Developing an X Client application
 
-We are going to be writing C code to develop the X client application because we don't need any of
-the facilities that C++ provides to do just that. It's worth mentioning that Casey used C++ features
-thoughtfully; for example, he reached out for operator overloading for making the vector math more
-readable. (I know that not because I have made it that far into the series but because I have seen
-mention that in other streams.)
+Xlib is the original Application Programming Interface (API) of the X11 protocol, written in C. Although
+there are bindings to make it possible to call Xlib from other languages such as Python, Go, and Rust,
+you would want to write C code if you wanted to work closer to the metal.
+
+Another reason for using C is that you will be free of the overhead of context switching when reading the
+Xlib source code or documentation. The Xlib code will not seem foreign to you as it would if you are
+calling it from Python.
+
+If you are familiar with the Handmade Hero series you know that Casey essentially writes C code
+on stream despite that he is compiling the source code of the game with a C++ compiler. 
+He did not leverage C++ features heavily until implementing vector math (via operator overloading)
+to make the operations read more like math to the next developer.
 
 ## Headers
 
