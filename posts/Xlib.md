@@ -7,7 +7,7 @@
 
 [description: Demystifying Xlib for crafting a window for a custom software renderer targeting GNU/Linux.]: #
 
-[tags: xlib, linux, systems programming]: #
+[tags: series, c, x11, xlib, linux, systems programming, handmadehero]: #
 
 [---]: #
 
