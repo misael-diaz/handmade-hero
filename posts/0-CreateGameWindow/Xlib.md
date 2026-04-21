@@ -22,80 +22,80 @@ For me, and many others that have followed the series, the best way to solidify 
 Because of my intention to share knowledge, I have decided to write this post with an academic like format so that it could be used as a reference for low-level systems programming.
 
 
-The next section presents a table of contents so that this resource can be use a reference and for quick navigation. The following [section](#Handmade-Hero-Why-craftsmanship-still-matters) talks about why Handmade Hero is so relevant even in these times were AI can generate code at scales never seen before. [Next](#Reasons-for-creating-a-GNULinux-port-of-Handmade-Hero) I write about my motivation to create a GNU/Linux port of Handmade Hero. This is followed by a [section](#Is-yet-another-Xlib-post-necessary) that talks about the value of writing about Xlib, that is, the library that we are going to use to put graphics on our game. [Then](#Why-use-Xlib-for-graphics-display) I try to answer the difficult question of why still using Xlib for graphics application development even if there are better alternatives, such as libXCB, favored even by highly respected X developers. After that I talk briefly about the client-server [architecture]( #Client-Server-Architecture) of the X windowing system. Then I show how to [install](#Installing-dependencies) the development files for developing X client applications in GNU/Linux. Then I write about X application development in [chunks](#Developing-an-X-Client-application). This is followed by the [conclusions](#Conclusions) , [final thoughts](#Final-Thoughts) on why Xlib is so important, a list of [references](#References) for crediting sources not included in this post but that were useful to me, and a list of Handmade Hero [ports](#Ports) that might be of interest.
+The next section presents a table of contents so that this resource can be use a reference and for quick navigation. The following [section](#handmade-hero-why-craftsmanship-still-matters) talks about why Handmade Hero is so relevant even in these times were AI can generate code at scales never seen before. [Next](#reasons-for-creating-a-gnulinux-port-of-handmade-hero) I write about my motivation to create a GNU/Linux port of Handmade Hero. This is followed by a [section](#is-yet-another-xlib-post-necessary) that talks about the value of writing about Xlib, that is, the library that we are going to use to put graphics on our game. [Then](#why-use-xlib-for-graphics-display) I try to answer the difficult question of why still using Xlib for graphics application development even if there are better alternatives, such as libXCB, favored even by highly respected X developers. After that I talk briefly about the client-server [architecture](#client-server-architecture) of the X windowing system. Then I show how to [install](#installing-dependencies) the development files for developing X client applications in GNU/Linux. Then I write about X application development in [chunks](#developing-an-x-client-application). This is followed by the [conclusions](#conclusions) , [final thoughts](#final-thoughts) on why Xlib is so important, a list of [references](#references) for crediting sources not included in this post but that were useful to me, and a list of Handmade Hero [ports](#ports) that might be of interest.
 
 ## Table of Contents
 
 Use the table of contents to get an outline of the post and to navigate to the sections that you might want to read next time you come back.
 
 
-If you are here for the source code you can copy it from [here](#Initial-Platform-Layer-of-the-Game).
+If you are here for the source code you can copy it from [here](#initial-platform-layer-of-the-game).
 
 - [Handmade Hero: Why craftsmanship still matters](
 	#handmade-hero-why-craftsmanship-still-matters
 )
 - [Reasons for creating a GNU/Linux port of Handmade Hero](
-	#Reasons-for-creating-a-GNULinux-port-of-Handmade-Hero
+	#reasons-for-creating-a-gnulinux-port-of-handmade-hero
 )
 - [Is yet another Xlib post necessary?](
-	#Is-yet-another-Xlib-post-necessary
+	#is-yet-another-xlib-post-necessary
 )
 - [Why use Xlib for graphics display](
-	#Why-use-Xlib-for-graphics-display
+	#why-use-xlib-for-graphics-display
 )
 - [Client-Server Architecture](
-	#Client-Server-Architecture
+	#client-server-architecture
 )
 - [Installing dependencies](
-	#Installing-dependencies
+	#installing-dependencies
 )
 - [Developing an X Client application](
-	#Developing-an-X-Client-application
+	#developing-an-x-client-application
 )
 	* [Headers](
-		#Headers
+		#headers
 	)
 	* [Connecting to the XServer](
-		#Connecting-to-the-XServer
+		#connecting-to-the-xserver
 	)
 	* [Creating a Window for the Game](
-		#Creating-a-Window-for-the-Game
+		#creating-a-window-for-the-game
 	)
 	* [Mapping the Window](
-		#Mapping-the-Window
+		#mapping-the-window
 	)
 	* [Pausing the Game](
-		#Pausing-the-Game
+		#pausing-the-game
 	)
 	* [Destroying the Window](
-		#Destroying-the-Window
+		#destroying-the-window
 	)
 	* [Closing the Display](
-		#Closing-the-Display
+		#closing-the-display
 	)
 	* [Initial Platform Layer of the Game](
-		#Initial-Platform-Layer-of-the-Game
+		#initial-platform-layer-of-the-game
 	)
 	* [Compilation](
-		#Compilation
+		#compilation
 	)
 	* [Running the Game](
-		#Running-the-Game
+		#running-the-game
 	)
 	* [Checking Memory Leaks with Valgrind](
-		#Checking-Memory-Leaks-with-Valgrind
+		#checking-memory-leaks-with-valgrind
 	)
 - [Conclusions](
-	#Conclusions
+	#conclusions
 )
 - [Final Thoughts](
-	#Final-Thoughts
+	#final-thoughts
 )
 - [References](
-	#References
+	#references
 )
 - [Ports](
-	#Ports
+	#ports
 )
 
 ## Handmade Hero: Why craftsmanship still matters
