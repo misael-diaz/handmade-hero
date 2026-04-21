@@ -23,8 +23,7 @@ The next section presents a table of contents so that this resource can be use a
 
 ## Table of Contents
 
-Use the table of contents to get an outline of the post and to navigate to the 
-sections that you might want to read next time you come back.
+Use the table of contents to get an outline of the post and to navigate to the sections that you might want to read next time you come back.
 
 If you are here for the source code you can copy it from
 [here](#Initial-Platform-Layer-of-the-Game).
@@ -98,31 +97,19 @@ If you are here for the source code you can copy it from
 
 ## Handmade Hero: Why craftsmanship still matters
 
-Handmade Hero has never been more relevant now than ever for software developers. Largely because of
-the increasing pressure of shipping faster by integrating software development with AI, this trend
-has intensified the work without leaving much time to have developers connect directly with the problem
-space through the act of driving solutions through handmade code.
+Handmade Hero has never been more relevant now than ever for software developers. Largely because of the increasing pressure of shipping faster by integrating software development with AI, this trend has intensified the work without leaving much time to have developers connect directly with the problem space through the act of driving solutions through handmade code.
 
-As a result of this trend,
-software developers write code less frequently and their ability to find solutions through writing
-exploratory code diminishes. It's not hard to see that this can lead to burnout in some cases because
-the intensity of the work that the developer does has increased by orders of magnitude. Or to some
-developers it means an eventual loss of confidence in writing a single line of code when compared to
-the amount of code that AI can generate in that same time.
 
-A practical way of addressing this situation is to work on an engaging side project that keeps your
-ability to engineer solutions through the act of writing code sharp. This means that as the technology
-improves and we learn better ways to integrate AI into our workflow our craftsmanship not only remains
-but evolves.
+As a result of this trend, software developers write code less frequently and their ability to find solutions through writing exploratory code diminishes. It's not hard to see that this can lead to burnout in some cases because the intensity of the work that the developer does has increased by orders of magnitude. Or to some developers it means an eventual loss of confidence in writing a single line of code when compared to the amount of code that AI can generate in that same time.
 
-For me that engaging project has been [Handmade Hero](https://www.youtube.com/watch?v=I5fNrmQYeuI&list=PLnuhp3Xd9PYTt6svyQPyRO_AAuMWGxPzU). Handmade Hero is a low-level systems engineering series
-that legendary engine developer Casey Muratori streamed for a period of two years to teach developers
-how computers work and how to write performant software by developing a game from scratch
-(no libraries and no game engines). This series has helped me encounter a balance between using AI to
-generate code for work and keep my problem solving and coding skills honed in my free time.
 
-Even though developers have written about the series many times each post is unique and it matters because
-it is a transformative experience.
+A practical way of addressing this situation is to work on an engaging side project that keeps your ability to engineer solutions through the act of writing code sharp. This means that as the technology improves and we learn better ways to integrate AI into our workflow our craftsmanship not only remains but evolves.
+
+
+For me that engaging project has been [Handmade Hero](https://www.youtube.com/watch?v=I5fNrmQYeuI&list=PLnuhp3Xd9PYTt6svyQPyRO_AAuMWGxPzU). Handmade Hero is a low-level systems engineering series that legendary engine developer Casey Muratori streamed for a period of two years to teach developers how computers work and how to write performant software by developing a game from scratch (no libraries and no game engines). This series has helped me encounter a balance between using AI to generate code for work and keep my problem solving and coding skills honed in my free time. 
+
+
+Even though developers have written about the series many times each post is unique and it matters because it is a transformative experience.
 
 ## Reasons for creating a GNU/Linux port of Handmade Hero
 
