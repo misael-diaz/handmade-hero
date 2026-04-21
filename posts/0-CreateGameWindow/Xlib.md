@@ -11,10 +11,6 @@
 
 [---]: #
 
-TODO:
-
-- FOR THE COVER COMPOSITE THE SRC CODE WITH THE WINDOW
-
 # Handmade Hero: A Systems Programming Odyssey
 
 This post is the start of my Handmade Hero journey documentation. For those that do not know what Handmade Hero is, it is a
