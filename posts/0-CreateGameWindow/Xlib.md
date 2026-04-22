@@ -11,6 +11,9 @@
 
 [---]: #
 
+TODO:
+- USE BETTER LINKING TAGGING WORDS IN THE OUTLINE PARAGRAPH
+
 # Handmade Hero: A Systems Programming Odyssey
 
 This post is the start of my Handmade Hero journey documentation. For those that do not know what Handmade Hero is, it is a completed game development [series](https://mollyrocket.com/#handmade) done by legendary game engine developer Casey Muratori. In the series, Casey shows how to build an entire game from scratch in Windows to teach us how computers work and write performant software.
