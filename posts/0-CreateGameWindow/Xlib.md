@@ -116,22 +116,14 @@ Even though developers have written about the series many times each post is uni
 
 ## Reasons for creating a GNU/Linux port of Handmade Hero
 
-Handmade Hero is about learning about how computers work, and Casey did that by showing
-us how to use the Win32 API to build a game in Windows. And he used Windows because it's
-the platform he is most familiar with.
+Handmade Hero is about learning about how computers work, and Casey did that by showing us how to use the Win32 API to build a game in Windows. And he used Windows because it's the platform he is most familiar with.
 
-By analogy, I want to build the game in GNU/Linux because I am comfortable with
-the command-line (gives me that "at home" feeling) and because I really want to know my platform better by writing systems
-programming code. On a side note,
-I am not adamant at trying to convince anyone to switch to
-GNU/Linux. You will know if it is for you after interacting with it for a while.
-I would like to add that I do not intend to skip the Win32 platform because
-Handmade Hero is a cross-platform development experience.
 
-The scope of this post is to  share what I have learned about Xlib to create a game window in GNU/Linux
-by following the way of the Handmade Hero craftsman. To me that meant that I had to
-read the Xlib man pages, dive into the source code to peek at its implementation, and also
-borrow ideas from the Quake-II engine. 
+By analogy, I want to build the game in GNU/Linux because I am comfortable with the command-line (gives me that "at home" feeling) and because I really want to know my platform better by writing systems programming code. On a side note, I am not adamant at trying to convince anyone to switch to GNU/Linux. You will know if it is for you after interacting with it for a while. I would like to add that I do not intend to skip the Win32 platform because Handmade Hero is a cross-platform development experience.
+
+
+The scope of this post is to share what I have learned about Xlib to create a game window in GNU/Linux by following the way of the Handmade Hero craftsman. To me that meant that I had to read the Xlib man pages, dive into the source code to peek at its implementation, and also borrow ideas from the Quake-II engine. 
+
 
 ## Is yet another Xlib post necessary?
 
