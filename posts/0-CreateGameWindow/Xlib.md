@@ -12,6 +12,8 @@
 [---]: #
 
 TODO:
+- FIXMES
+- IMPROVE REASONS FOR STICKING WITH XLIB
 - USE BETTER LINKING TAGGING WORDS IN THE OUTLINE PARAGRAPH
 
 # Handmade Hero: A Systems Programming Odyssey
@@ -141,23 +143,34 @@ I would like to end this section by saying that now that programming is more wid
 
 ## Why use Xlib for graphics display
 
-So why use Xlib for putting graphics on the game window when even the recommendation
-from Xorg developers is to not use it but instead use XCB for low-level X Window application development 
-or a toolkit such as GTK+ or Qt?
+So why use Xlib for putting the graphics of the game on the screen when the official documentation from Xorg recommends not using Xlib but instead use the X C Bindings (XCB) for low-level development or toolkits such as GTK+ or Qt for GUI applications?
 
-The rationale for working directly with Xlib is simple, it is all about the learning
-that goes from doing that ourselves. By following Casey we are going to learn how to
+
+To answer that question it is important to have in mind that Xlib development began in the 80s and it has remained backward compatible since then. If it didn't, then devices equipped with older hardware (such as embedded devices and medical equipment with long life cycles) still in use today would be rendered useless. We should recognize that Xlib developers have done the best to preserve backward compatibility while modernizing it. At the present time there is not much that can be done to improve its performance without compromising the existing architecture. To give you an idea of what this means, some Xlib calls incur roundtrips that hinder its performance on modern hardware but those roundtrips are features that are needed to remain backwards compatible. This is one of the major reasons Xlib developers do not recommend using it for new projects. The other reason is that modern GUI applications, such as desktop environments, leverage toolkits tailored for modern applications, such as handling complex international input and ouput. The toolkits have better programming models than the underlying Xlib layer and for that reason applications should call Xlib sparingly (only to reach out for features not provided by the toolkits). For modern low-level application development on embedded devices the obvious choice is XCB. I don't think that anyone would object to that. I strongly recommend reading the official Xorg [guide](https://www.x.org/wiki/guide/) for new developers for those wishing to learn more about this.
+
+
+The other thing that we have to keep in mind is the philosophy of Handmade Hero &mdash to write exploratory code to learn about the problem space and after getting an idea of what the solution looks like optimize it.  Since we are just starting the development we are content with any code that allows us to display a window for our game on the screen. We do not care if it looks clean or if its performant. What we care is that it works and that we know (to some extent) how it works. And the latter is an important point for me, we have the privilege of having the opportunity to learn from source code written by professional developers because of open-source. This is why I do recommend to read even if it's just the headers of Xlib so that the code that you call is not a black-box to you. This is one of the advantages of developing the game for the Linux platform over doing that for Windows, that you can take your time to study the source code of all the libraries that your game depends on.
+
+FIXME TO REMOVE OR INTEGRATE ELSEWHERE
+If you don't know the X11 protocol chances are that you will not be able to write effective XCB code.
+By following Casey we are going to learn how to
 write the software renderer, using a library for that would not align with the main
 objective which is to learn how computers work. And by doing that we have a better
-idea of what a software renderer does behind scenes. All that we need for displaying
-the graphics of our game is a framebuffer structured in a way that the screen can understand, and that is not
+idea of what a software renderer does behind scenes. 
+
+Now that we have talked about some general reasons for using Xlib, we can consider some
+specific reasons for using Xlib over the alternatives. 
+The rationale for working directly with Xlib is simple, it is all about the learning
+that goes from doing that ourselves. 
+Basically what we need for displaying
+the graphics of our game is a framebuffer structured in a way that the screen can understand &emdash and that is not
 that difficult to achieve.
-To realize that all that we need is to build the game on top of Xlib's implementation
-of the X11 protocol (see [Xorg-wiki](https://www.x.org/wiki/guide/client-ecosystem/)).
+Because we are not going to add widgets,
+menus, text, buttons, etc. to our game, we do not need any toolkits. What we do need is a window
+to put our game graphics for the delight of our players and we can achieve that through
+Xlib calls (see [Xorg-wiki](https://www.x.org/wiki/guide/client-ecosystem/)).
 What Xorg developers discourage is reinventing the wheel of the entire stack which
-took years for professional developers to implement. We are not going to add widgets,
-menus, text, buttons, etc. to our game, from Xlib all that we need is just a window that
-to put our game graphics there for the delight of our players.
+took years for professional developers to implement. 
 
 The Xlib code is relatively straightforward to write in this case.
  The client code that one has to write reads by itself, you don't need to know the entire 
@@ -169,19 +182,28 @@ Xlib has been modernized, it leverages the X C Bindings (XCB) under the hood, it
 Alan Coopersmith, a veteran Xlib developer, and many others. Surely a properly implemented client code
 with XCB will perform better than its Xlib counterpart but that depends entirely on your ability
 to write that code (as mentioned in this XCB
-[tutorial](https://xcb.freedesktop.org/tutorial/)).
+[tutorial](https://xcb.freedesktop.org/tutorial/)). Working directly with XCB entails that you must have a
+complete understanding of the X11 protocol.
 Reaching for XCB does resonate with the Handmade Hero spirit only after you have determined
-that Xlib is the performance bottleneck (if you happen to go this route). Casey also advocates
+that Xlib calls limit performance. Casey also advocates
 that it is best to write a working code first to get a good idea of what the platform layer should be;
 and only then work on optimizing it if there are factual reasons to do so.
 Thus my rationale for using Xlib is that I want to push it to its limits 
 and then after identifying that performance limitation stems from Xlib itself then
-develop the platform layer with XCB.
-Even though that I do find it appealing to develop the platform layer of the game with XCB,
-I think that choosing XCB over Xlib right now solely on performance grounds would be an early optimization.
-I rather spend the time to get a working game sooner with Xlib and only push myself to the limit by
-leveraging Xlib multi-threading capabilities (and other extensions) to get a robust baseline for comparison.
-Then I would be at a better position to assess performance differences
+I would consider using XCB.
+
+To be clear, I do find it appealing to develop the platform layer of the game with XCB.
+However, choosing XCB over Xlib right now only because it is performant
+would be an early optimization.
+We cannot talk effectively about performance until we have a game running.
+not the result of researching the problem space.
+I rather spend time to get a working system sooner with Xlib and then consider the performance
+bottlenecks. One has to consider that Xlib supports multi-threading and extensions such as the shared
+memory extension are features that should be explored in addition to speaking directly to the X11 protocol
+with XCB. It is worthwhile to mention that Xlib and XCB code can coexist, that means that you can have the
+best of both worlds by using XCB for optimizing the rate limiting features while
+keeping around the convenient functions that Xlib provides that do not affect the gaming experience.
+ I would be at a better position to assess performance differences
 between the Xlib-based game and its XCB counterpart. Since we are talking about
 performance here it would be worthwhile to leverage the shared memory extension
 to bypass entirely the data transfer with the server over the
