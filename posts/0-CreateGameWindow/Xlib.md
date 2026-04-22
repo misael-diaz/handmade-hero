@@ -226,7 +226,7 @@ run the game (without modification) on a Wayland-based desktop. Xlib blocking ca
 due to the asynchronous nature of Wayland. The interested reader is referred to the official Wayland
 [documentation](https://wayland.freedesktop.org/docs/book/Xwayland.html).
 
-## <a id="clientserver-architecture"></a> Client-Server Architecture
+## <a id="clientserver-architecture"></a>Client-Server Architecture
 
 Xlib has a client-server architecture as illustrated in the following diagram:
 
