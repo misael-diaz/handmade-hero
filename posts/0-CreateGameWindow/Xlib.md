@@ -191,9 +191,9 @@ The Xlib code is relatively straightforward to write in this case.
 Xlib API to understand it. I do stress that you should at least familiarize yourself with the
 functions that your client code depends on to be able to pinpoint and fix errors when they happen.
 
-Xlib has been modernized, it uses libXCB under the hood, it also supports multi-threading
+Xlib has been modernized, it leverages the X C Bindings (XCB) under the hood, it also supports multi-threading
 (if `XThreads` are initialized on the client side), and it is still maintained to this day by 
-Alan Coopersmith, a veteran Xlib developer. Surely a properly implemented client code
+Alan Coopersmith, a veteran Xlib developer, and many others. Surely a properly implemented client code
 with XCB will perform better than its Xlib counterpart but that depends entirely on your ability
 to write that code (as mentioned in this XCB
 [tutorial](https://xcb.freedesktop.org/tutorial/)).
