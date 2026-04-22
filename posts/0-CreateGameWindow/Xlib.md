@@ -230,7 +230,7 @@ due to the asynchronous nature of Wayland. The interested reader is referred to 
 
 Xlib has a client-server architecture as illustrated in the following diagram:
 
-<img src="https://github.com/misael-diaz/handmade-hero/raw/c7db0971c1a95c5d8e7d243bf9214cebb7db064b/posts/img/client-server-architecture-diagram.png" alt="ClientServerArch" style="max-width: 100%;">
+<img src="https://github.com/misael-diaz/handmade-hero/raw/c7db0971c1a95c5d8e7d243bf9214cebb7db064b/posts/img/client-server-architecture-diagram.png" alt="ClientServerArch" width="100%">
 
 The diagram shows that the XServer receives the user input from the keyboard, mouse, and possibly a game
 controller. The diagram shows that the applications that we use such as the browser and the console
@@ -674,7 +674,7 @@ $3 = {
 
 The game window should now be visible on your screen.
 
-<img src="https://github.com/misael-diaz/handmade-hero/raw/f2264c83cdc0955ce0a34eed19c397f300c5dcdc/posts/img/window.png" alt="GameWindow" style="max-width: 100%;">
+<img src="https://github.com/misael-diaz/handmade-hero/raw/f2264c83cdc0955ce0a34eed19c397f300c5dcdc/posts/img/window.png" alt="GameWindow" width="100%">
 
 ## Pausing the Game
 
