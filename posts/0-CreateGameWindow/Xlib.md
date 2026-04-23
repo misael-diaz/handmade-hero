@@ -153,97 +153,34 @@ To answer that question it is important to have in mind that Xlib development be
 
 The other thing that we have to keep in mind is the philosophy of Handmade Hero &mdash to write exploratory code to learn about the problem space and after getting an idea of what the solution looks like optimize it.  Since we are just starting the development we are content with any code that allows us to display a window for our game on the screen. We do not care if it looks clean or if its performant. What we care is that it works and that we know (to some extent) how it works. And the latter is an important point for me, we have the privilege of having the opportunity to learn from source code written by professional developers because of open-source. This is why I do recommend to read even if it's just the headers of Xlib so that the code that you call is not a black-box to you. This is one of the advantages of developing the game for the Linux platform over doing that for Windows, that you can take your time to study the source code of all the libraries that your game depends on.
 
-Now that we have talked about some general reasons for using Xlib, we can consider some
-key specific reasons for using Xlib.
-In the handmade spirit, what we need for displaying
-the graphics of our game is a framebuffer structured in a way that the screen can understand.
-Also we are not going to need widgets,
-menus, text, buttons, etc. for our game; this is why we do not need toolkits. What we do need is a window
-to put the game graphics for the delight of our players and we can achieve that through
-Xlib calls (see [Xorg-wiki](https://www.x.org/wiki/guide/client-ecosystem/)).
-What Xorg developers discourage is reinventing the wheel of the entire stack because it
-disregards what took several years for professional developers to implement and improve. 
+Now that we have talked about some general reasons for using Xlib, we can consider some key specific reasons for using Xlib.  In the handmade spirit, what we need for displaying the graphics of our game is a framebuffer structured in a way that the screen can understand.  Also we are not going to need widgets, menus, text, buttons, etc. for our game; this is why we do not need toolkits. What we do need is a window to put the game graphics for the delight of our players and we can achieve that through Xlib calls (see [Xorg-wiki](https://www.x.org/wiki/guide/client-ecosystem/)).  What Xorg developers discourage is reinventing the wheel of the entire stack because it disregards what took several years for professional developers to implement and improve. 
 
-For this use case the Xlib code is relatively straightforward to write.
- The client code that one has to write essentially reads by itself, you don't need to know the entire 
-Xlib API to understand it. 
-This means that the Xlib code that we are going to write is readable and that is a good enough
-reason for using it in my book.
 
-Another reason for using Xlib is that it has been modernized, it leverages the X C Bindings (XCB) under the hood, it also supports multi-threading
-(if `XThreads` are initialized on the client side), and it is still maintained to this day by 
-Alan Coopersmith, a veteran Xlib developer, and many others. Surely a properly implemented client code
-with XCB will perform better than its Xlib counterpart but that depends entirely on your ability
-to write that code (as mentioned in this XCB
-[tutorial](https://xcb.freedesktop.org/tutorial/)). Working directly with XCB entails that you must have a
-fairly good understanding of the X11 protocol.
 
-In the context of handmade game development, reaching for XCB does resonate with the Handmade Hero spirit
-only after you have determined
-that Xlib calls limit performance. Casey also advocates
-that it is best to write a working code first to get a good idea of what the platform layer should be;
-and only then work on optimizing it if there are factual reasons to do so.
-Thus my rationale for using Xlib is that I want to push it to its limits 
-and then after identifying that performance limitations stem from Xlib itself then
-I would consider using XCB. And if I were to focus on performance bottlenecks, I would look at the game
-loop code because the less overhead the better so that the game would hit the target framerate. I would not bother
-too much about the Xlib code preceeding the game loop. The expectation is that the game will at some point
-leverage XCB in the game loop and use Xlib elsewhere for readability.
+For this use case the Xlib code is relatively straightforward to write.  The client code that one has to write essentially reads by itself, you don't need to know the entire Xlib API to understand it.  This means that the Xlib code that we are going to write is readable and that is a good enough reason for using it in my book.
 
-To be clear, I do find it appealing to develop the platform layer of the game with XCB.
-However, choosing XCB over Xlib right now without having a playable game
-would be an early optimization for me.
-We cannot talk effectively about performance until we have a system running.
-This is why that I rather spend time to get a working system sooner with Xlib and then consider the performance
-bottlenecks. One has to consider that Xlib supports multi-threading and extensions such as the shared
-memory extension are features that should be explored in addition to speaking directly to the X11 protocol
-with XCB. It is worthwhile to mention that Xlib and XCB code can coexist, that means that you can have the
-best of two worlds by using XCB for optimizing the rate limiting features while
-keeping around the convenient functions that Xlib provides.
-After conducting the due research I would be at a better position to assess performance differences and
-post about what worked best.
 
-Another reason for using Xlib is that Handmade
-Hero has not been my first experience with game development.
-I started learning about game development by reading Quake-II's source code and so by the time I found out about Handmade Hero I 
-knew that Quake uses Xlib to put graphics on the screen in GNU/Linux. It was
-only natural to avail myself of the experience of diving into Quake's source
-code to develop my own GNU/Linux port of Handmade Hero.
 
-I would like to tell more about why not using a toolkit with more details here.
-The strongest reason for not use a toolkit is because it hides the difficulties of dealing directly with visuals, a lesson
-on how computers work that I do not want to skip.
-Some of those difficulties
-translate to the platform layer of the game. For example, if the visual is TrueColor
-(modern monitors) one has to work directly with RGB bitmasks so that the colors shown
-on the game window look right. 
-It is important to mention that the
-XServer (more on that later) still does the heavy lifting to determine the properties of
-the visual, such as if the visual is a TrueColor or PseudoColor type,
-if it has a 16-bit or 24-bit depth, the RGB layout in memory (bitmasks), etc. To be
-precise, you can still experiment with RGB bitmasks with the GTK2 toolkit (see [here](
-https://www.manpagez.com/html/gdk2/gdk2-2.24.24/gdk2-GdkRGB.php#gdk-draw-rgb-image
-))
-but you must consider the pros and cons of adding another layer of abstraction to
-your application; probably, the answer to that lies with you (or with your team).
+Another reason for using Xlib is that it has been modernized, it leverages the X C Bindings (XCB) under the hood, it also supports multi-threading (if `XThreads` are initialized on the client side), and it is still maintained to this day by Alan Coopersmith, a veteran Xlib developer, and many others. Surely a properly implemented client code with XCB will perform better than its Xlib counterpart but that depends entirely on your ability to write that code (as mentioned in this XCB [tutorial](https://xcb.freedesktop.org/tutorial/)). Working directly with XCB entails that you must have a fairly good understanding of the X11 protocol.
 
-The last reason is the most personal one.
-By the time I began my transition
-from Windows 7 to Ubuntu 9.10 (code named Karmic Koala) that Linux desktop shipped with 
-libX11 version 1.2.2 (that can be verified via the
-[manifest](http://old-releases.ubuntu.com/releases/9.10/ubuntu-9.10-desktop-amd64.manifest)).
-At that point Xlib already had the modernized XCB transport layer that made my Linux desktop experience
-so memorable. Knowing that GTK2 at that time was leveraging Xlib code heavily (as can be verified in the
-[source](https://gitlab.gnome.org/GNOME/gtk/-/tree/gtk-2-18?ref_type=heads)) to create the desktop
-environment makes me want to build the platform layer of my game with Xlib (call it nostalgia if you may).
-Also my desktop is using a version of [Cinnamon](https://github.com/linuxmint/cinnamon) (a fork of GNOME2)
-that still depends on Xlib and so it is natural for me to stick with it. 
 
-I just want to add here a little note about possible issues that you could stumble upon if you try to
-run the game (without modification) on a Wayland-based desktop. Xlib blocking calls, such as
-`XNextEvent` and `XWindowEvent`, must be replaced with their polling alternatives to avoid potential deadlocks
-due to the asynchronous nature of Wayland. The interested reader is referred to the official Wayland
-[documentation](https://wayland.freedesktop.org/docs/book/Xwayland.html).
+In the context of handmade game development, reaching for XCB does resonate with the Handmade Hero spirit only after you have determined that Xlib calls limit performance. Casey also advocates that it is best to write a working code first to get a good idea of what the platform layer should be; and only then work on optimizing it if there are factual reasons to do so.  Thus my rationale for using Xlib is that I want to push it to its limits and then after identifying that performance limitations stem from Xlib itself then I would consider using XCB. And if I were to focus on performance bottlenecks, I would look at the game loop code because the less overhead the better so that the game would hit the target framerate. I would not bother too much about the Xlib code preceeding the game loop. The expectation is that the game will at some point leverage XCB in the game loop and use Xlib elsewhere for readability.
+
+
+To be clear, I do find it appealing to develop the platform layer of the game with XCB.  However, choosing XCB over Xlib right now without having a playable game would be an early optimization for me.  We cannot talk effectively about performance until we have a system running.  This is why that I rather spend time to get a working system sooner with Xlib and then consider the performance bottlenecks. One has to consider that Xlib supports multi-threading and extensions such as the shared memory extension are features that should be explored in addition to speaking directly to the X11 protocol with XCB. It is worthwhile to mention that Xlib and XCB code can coexist, that means that you can have the best of two worlds by using XCB for optimizing the rate limiting features while keeping around the convenient functions that Xlib provides.  After conducting the due research I would be at a better position to assess performance differences and post about what worked best.
+
+
+Another reason for using Xlib is that Handmade Hero has not been my first experience with game development.  I started learning about game development by reading Quake-II's source code and so by the time I found out about Handmade Hero I knew that Quake uses Xlib to put graphics on the screen in GNU/Linux. It was only natural to avail myself of the experience of diving into Quake's source code to develop my own GNU/Linux port of Handmade Hero.
+
+
+I would like to tell more about why not using a toolkit with more details here.  The strongest reason for not use a toolkit is because it hides the difficulties of dealing directly with visuals, a lesson on how computers work that I do not want to skip.  Some of those difficulties translate to the platform layer of the game. For example, if the visual is TrueColor (modern monitors) one has to work directly with RGB bitmasks so that the colors shown on the game window look right.  It is important to mention that the XServer (more on that later) still does the heavy lifting to determine the properties of the visual, such as if the visual is a TrueColor or PseudoColor type, if it has a 16-bit or 24-bit depth, the RGB layout in memory (bitmasks), etc. To be precise, you can still experiment with RGB bitmasks with the GTK2 toolkit (see [here]( https://www.manpagez.com/html/gdk2/gdk2-2.24.24/gdk2-GdkRGB.php#gdk-draw-rgb-image)) but you must consider the pros and cons of adding another layer of abstraction to your application; probably, the answer to that lies with you (or with your team).
+
+
+The last reason is the most personal one.  By the time I began my transition from Windows 7 to Ubuntu 9.10 (code named Karmic Koala) that Linux desktop shipped with libX11 version 1.2.2 (that can be verified via the [manifest](http://old-releases.ubuntu.com/releases/9.10/ubuntu-9.10-desktop-amd64.manifest)).  At that point Xlib already had the modernized XCB transport layer that made my Linux desktop experience so memorable. Knowing that GTK2 at that time was leveraging Xlib code heavily (as can be verified in the [source](https://gitlab.gnome.org/GNOME/gtk/-/tree/gtk-2-18?ref_type=heads)) to create the desktop environment makes me want to build the platform layer of my game with Xlib (call it nostalgia if you may).  Also my desktop is using a version of [Cinnamon](https://github.com/linuxmint/cinnamon) (a fork of GNOME2) that still depends on Xlib and so it is natural for me to stick with it. 
+
+
+I just want to add here a little note about possible issues that you could stumble upon if you try to run the game (without modification) on a Wayland-based desktop. Xlib blocking calls, such as `XNextEvent` and `XWindowEvent`, must be replaced with their polling alternatives to avoid potential deadlocks due to the asynchronous nature of Wayland. The interested reader is referred to the official Wayland [documentation](https://wayland.freedesktop.org/docs/book/Xwayland.html).
+
 
 ## <a id="clientserver-architecture"></a>Client-Server Architecture
 
