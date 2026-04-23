@@ -964,4 +964,4 @@ I would like to share some of the well known ports of Handmade Hero to GNU/Linux
 
 - [First GNU/Linux port of Handmade Hero](https://davidgow.net/handmadepenguin/) A series by David Gow on developing the platform layer for Handmade Penguin (a Linux port of Handmade Hero). David leverages the Simple Direct Media Layer (SDL) for handling graphics, sounds, and user input. This is useful for people that want to defer the hardships of implementing the platform layer with Xlib and ALSA.
 
-- [Multi-Platform Handmade Hero](https://github.com/laszlokorte/handmade-hero) A comprehensive implementation of Handmade Hero on various platforms Laszlo Korte. He has succeeded in porting the game to MacOS, iOS, Android, and GNU/Linux (both Wayland and X11).
+- [Multi-Platform Handmade Hero](https://github.com/laszlokorte/handmade-hero) A comprehensive implementation of Handmade Hero on various platforms Laszlo Korte. He has succeeded in porting the game to MacOS, iOS, Android, and GNU/Linux (both Wayland and X11). His work demonstrates that well designed game layer written in one platform can be easily ported to other platforms.
