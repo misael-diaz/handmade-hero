@@ -12,8 +12,12 @@
 [---]: #
 
 TODO:
-- IMPROVE REFERENCES PRESENTATION AT THE END TO MAKE IT MORE POLISHED OR SELF DESCRIPTIVE BECAUSE IT'S 
-  ONLY THE LINKS. SAME APPLIES TO THE KNOWN PORTS.
+- LINK THIS POST FROM GITHUB FOR SEO
+- MAYBE STATE THAT XLIB CODE IS NOT GOING AWAY WITH WAYLAND SHIFT THERE'S XWAYLAND
+- SHOW THE POLLING VERSION FOR XWAYLAND CLIENT APPS FOR SEO AND USE THAT VERSION IN
+  THE FINAL SRC CODE LISTING. DON'T FORGET TO CITE THE OFFICIAL SOURCE THAT TALKS ABOUT
+  AVOIDING BLOCKING COMMS WITH XWAYLAND
+- SHOW THAT STORENAME() CHANGES THE PROPERTIES OF THE WINDOW BEHIND THE SCENES
 - USE DESCRIPTIVE NAMES FOR IMAGE FILES FOR SEO AND UX (IF USER DOWNLOADS THE IMAGES THEY ARE DESCRIPTIVE)
 - ADD USEFUL COMMENTS TO THE FINAL SOURCE CODE THAT EXPLAIN BEYOND THE OBVIOUS GOTCHAS; NOTE THAT YOU
   ARE NOT EXPECTED TO COMMENT ON EACH XLIB CALL. DOING THIS IS IN THE BEST OF YOUR INTEREST.
@@ -944,17 +948,20 @@ Stayed tuned for the next post.
 
 ## References
 
-Here's a list of additional resources that I have found to be useful to learn about Xlib:
+In this section presents a list of the most relevant resources to learn about the X11 protocol and the C Language Interface libX11 (or commonly known as Xlib): 
 
-- https://tronche.com/gui/x/xlib-tutorial/
-- https://handmade.network/forums/articles/t/2834-tutorial_a_tour_through_xlib_and_related_technologies
-- https://github.com/Faison/xlib-learning
-- https://github.com/QMonkey/Xlib-demo
+- [Xlib - C Language Interface](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html) The official Xorg Technical Specification of the X11 Protocol with the C bindings. 
+ 
+- [The X New Developer's Guide](https://www.x.org/wiki/guide/) Provides a high-level documentation of the X11 Protocol that is tailored for new contributors. It provides information about modern extensions, the asynchronous X C Bindings (XCB), a fresher presentation of the the original C Language Interface libX11, and contributing guidelines.
+
+- [Tronche's Xlib - C Language Interface](https://tronche.com/gui/x/xlib-tutorial/) This is the legacy (release 6 of the) X11 protocol C Language Interface by Christophe Tronche. It is worth mentioning that Tronche brought the Xlib documentation to the web before the X Consortium and this is why it is still a relevant, highly indexed, and searchable resource.
+
+- [Handmade Network Tour through Xlib and related technologies](https://handmade.network/forums/articles/t/2834-tutorial_a_tour_through_xlib_and_related_technologies) A practical tour of Xlib (creating the window, handling events, and working with the framebuffer) to get you on the fast track for developing the Handmade Hero game in GNU/Linux written by Florian Behr.
 
 ## Ports
 
-I would like to share some of the well known ports of Handmade Hero to GNU/Linux. I found about them while
-working on this post. I am sharing them because it might be instructive to look at them also: 
+I would like to share some of the well known ports of Handmade Hero to GNU/Linux. I found about them while working on this post. I am sharing them because you may also find them to be useful.
 
-- https://davidgow.net/handmadepenguin/
-- https://dailyollie.hashnode.dev/building-handmade-penguin-0-a-linux-journey-using-xlib-inspired-by-handmade-hero
+- [First GNU/Linux port of Handmade Hero](https://davidgow.net/handmadepenguin/) A series by David Gow on developing the platform layer for Handmade Penguin (a Linux port of Handmade Hero). David leverages the Simple Direct Media Layer (SDL) for handling grapihics, sounds, and user input. This is useful for people that want to defer the hardships of implementing the platform layer with Xlib and ALSA.
+
+- [Multi-Platform Handmade Hero](https://github.com/laszlokorte/handmade-hero) A comprehensive implementation of Handmade Hero on various platforms Laszlo Korte. He has succeeded in porting the game to MacOS, iOS, Android, and GNU/Linux (both Wayland and X11).
