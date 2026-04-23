@@ -20,6 +20,9 @@ TODO:
 
 # Handmade Hero: A Systems Programming Odyssey
 
+<img src="https://github.com/misael-diaz/handmade-hero/blob/ebbb0d2f6efabfad5769f16159c810a06da00967/posts/0-CreateGameWindow/img/Cover.png" alt="Architecture diagram of X11 Server-Client communication next to C code for Xlib window creation." width="100%">
+
+
 This post is the start of my Handmade Hero journey documentation. For those that do not know what Handmade Hero is, it is a completed game development [series](https://mollyrocket.com/#handmade) done by legendary game engine developer Casey Muratori. In the series, Casey shows how to build an entire game from scratch in Windows to teach us how computers work and write performant software.
 
 
