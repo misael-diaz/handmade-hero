@@ -7,7 +7,7 @@
 
 [description: Demystifying Xlib for crafting a window for a custom software renderer targeting GNU/Linux.]: #
 
-[tags: series, c, x11, xlib, linux, systems programming, handmadehero]: #
+[tags: xlib, linux, lowlevel, gamedev]: #
 
 [---]: #
 
@@ -15,6 +15,7 @@ TODO:
 - FIXMES
 - IMPROVE REASONS FOR STICKING WITH XLIB
 - USE BETTER LINKING TAGGING WORDS IN THE OUTLINE PARAGRAPH
+- UPDATE COVER WITH XORG BADGE
 
 # Handmade Hero: A Systems Programming Odyssey
 
