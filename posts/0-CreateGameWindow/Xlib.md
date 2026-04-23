@@ -197,7 +197,7 @@ I just want to add here a little note about possible issues that you could stumb
 
 Xlib has a client-server architecture as illustrated in the following diagram:
 
-<img src="https://raw.githubusercontent.com/misael-diaz/handmade-hero/refs/heads/posts/posts/0-CreateGameWindow/img/client-server-architecture-diagram.png" alt="X11 Client-Server Architecture Diagram" width="100%">
+<p><img src="https://raw.githubusercontent.com/misael-diaz/handmade-hero/refs/heads/posts/posts/0-CreateGameWindow/img/client-server-architecture-diagram.png" alt="X11 Client-Server Architecture Diagram" width="100%"></p>
 
 The diagram shows that the XServer receives the user input from the keyboard, mouse, and possibly a game
 controller. The diagram shows that the applications that we use such as the browser and the console
