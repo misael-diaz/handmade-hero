@@ -641,7 +641,7 @@ $3 = {
 
 The game window should now be visible on your screen.
 
-<img src="https://github.com/misael-diaz/handmade-hero/raw/f2264c83cdc0955ce0a34eed19c397f300c5dcdc/posts/img/window.png" alt="GameWindow" width="100%">
+<img src="https://github.com/misael-diaz/handmade-hero/raw/f2264c83cdc0955ce0a34eed19c397f300c5dcdc/posts/img/window.png" alt="X11 Client Window of the Handmade Hero Game" width="100%">
 
 ## Pausing the Game
 
