@@ -18,7 +18,7 @@ TODO:
 - IMPROVE REASONS FOR STICKING WITH XLIB
 - USE BETTER LINKING TAGGING WORDS IN THE OUTLINE PARAGRAPH
 
-# Handmade Hero: A Systems Programming Odyssey
+## Handmade Hero: A Systems Programming Odyssey
 
 <img src="https://github.com/misael-diaz/handmade-hero/blob/ebbb0d2f6efabfad5769f16159c810a06da00967/posts/0-CreateGameWindow/img/Cover.png" alt="Architecture diagram of X11 Server-Client communication next to C code for Xlib window creation." width="100%">
 
