@@ -12,7 +12,6 @@
 [---]: #
 
 TODO:
-- DOUBLE CHECK WHAT IS EXPECTED OF BASIC X API CALLS (RETURN INFO) ON ERRORS OR INVALID INPUT
 - APPLY MIT LIC TO SRC LISTING
 - MAKE THE README OF YOUR REPO MORE USEFUL MAYBE EVEN EXPLAIN WHAT MIGHT BE NEW NOT ADDRESSED IN PREVIOUS IMPLEMENTATIONS (TOUGH HANDMADE HERO HAS BEEN DONE BY MANY). THIS IS A MUST IF YOU ARE GOING TO LINK THIS POST TO YOUR GITHUB WHICH YOU ARE TO DO. CONSIDER SHOWING EITHER SNAPSHOTS OR VIDEOS AT KEY COMMITS. WHAT PROBLEMS DID YOU STUMBLED ON TOO SINCE YOU ARE DOING IT IN LINUX.
   THIS RIGHT.
@@ -512,14 +511,15 @@ XStoreName (
 }
 ```
 
-DOUBLE-CHECK
 As can be seen from the code snippet, the function we just called is a convenient wrapper that makes the Xlib code easier to read. The display and window handle arguments are easy to see, the new ones are `Atom` macros,`XA_WM_NAME` and `XA_STRING`, that help identify the property name and the type of the property. 
 The underlying size of the `Atom` is platform dependent (either 32 or 64-bit integer). In this case the name of the window and the string type. 
-If the name that we provide is a NULL pointer or if its length exceeds the maximum
 The magic number `8` tells the server that the property should be interpreted in chunks of 8-bits which make sense for strings. 
 The `PropModeReplace` instructs the server to replace whatever it had stored for that property.
-storage size this call has no effect (returns 0); however that behavior is not documented in the man page
-or the official [Xlib documentation](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html).
+If the name that we provide is a NULL pointer or if its length exceeds the maximum
+storage size it returns zero to indicate that an error has ocurred. This behavior is not explicitly mentioned
+in the man page; however, the official [Xlib documentation](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Errors) state that zero status is used to hint errors. In this case it is up for the client
+application to check the status and up to the developer to determine what was the cause. This is a good
+example that the source code itself is the ultimate documentation.
 
 The stored name remains in the server until the it receives a request to destroy the window, it is not
 stored on the client side.
