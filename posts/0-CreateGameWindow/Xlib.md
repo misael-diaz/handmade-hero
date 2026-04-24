@@ -16,7 +16,6 @@ TODO:
 - PROVIDE A SUMMARY OF THE XLIB FUNCTIONS CALLS WITH GOOD BRIEF DESCRIPTIONS AND LINKS TO THE OFFICIAL DOCS
 - MAKE THE README OF YOUR REPO MORE USEFUL MAYBE EVEN EXPLAIN WHAT MIGHT BE NEW NOT ADDRESSED IN PREVIOUS IMPLEMENTATIONS (TOUGH HANDMADE HERO HAS BEEN DONE BY MANY). THIS IS A MUST IF YOU ARE GOING TO LINK THIS POST TO YOUR GITHUB WHICH YOU ARE TO DO. CONSIDER SHOWING EITHER SNAPSHOTS OR VIDEOS AT KEY COMMITS. WHAT PROBLEMS DID YOU STUMBLED ON TOO SINCE YOU ARE DOING IT IN LINUX.
   THIS RIGHT.
-- LINK TO LIBX11 AND PROTO REPOS IN GITLAB IN REFERENCES
 - LINK THIS POST FROM GITHUB FOR SEO
 - ALSO LINK THE POST ITSELF TO YOUR GITHUB FOR SEO
 - MAYBE STATE THAT XLIB CODE IS NOT GOING AWAY WITH WAYLAND SHIFT THERE'S XWAYLAND
@@ -997,7 +996,9 @@ In this section presents a list of the most relevant resources to learn about th
  
 - [The X New Developer's Guide](https://www.x.org/wiki/guide/) Provides a high-level documentation of the X11 Protocol that is tailored for new contributors. It provides information about modern extensions, the asynchronous X C Bindings (XCB), a fresher presentation of the the original C Language Interface libX11, and contributing guidelines.
 
-- [Xlib Repository](https://gitlab.freedesktop.org/xorg/lib/libX11) A link to the official Xlib repository hosted in GitLab. This is the definitive Xlib documentation.
+- [Xlib Repository](https://gitlab.freedesktop.org/xorg/lib/libX11) The official Xlib repository hosted in GitLab. This is the definitive Xlib documentation written in source code form.
+
+- [X11 Protocol Headers Repository](https://gitlab.freedesktop.org/xorg/proto/xorgproto) The official GitLab repository hosting the X11 protocol headers. Some of the X11 protocol definitions were referenced from the standard X11 protocol headers.
 
 - [Tronche's Xlib - C Language Interface](https://tronche.com/gui/x/xlib-tutorial/) This is the legacy (release 6 of the) X11 protocol C Language Interface by Christophe Tronche. It is worth mentioning that Tronche brought the Xlib documentation to the web before the X Consortium and this is why it is still a relevant, highly indexed, and searchable resource.
 
