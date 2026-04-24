@@ -744,7 +744,7 @@ on it.
 /* 
 Copyright (c) 2026 Misael Díaz-Maldonado
 Distributed under the MIT License.
-See the [MIT LICENSE](https://opensource.org/license/mit) for details.
+See the MIT LICENSE URL https://opensource.org/license/mit for details.
 */
 #include <stdio.h>
 #include <X11/Xlib.h>
