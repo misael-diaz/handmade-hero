@@ -403,13 +403,13 @@ Window XCreateSimpleWindow(
 ```
 
 For the purposes of putting graphics on screen for our game and keeping things simple we can tell Xlib
-that we want the root window as the parent of our game window via the macro `DefaultRootWindow()`
+that we want the root window as the parent of our game window via the macro [`DefaultRootWindow()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#DefaultRootWindow)
 which takes as argument our display. The macro will return the Window ID of the root window. We can pass
 zero for both the `x` and `y` coordinates, we could specify standard dimensions for our window such as
 1600 x 900 where the width, 1600, and the height, 900, are in pixels.
 
 If you wish to make your code more portable you may get the default screen of your display and use query
-macros to use the default dimensions:
+macros, [`WidthOfScreen()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#WidthOfScreen) and [`HeightOfScreen()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#HeightOfScreen), to use the default dimensions:
 
 ```c
 Screen *screen = DefaultScreenOfDisplay(display);
@@ -417,14 +417,14 @@ int width = WidthOfScreen(screen);
 int height = HeightOfScreen(screen);
 ```
 
-There is also a query function for getting the black pixel value for the screen to use it for the
+There is also a query function for getting the black pixel value, [`BlackPixelOfScreen()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#BlackPixelOfScreen), for the screen to use it for the
 border and background colors:
 
 ```c
 unsigned long BlackPixelValue = BlackPixelOfScreen(screen);
 ```
 
-Thus to create the window for the game you may write:
+Thus to create the window of the game with a black background and default dimensions you should write:
 
 ```c
 Screen *screen = DefaultScreenOfDisplay(display);
