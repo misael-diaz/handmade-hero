@@ -72,3 +72,12 @@ If the compilation fails make sure that the `obj` and `bin` or `exe` directories
 installed MinGW and that `gcc` and `make` have been added to `PATH`. This is mostly for the Windows
 platform and surely this is part of the documentation that needs improvement because so many things
 can go wrong and it takes time to cover all the issues and that can change as the project advances.
+
+TODO
+
+Making this readme a porting guide for the next dev:
+
+- feature mapping of milestones to make it useful for others porting HH to Linux. Examples, **Windowing** (Translating `CreateWindow`->`XCreateWindow`) and **Framebuffer** (Translating `BitBlt` -> `XPutImage`). Use the same terms that Casey used in the stream to make it easy and useful for others to see the mapping.
+- add snapshots and videos (not necessarily for each milestone since the work done does not always translate to graphics). Don't only show the video but talk about what was discovered and what difficulties did you find.
+- translation of features. Example non-blocking loop with PeekMessage. Here on the Linux side you talk about polling Xlib calls rather than blocking calls which will stall your game loop if used.
+- Map the work done on the stream to your work. Example HH day 1-2 look at my source file from this commit. This should make this project more useful by making it easy for others to find things that they would search on the web to bring them here. Why the port is different from the stream, make sure to explain that. 
