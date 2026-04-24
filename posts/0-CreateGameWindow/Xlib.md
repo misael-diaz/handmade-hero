@@ -997,6 +997,8 @@ In this section presents a list of the most relevant resources to learn about th
  
 - [The X New Developer's Guide](https://www.x.org/wiki/guide/) Provides a high-level documentation of the X11 Protocol that is tailored for new contributors. It provides information about modern extensions, the asynchronous X C Bindings (XCB), a fresher presentation of the the original C Language Interface libX11, and contributing guidelines.
 
+- [Xlib Repository](https://gitlab.freedesktop.org/xorg/lib/libX11) A link to the official Xlib repository hosted in GitLab. This is the definitive Xlib documentation.
+
 - [Tronche's Xlib - C Language Interface](https://tronche.com/gui/x/xlib-tutorial/) This is the legacy (release 6 of the) X11 protocol C Language Interface by Christophe Tronche. It is worth mentioning that Tronche brought the Xlib documentation to the web before the X Consortium and this is why it is still a relevant, highly indexed, and searchable resource.
 
 - [Handmade Network Tour through Xlib and related technologies](https://handmade.network/forums/articles/t/2834-tutorial_a_tour_through_xlib_and_related_technologies) A practical tour of Xlib (creating the window, handling events, and working with the framebuffer) to get you on the fast track for developing the Handmade Hero game in GNU/Linux written by Florian Behr.
