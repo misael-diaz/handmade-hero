@@ -997,6 +997,12 @@ In this section presents a list of the most relevant resources to learn about th
 
 - [Handmade Network Tour through Xlib and related technologies](https://handmade.network/forums/articles/t/2834-tutorial_a_tour_through_xlib_and_related_technologies) A practical tour of Xlib (creating the window, handling events, and working with the framebuffer) to get you on the fast track for developing the Handmade Hero game in GNU/Linux written by Florian Behr.
 
+### Credits
+
+- [Xlib Learning Notes](https://github.com/Faison/xlib-learning) A series of study notes that covers topics of interest for developers just getting started with Xlib, such as opening a window, toggling fullscreen mode, and using OpenGL by Faison Zutavern. This was the first GitHub repository that I found on Xlib when I was exploring the Quake engine. I am citing his work as a token of respect.
+
+- [Xlib Examples](https://github.com/QMonkey/Xlib-demo) A repository of Xlib examples by Charles Qiu. This is another repository that I found useful when studying the Quake engine. I am sharing it as well as a token of respect.
+
 ## Ports
 
 I would like to share some of the well known ports of Handmade Hero to GNU/Linux. I found about them while working on this post. I am sharing them because you may also find them to be useful.
