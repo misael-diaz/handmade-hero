@@ -215,7 +215,7 @@ An interesting finding for me that helped me realize that even desktop environme
 can be found in the Cinnamon desktop environment source code. In case you don't know, the Cinnamon desktop
 environment is actively developed by Linux Mint developers.
 If you do look at its source code
-you will see that a connection to the XServer (via `XOpenDisplay()`) happens in the [main](
+you will see that a connection to the XServer (via [`XOpenDisplay()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XOpenDisplay)) happens in the [main](
 https://github.com/linuxmint/cinnamon/blob/bfc454e799f0284a3c2fd3a0ec11a716b2d425bb/src/main.c#L303)
 source file.
 
@@ -325,7 +325,7 @@ and put graphics on it (in a future post).
 ## Connecting to the XServer
 
 The first step towards displaying a window with Xlib is to establish a connection with
-the XServer via the function call `XOpenDisplay()` which takes as argument the
+the XServer via the function call [`XOpenDisplay()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XOpenDisplay) which takes as argument the
 hardware display name. In GNU/Linux it's okay to pass `NULL`, in that case the parameter
 resolves to whatever the shell environment variable `DISPLAY` holds. If the call succeeds
 the function returns a pointer to the `Display` structure. In the Xlib context this
