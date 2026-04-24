@@ -808,13 +808,13 @@ that goes with the convention established by Casey in Handmade Hero to prefix th
 for the platform layer code.
 
 ```sh
-gcc -Wall -g -Og -gdwarf-4 linux_handmade.c -o linux-handmade.bin -lX11
+gcc -std=gnu99 -Wall -g -Og -gdwarf-4 linux_handmade.c -o linux-handmade.bin -lX11
 ```
 
-where we have enabled all warnings and instructed the compiler to generate debugging symbols in
-DWARF version 4 format that `valgrind` (memcheck tool) understands and
-apply optimizations that do not interfere with the debugging session, and the last one is for 
-the linker to link the executable dynamically with Xlib.
+where we are telling the compiler that we want our code to conform to the `C99` standard with GNU extensions, this is so that we can initialize structs the way Casey did on the stream, we are also asking the compiler to enable all warnings, generate debugging symbols in
+the DWARF version 4 format that `valgrind` (memcheck tool) understands, and
+apply optimizations that do not interfere with the debugging session. The last one `-lX11` is for the linker
+so that our code gets dynamically linked with Xlib.
 
 It's important to mention that Casey uses a batch file to compile the source code and that's what I also
 did because my intention is to experience cross-platform development. To have a consistent build
