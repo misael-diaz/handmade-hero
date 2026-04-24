@@ -485,6 +485,37 @@ world experience when your game window appears:
 XStoreName(display, window, "Handmade Hero");
 ```
 
+This call also updates the output buffer with the request to change the name of the window shown in the
+window manager, the function does not trigger a synchronization request with the server
+as in the previous cases. It is interesting to see that it forwards the operation to the `XChangeProperty()`
+function (which implements the corresponding X11 protocol request):
+
+```c
+int
+XStoreName (
+    register Display *dpy,
+    Window w,
+    _Xconst char *name)
+{
+    if (name != NULL && strlen(name) >= USHRT_MAX)
+        return 0;
+    return XChangeProperty(dpy, w, XA_WM_NAME, XA_STRING, /*  */
+                           8, PropModeReplace, (_Xconst unsigned char *)name,
+                           name ? (int) strlen(name) : 0);
+}
+```
+
+As can be seen from the code snippet, the function we just called is a convenient wrapper that makes the Xlib code easier to read. The display and window handle arguments are easy to see, the new ones are `Atom` macros,`XA_WM_NAME` and `XA_STRING`, that help identify the property name and the type of the property. 
+The underlying size of the `Atom` is platform dependent (either 32 or 64-bit integer). In this case the name of the window and the string type. 
+If the name that we provide is a NULL pointer or if its length exceeds the maximum
+The magic number `8` tells the server that the property should be interpreted in chunks of 8-bits which make sense for strings. 
+The `PropModeReplace` instructs the server to replace whatever it had stored for that property.
+storage size this call has no effect (returns 0); however that behavior is not documented in the man page
+or the official [Xlib documentation](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html).
+
+The stored name remains in the server until the it receives a request to destroy the window, it is not
+stored on the client side.
+
 It is important to note that to make the window visible we will need to make a mapping request, and
 that is the topic of the next section.
 
