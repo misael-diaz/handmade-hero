@@ -12,6 +12,7 @@
 [---]: #
 
 TODO:
+- DOUBLE CHECK WHAT IS EXPECTED OF BASIC X API CALLS (RETURN INFO) ON ERRORS OR INVALID INPUT
 - APPLY MIT LIC TO SRC LISTING
 - MAKE THE README OF YOUR REPO MORE USEFUL MAYBE EVEN EXPLAIN WHAT MIGHT BE NEW NOT ADDRESSED IN PREVIOUS IMPLEMENTATIONS (TOUGH HANDMADE HERO HAS BEEN DONE BY MANY). THIS IS A MUST IF YOU ARE GOING TO LINK THIS POST TO YOUR GITHUB WHICH YOU ARE TO DO. CONSIDER SHOWING EITHER SNAPSHOTS OR VIDEOS AT KEY COMMITS. WHAT PROBLEMS DID YOU STUMBLED ON TOO SINCE YOU ARE DOING IT IN LINUX.
   THIS RIGHT.
@@ -511,6 +512,7 @@ XStoreName (
 }
 ```
 
+DOUBLE-CHECK
 As can be seen from the code snippet, the function we just called is a convenient wrapper that makes the Xlib code easier to read. The display and window handle arguments are easy to see, the new ones are `Atom` macros,`XA_WM_NAME` and `XA_STRING`, that help identify the property name and the type of the property. 
 The underlying size of the `Atom` is platform dependent (either 32 or 64-bit integer). In this case the name of the window and the string type. 
 If the name that we provide is a NULL pointer or if its length exceeds the maximum
