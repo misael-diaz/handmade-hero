@@ -83,10 +83,10 @@ If you are here for the source code you can copy it from [here](#initial-platfor
 	* [Subsection 7-E: Expose Events](
 		#subsection-7e-expose-events
 	)
-		* [Subsection 7-E-1: Hanlding Expose Events in X11-based Linux Desktops](
+		* [Subsection 7-E-1: Handling Expose Events in X11-based Linux Desktops](
 			#subsection-7e1-handling-expose-events-in-x11based-linux-desktops
 		)
-		* [Subsection 7-E-2: Expose Events in Wayland-based Linux Desktops](
+		* [Subsection 7-E-2: Handling Expose Events in Wayland-based Linux Desktops](
 			#subsection-7e2-handling-expose-events-in-waylandbased-linux-desktops
 		)
 	* [Subsection 7-F: Pausing the Game](
