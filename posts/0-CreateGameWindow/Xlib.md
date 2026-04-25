@@ -746,7 +746,7 @@ See the MIT LICENSE URL https://opensource.org/license/mit for details.
 
 int main() {
 /*
-    Think of openning the display as connecting to the default session of the X11 server. When you pass
+    Think of opening the display as connecting to the default session of the X11 server. When you pass
     zero or NULL to this function it tells the client to lookup the default from your system configuration.
     More specifically the shell environment variable DISPLAY. This is more portable and less error prone
     than typing it yourself. If there is an error the display will be NULL and so the application informs
