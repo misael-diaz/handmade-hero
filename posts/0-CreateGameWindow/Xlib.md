@@ -12,6 +12,7 @@
 [---]: #
 
 TODO:
+- FIX INDENTATION IN POLLING SNIPPET (LOOKS WRONG IN MD)
 - UPDATE THE OUTLINE PARAGRAPH WITH THE NEW SECTIONS
 - MAKE SURE TO ADD SECTION X TO THE SECTIONS AND SUBSECTIONS FOR CONSISTENCY WITH TOC
 - PROVIDE A SUMMARY OF THE XLIB FUNCTIONS CALLS WITH GOOD BRIEF DESCRIPTIONS AND LINKS TO THE OFFICIAL DOCS
@@ -889,7 +890,7 @@ The current state of the development of this project can be found in this GitHub
 https://github.com/misael-diaz/handmade-hero/
 ).
 
-## <a id="subsection-7k-compilation"></a>Subsection 7-K: Compilation
+## <a id="subsection-7j-compilation"></a>Subsection 7-J: Compilation
 
 For simplicity we have opted to write all the source code in a single source file `linux_handmade.c`
 that goes with the convention established by Casey in Handmade Hero to prefix the platform name
