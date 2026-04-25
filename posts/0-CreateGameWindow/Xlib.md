@@ -563,7 +563,7 @@ Note that these [event-masks](https://www.x.org/releases/current/doc/libX11/libX
 ```
 
 Just for displaying our game window we only need to set the `event_mask` with the `ExposureMask` and
-nothing else really (in the future I could post about user input).
+nothing else really (a future post will address user input).
 
 The function [`XChangeWindowAttributes()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XChangeWindowAttributes) enable us to change the window attributes, which has the following signature:
 
