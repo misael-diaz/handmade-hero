@@ -376,10 +376,8 @@ This is where the fun part really begins. I strongly recommend you to consult th
 documentation (man pages) as you read the code snippets to familiarize yourself with some aspects of Xlib
 that we cannot possibly cover in a post like this.
 
-The other recommendation is to read the source code that the Quake engine uses to display graphics on
-screen with Xlib. I am sharing the
-[link](https://github.com/id-Software/Quake-2/blob/master/linux/rw_x11.c)
-to the source file for your convenience.
+The other recommendation is to read the [Xlib](https://github.com/id-Software/Quake-2/blob/master/linux/rw_x11.c) source code that the Quake engine uses to display graphics on screen with Xlib. That should give you
+an idea of the Xlib code needed to develop a solid platform layer of the game. Chances are that you will need to adapt the code for the Handmade Hero game but that is part of the exploration that you want to get into.
 
 The following snippet borrowed from the Xlib official documentation shows that to create a simple window
 via [`XCreateSimpleWindow()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XCreateSimpleWindow) one needs to have an active connection to the XServer (a display), a parent window, coordinates with
