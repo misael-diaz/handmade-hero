@@ -79,47 +79,50 @@ If you are here for the source code you can copy it from [here](#initial-platfor
 	* [Subsection 7-D: Mapping the Window](
 		#subsection-7d-mapping-the-window
 	)
-	* [Subsection 7-E: Handling Expose Events](
-		#subsection-7e-handling-expose-events
+	* [Subsection 7-E: Expose Events](
+		#subsection-7e-expose-events
 	)
-		* [Subsection 7-E-1: Expose Events in X11-based Linux Desktops](
-			#subsection-7e1-expose-events-in-x11based-linux-desktops
+		* [Subsection 7-E-1: Hanlding Expose Events in X11-based Linux Desktops](
+			#subsection-7e1-handling-expose-events-in-x11based-linux-desktops
 		)
 		* [Subsection 7-E-2: Expose Events in Wayland-based Linux Desktops](
-			#subsection-7e1-expose-events-in-waylandbased-linux-desktops
+			#subsection-7e2-handling-expose-events-in-waylandbased-linux-desktops
 		)
-	* [Subsection 7-E: Pausing the Game](
-		#pausing-the-game
+	* [Subsection 7-F: Pausing the Game](
+		#subsection-7f-pausing-the-game
 	)
-	* [Subsection 7-F: Destroying the Window](
-		#destroying-the-window
+	* [Subsection 7-G: Destroying the Window](
+		#subsection-7g-destroying-the-window
 	)
-	* [Subsection 7-G: Closing the Display](
-		#closing-the-display
+	* [Subsection 7-H: Closing the Display](
+		#subsection-7h-closing-the-display
 	)
-	* [Subsection 7-H: Initial Platform Layer of the Game](
-		#initial-platform-layer-of-the-game
+	* [Subsection 7-I: Initial Platform Layer of the Game](
+		#subsection-7i-initial-platform-layer-of-the-game
 	)
-	* [Subsection 7-I: Compilation](
-		#compilation
+	* [Subsection 7-J: Compilation](
+		#subsection-7j-compilation
 	)
-	* [Subsection 7-J: Running the Game](
-		#running-the-game
+	* [Subsection 7-K: Running the Game](
+		#subsection-7k-running-the-game
 	)
-	* [Subsection 7-K: Checking Memory Leaks with Valgrind](
-		#checking-memory-leaks-with-valgrind
+	* [Subsection 7-L: Checking Memory Leaks with Valgrind](
+		#subsection-7l-checking-memory-leaks-with-valgrind
 	)
 - [Section 8: Conclusions](
-	#conclusions
+	#section-8-conclusions
 )
 - [Section 9: Final Thoughts](
-	#final-thoughts
+	#section-9-final-thoughts
 )
 - [Section 10: References](
-	#references
+	#section-10-references
 )
-- [Section 11: Ports](
-	#ports
+* [Section 11: Credits](
+	#section-11-credits
+)
+- [Section 12: Ports](
+	#section-12-ports
 )
 
 ## Section 1: Why learning from Handmade Hero still matters
@@ -240,7 +243,7 @@ will respond to the input events.
 
 It helps to bear these aspects of Xlib in mind when reading X client applications.
 
-## Installing dependencies
+## Section 6: Installing dependencies
 
 If you want to follow along you would probably need to install the development libraries
 for creating client X11 applications. If you have not done that before the likeliness is
@@ -274,7 +277,7 @@ the `3` tells `man` that what follows is a function from a library.
 
 Now we can start writing our X client code to create a game window for our game.
 
-## Developing an X Client application
+## Section 7: Developing an X Client application
 
 Xlib is the original Application Programming Interface (API) of the X11 protocol, written in C. Although
 there are bindings to make it possible to call Xlib from other languages such as Python, Go, and Rust,
@@ -289,7 +292,7 @@ on stream despite that he is compiling the source code of the game with a C++ co
 He did not leverage C++ features heavily until implementing vector math (via operator overloading)
 to make the operations read more like math to the next developer.
 
-## Headers
+## Subsection 7-A: Headers
 
 C programs typically start with a header section that specifies the function prototypes (declarations) and 
 types (data structures) that the program needs to compile the source down to machine code. 
@@ -324,7 +327,7 @@ and maintainable.
 With those definitions we will be able to open a connection to the XServer, create the window for our game,
 and put graphics on it (in a future post).
 
-## Connecting to the XServer
+## Subsection 7-B: Connecting to the XServer
 
 The first step towards displaying a window with Xlib is to establish a connection with
 the XServer via the function call [`XOpenDisplay()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XOpenDisplay) which takes as argument the
@@ -375,7 +378,7 @@ utils. For example if `DISPLAY` is `:0` we know that the XServer is running in l
 screen number is zero. This matters to us because we use the default screen for our game window as you
 will see shortly.
 
-## Creating a Window for the Game
+## Subsection 7-C: Creating a Window for the Game
 
 This is where the fun part really begins. I strongly recommend you to consult the Xlib
 documentation (man pages) as you read the code snippets to familiarize yourself with some aspects of Xlib
@@ -527,7 +530,7 @@ stored on the client side.
 It is important to note that to make the window visible we will need to make a mapping request, and
 that is the topic of the next section.
 
-## Mapping the Window
+## Subsection 7-D: Mapping the Window
 
 To make our game window visible we need to add a window mapping request to the XServer. The
 Xlib function that allows us to place that request is [`XMapWindow()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XMapWindow). But before doing that
@@ -638,7 +641,7 @@ has increased to 10 after calling [`XMapWindow()`](https://www.x.org/releases/cu
 requested attributes change, and performed a window mapping request; thus, the increment in the
 request sequence number adds up perfectly.
 
-## Handling Expose Events
+## Subsection 7-E: Expose Events
 
 As we saw in the previous section mapping the window does not make it show up, instead
 it batches the request into the output buffer. To make the window visible we need to
@@ -728,7 +731,7 @@ Regardless of the platform you should be able to see the game window.
 
 <p><img src="https://raw.githubusercontent.com/misael-diaz/handmade-hero/refs/heads/posts/posts/0-CreateGameWindow/img/x11-window-handmade-game.png" alt="X11 Client Window of the Handmade Hero Game" width="100%"></p>
 
-## Pausing the Game
+## Subsection 7-F: Pausing the Game
 
 One thing that you want to do is to pause the game to be able to see the window on your screen and this
 can be done in simply by requesting a read from standard input:
@@ -750,7 +753,7 @@ The magic number one after `sizeof` tells us that we only want to read one item 
 could be a little strange at first and this is why I prefer to use `read` instead but to keep things
 to a minimum I decided to stick with `fread`.
 
-## Destroying the Window
+## Subsection 7-G: Destroying the Window
 
 As mentioned in the [creating](#Creating-a-Window-for-the-Game) a window section the XServer allocates
 resources for the game window and so the right thing to do is to request the server to destroy it before we
@@ -771,7 +774,7 @@ There is no implicit synchronization, it is not needed really because
 closing the display does the final synchronization. That's when the server will receive the
 destroy request and when the resources allocated on the server side will be freed.
 
-## Closing the Display
+## Subsection 7-H: Closing the Display
 
 At the end of the program you want to close the display via [`XCloseDisplay()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Closing_the_Display) so that Xlib's internal data structures get
 freed from the heap memory and to close the socket used for communicating with the XServer via:
@@ -783,7 +786,7 @@ XCloseDisplay(display);
 As mentioned in the preceding [section](#Destroying-the-Window) the XServer performs a final synchronization
 via [`XSync()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XSync) to send requests in the output buffer (this feature is also mentioned in the man page).
 
-## Initial Platform Layer of the Game
+## Subsection 7-I: Initial Platform Layer of the Game
 
 Here's the source code we have written to create a window for our game that we can use to put graphics
 on it.
@@ -885,7 +888,7 @@ The current state of the development of this project can be found in this GitHub
 https://github.com/misael-diaz/handmade-hero/
 ).
 
-## Compilation
+## Subsection 7-K: Compilation
 
 For simplicity we have opted to write all the source code in a single source file `linux_handmade.c`
 that goes with the convention established by Casey in Handmade Hero to prefix the platform name
@@ -906,7 +909,7 @@ I am currently using a Makefile that can be used for compiling the source in Win
 The advantage of using a Makefile is that one can extend it for other platforms -- "one Makefile
 to build them all".
 
-## Running the Game
+## Subsection 7-K: Running the Game
 
 To run the game from the command-line:
 
@@ -919,7 +922,7 @@ to GNU/Linux you don't know that commands and executables must be in the PATH in
 By default the current working directory is in the PATH so by using that notation you are saying the
 path of the executable is relative to the current directory.
 
-## Checking Memory Leaks with Valgrind
+## Subsection 7-L: Checking Memory Leaks with Valgrind
 
 Valgrind is a tool suite for debugging and profiling programs. I use often to check for memory leaks
 at the end of the program. In the context of our simple client application we are making sure that
@@ -969,7 +972,7 @@ by the server this request instructs the server to destroy the window and its pr
 if we miss the call (due to a crash for example) the server will free the resources allocated to
 the client and that of course includes the window.
 
-## Conclusions
+## Section 8: Conclusions
 
 In this post we delved into some of Xlib internals to close the gap between the information presented in the
 official documentation and what we can understand from reading it in order to be in a better position to
@@ -1013,7 +1016,7 @@ need synchronization such as `XWindowEvent` flush the output buffer and block un
 
 - In the end we succeeded in making our game window visible and ready to put graphics on it.
 
-## Final Thoughts
+## Section 9: Final Thoughts
 
 In this current world of software which is comprised by multiple layers of code that we cannot simply
 discard or choose not to use it because it is integral to the code that we write, at least we can dive
@@ -1072,7 +1075,7 @@ software developers.
 
 Stayed tuned for the next post.
 
-## References
+## Section 10: References
 
 In this section presents a list of the most relevant resources to learn about the X11 protocol and the C Language Interface libX11 (or commonly known as Xlib): 
 
@@ -1088,13 +1091,13 @@ In this section presents a list of the most relevant resources to learn about th
 
 - [Handmade Network Tour through Xlib and related technologies](https://handmade.network/forums/articles/t/2834-tutorial_a_tour_through_xlib_and_related_technologies) A practical tour of Xlib (creating the window, handling events, and working with the framebuffer) to get you on the fast track for developing the Handmade Hero game in GNU/Linux written by Florian Behr.
 
-### Credits
+## Section 11: Credits
 
 - [Xlib Learning Notes](https://github.com/Faison/xlib-learning) A series of study notes that covers topics of interest for developers just getting started with Xlib, such as opening a window, toggling fullscreen mode, and using OpenGL by Faison Zutavern. This was the first GitHub repository that I found on Xlib when I was exploring the Quake engine. I am citing his work as a token of respect.
 
 - [Xlib Examples](https://github.com/QMonkey/Xlib-demo) A repository of Xlib examples by Charles Qiu. This is another repository that I found useful when studying the Quake engine. I am sharing it as well as a token of respect.
 
-## Ports
+## Section 12: Ports
 
 I would like to share some of the well known ports of Handmade Hero to GNU/Linux. I found about them while working on this post. I am sharing them because you may also find them to be useful.
 
