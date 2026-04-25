@@ -765,17 +765,15 @@ int main() {
     more advanced version XCreateWindow.
 */
     Screen *screen = DefaultScreenOfDisplay(display);
-    Window window = XCreateSimpleWindow(
-		    display,
-		    DefaultRootWindow(display),
-		    0,
-		    0,
-		    WidthOfScreen(screen),
-		    HeightOfScreen(screen),
-		    0,
-		    BlackPixelOfScreen(screen),
-		    BlackPixelOfScreen(screen)
-    );
+    Window window = XCreateSimpleWindow(display,
+					DefaultRootWindow(display),
+					0,
+					0,
+					WidthOfScreen(screen),
+					HeightOfScreen(screen),
+					0,
+					BlackPixelOfScreen(screen),
+					BlackPixelOfScreen(screen));
 
 /*
     Setting Window Properties and Attributes. Naming the window feels good, knowing that the name is stored on
