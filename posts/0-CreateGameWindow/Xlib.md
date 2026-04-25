@@ -26,7 +26,6 @@ TODO:
   ARE NOT EXPECTED TO COMMENT ON EACH XLIB CALL. DOING THIS IS IN THE BEST OF YOUR INTEREST.
 - UPDATE TAGS IN POSTING SITE
 - IMPROVE REASONS FOR STICKING WITH XLIB
-- USE BETTER LINKING TAGGING WORDS IN THE OUTLINE PARAGRAPH
 
 ## Handmade Hero: A Systems Programming Odyssey
 
@@ -41,7 +40,7 @@ For me, and many others that have followed the series, the best way to solidify 
 Because of my intention to share knowledge, I have decided to write this post with an academic like format so that it could be used as a reference for low-level systems programming.
 
 
-The next section presents a table of contents so that this resource can be use a reference and for quick navigation. The following [section](#handmade-hero-why-craftsmanship-still-matters) talks about why Handmade Hero is so relevant even in these times were AI can generate code at scales never seen before. [Next](#reasons-for-creating-a-gnulinux-port-of-handmade-hero) I write about my motivation to create a GNU/Linux port of Handmade Hero. This is followed by a [section](#is-yet-another-xlib-post-necessary) that talks about the value of writing about libX11 (commonly known as Xlib), that is, the library that we are going to use to put graphics on our game. [Then](#why-use-xlib-for-graphics-display) I try to answer the difficult question of why still using Xlib for graphics application development even if there are better alternatives, such as libXCB, favored even by highly respected X developers. After that I talk briefly about the client-server [architecture](#clientserver-architecture) of the X windowing system. Then I show how to [install](#installing-dependencies) the development files for developing X client applications in GNU/Linux. Then I write about X application development in [chunks](#developing-an-x-client-application). This is followed by the [conclusions](#conclusions) , [final thoughts](#final-thoughts) on why Xlib is so important, a list of [references](#references) for crediting sources not included in this post but that were useful to me, and a list of Handmade Hero [ports](#ports) that might be of interest.
+The next section presents a table of contents for quick navigation in the hope that this resource can be used as reference for building low-level window applications in GNU/Linux. [Section 1](#handmade-hero-why-craftsmanship-still-matters) explains why Handmade Hero remains relevant even in these times where AI can generate code at scales never seen before. [Section 2](#reasons-for-creating-a-gnulinux-port-of-handmade-hero) reveals my motivations for porting Handmade Hero to GNU/Linux. Then, I talk about the value of posting about libX11 (commonly known as Xlib) &mdash the library that we are going to use to put graphics on screen (see [Section 3](#is-yet-another-xlib-post-necessary)). Then, in [Section 4](#why-use-xlib-for-graphics-display) I answer the difficult question of why choosing Xlib for graphics display despite that even X11 developers recommend other alternatives. After that I talk briefly about the client-server [architecture](#clientserver-architecture) of the X windowing system in Section 5. Then I show how to [install](#installing-dependencies) the development files for X11 client applications in GNU/Linux (Section 6). The X11 windowing development dive starts in [Section 7](#developing-an-x-client-application), the development is broken down into subsections to make the explanations more manageable. After that I shared the lessons learned in the [conclusions](#conclusions) section. That is followed by my [realization](#final-thoughts) of the importance of Xlib to the current software development world as I was writing this post. A list of [references](#references) for future study is given and also I credit the work of other developers that helped me learn about Xlib in the early days. My post concludes with a list of Handmade Hero [ports](#ports) that might be of interest to enthusiast and software developers.
 
 ## Table of Contents
 
@@ -50,70 +49,70 @@ Use the table of contents to get an outline of the post and to navigate to the s
 
 If you are here for the source code you can copy it from [here](#initial-platform-layer-of-the-game).
 
-- [Handmade Hero: Why craftsmanship still matters](
+- [Section 1: Why learning from Handmade Hero still matters](
 	#handmade-hero-why-craftsmanship-still-matters
 )
-- [Reasons for creating a GNU/Linux port of Handmade Hero](
+- [Section 2: Reasons for creating a GNU/Linux port of Handmade Hero](
 	#reasons-for-creating-a-gnulinux-port-of-handmade-hero
 )
-- [Is yet another Xlib post necessary?](
+- [Section 3: Is yet another Xlib post necessary?](
 	#is-yet-another-xlib-post-necessary
 )
-- [Why use Xlib for graphics display](
+- [Section 4: Why use Xlib for graphics display](
 	#why-use-xlib-for-graphics-display
 )
-- [Client-Server Architecture](
+- [Section 5: Client-Server Architecture](
 	#clientserver-architecture
 )
-- [Installing dependencies](
+- [Section 6: Installing dependencies](
 	#installing-dependencies
 )
-- [Developing an X Client application](
+- [Section 7: Developing an X Client application](
 	#developing-an-x-client-application
 )
-	* [Headers](
+	* [Subsection 7-A: Headers](
 		#headers
 	)
-	* [Connecting to the XServer](
+	* [Subsection 7-B: Connecting to the XServer](
 		#connecting-to-the-xserver
 	)
-	* [Creating a Window for the Game](
+	* [Subsection 7-C: Creating a Window for the Game](
 		#creating-a-window-for-the-game
 	)
-	* [Mapping the Window](
+	* [Subsection 7-D: Mapping the Window](
 		#mapping-the-window
 	)
-	* [Pausing the Game](
+	* [Subsection 7-E: Pausing the Game](
 		#pausing-the-game
 	)
-	* [Destroying the Window](
+	* [Subsection 7-F: Destroying the Window](
 		#destroying-the-window
 	)
-	* [Closing the Display](
+	* [Subsection 7-G: Closing the Display](
 		#closing-the-display
 	)
-	* [Initial Platform Layer of the Game](
+	* [Subsection 7-H: Initial Platform Layer of the Game](
 		#initial-platform-layer-of-the-game
 	)
-	* [Compilation](
+	* [Subsection 7-I: Compilation](
 		#compilation
 	)
-	* [Running the Game](
+	* [Subsection 7-J: Running the Game](
 		#running-the-game
 	)
-	* [Checking Memory Leaks with Valgrind](
+	* [Subsection 7-K: Checking Memory Leaks with Valgrind](
 		#checking-memory-leaks-with-valgrind
 	)
-- [Conclusions](
+- [Section 8: Conclusions](
 	#conclusions
 )
-- [Final Thoughts](
+- [Section 9: Final Thoughts](
 	#final-thoughts
 )
-- [References](
+- [Section 10: References](
 	#references
 )
-- [Ports](
+- [Section 11: Ports](
 	#ports
 )
 
