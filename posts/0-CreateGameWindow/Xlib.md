@@ -718,7 +718,7 @@ the Wayland counterparts:
 while (1) {
     XEvent ev = {};
     if (XCheckWindowEvent(display, window, ExposureMask, &ev)) {
-	break;
+		break;
     }
 }
 ```
