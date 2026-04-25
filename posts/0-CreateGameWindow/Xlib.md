@@ -659,7 +659,7 @@ in both X11-based and Wayland-based Linux desktops.
 
 We start by talking about the blocking (or synchronous) approach that is compatible with X11-based Linux desktops in the context of Handmade Hero. 
 
-### <a id="subsection-7e1-expose-events-in-x11based-linux-desktops"></a>Subsection 7-E-1: Expose Events in X11-based Linux desktops
+### <a id="subsection-7e1-handling-expose-events-in-x11based-linux-desktops"></a>Subsection 7-E-1: Handling Expose Events in X11-based Linux desktops
 
 In the context of writing the code that makes the game window visible all that we need
 to call is the [`XWindowEvent()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XWindowEvent). The signature of that function is the following:
@@ -704,7 +704,7 @@ $3 = {
 
 The game window should now be visible on your screen.
 
-### <a id="subsection-7e2-expose-events-in-waylandbased-linux-desktops"></a>Subsection 7-E-2: Expose Events in Wayland-based Linux desktops
+### <a id="subsection-7e2-handling-expose-events-in-waylandbased-linux-desktops"></a>Subsection 7-E-2: Handling Expose Events in Wayland-based Linux desktops
 
 Wayland supports running X11 client applications via XWayland, which is based on the
 original code for the X11 server. In a nutshell, XWayland acts as an intermediary layer
