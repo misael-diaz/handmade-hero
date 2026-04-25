@@ -745,11 +745,25 @@ See the MIT LICENSE URL https://opensource.org/license/mit for details.
 #include <X11/Xlib.h>
 
 int main() {
+/*
+    Think of openning the display as connecting to the default session of the X11 server. When you pass
+    zero or NULL to this function it tells the client to lookup the default from your system configuration.
+    More specifically the shell environment variable DISPLAY. This is more portable and less error prone
+    than typing it yourself. If there is an error the display will be NULL and so the application informs
+    the user about the problem and returns the general purpose error code.
+*/
     Display *display = XOpenDisplay(NULL);
     if (!display) {
 	    fprintf(stderr, "%s", "failed to open display\n");
 	    return 1;
     }
+/*
+    It is important to keep in mind that in X11 all windows must have a parent window except the root window.
+    So the easiest way to create a window is by using the macro that returns the parent window. You can see
+    that other macros were used to determine dimensions of the window and the color for your screen. This
+    is the most portable way of creating a window with Xlib. As you gain more experience you can use the
+    more advanced version XCreateWindow.
+*/
     Screen *screen = DefaultScreenOfDisplay(display);
     Window window = XCreateSimpleWindow(
 		    display,
@@ -763,19 +777,41 @@ int main() {
 		    BlackPixelOfScreen(screen)
     );
 
+/*
+    Setting Window Properties and Attributes. Naming the window feels good, knowing that the name is stored on
+    the server side along the other window properties makes you think of X11 window application developement
+    as modifying the state of a state machine. This is good to have in mind because not all Xlib calls
+    involve visible changes on your screen. We need to tell the server that we care about expose events to
+    be able to know how much we need to wait on the client side for the event to happen, this reveals the
+    async nature of the X11 windowing system.
+*/
     XStoreName(display, window, "Handmade Hero");
     XSetWindowAttributes template = {};
     template.event_mask = ExposureMask;
     XChangeWindowAttributes(display, window, CWEventMask, &template);
 
+/*
+    Here we tell the server to map our game window into our screen but that alone won't make it visible for it
+    is a request that gets buffered locally for performance (client-server roundtrips are expensive).
+*/
     XMapWindow(display, window);
 
+/*
+    We wait for the expose event to happen and continue execution after that. Without blocking by reading from
+    standard input the game window may not have time to show up before we close the connection to the server.
+*/
     XEvent ev = {};
     XWindowEvent(display, window, ExposureMask, &ev);
 
     char c = 0;
     fprintf(stdout, "%s", "game paused, press enter to continue\n");
     fread(&c, sizeof(c), 1, stdin);
+
+/*
+    Cleanup code to free memory allocations on both the client and server. It is interesting that the request
+    to destroy the window is buffered as well. It is not until we request to close the display in this case
+    that the buffer is flushed (meaning that the server will be notified of the destroy window request).
+*/
 
     XDestroyWindow(display, window);
     XCloseDisplay(display);
