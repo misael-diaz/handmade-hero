@@ -47,38 +47,47 @@ Use the table of contents to get an outline of the post and to navigate to the s
 If you are here for the source code you can copy it from [here](#initial-platform-layer-of-the-game).
 
 - [Section 1: Why learning from Handmade Hero still matters](
-	#handmade-hero-why-craftsmanship-still-matters
+	#section-1-handmade-hero-why-craftsmanship-still-matters
 )
 - [Section 2: Reasons for creating a GNU/Linux port of Handmade Hero](
-	#reasons-for-creating-a-gnulinux-port-of-handmade-hero
+	#section-2-reasons-for-creating-a-gnulinux-port-of-handmade-hero
 )
 - [Section 3: Is yet another Xlib post necessary?](
-	#is-yet-another-xlib-post-necessary
+	#section-3-is-yet-another-xlib-post-necessary
 )
 - [Section 4: Why use Xlib for graphics display](
-	#why-use-xlib-for-graphics-display
+	#section-4-why-use-xlib-for-graphics-display
 )
 - [Section 5: Client-Server Architecture](
-	#clientserver-architecture
+	#section-5-clientserver-architecture
 )
 - [Section 6: Installing dependencies](
-	#installing-dependencies
+	#section-6-installing-dependencies
 )
 - [Section 7: Developing an X Client application](
-	#developing-an-x-client-application
+	#section-7-developing-an-x-client-application
 )
 	* [Subsection 7-A: Headers](
-		#headers
+		#subsection-7a-headers
 	)
 	* [Subsection 7-B: Connecting to the XServer](
-		#connecting-to-the-xserver
+		#subsection-7b-connecting-to-the-xserver
 	)
 	* [Subsection 7-C: Creating a Window for the Game](
-		#creating-a-window-for-the-game
+		#subsection-7c-creating-a-window-for-the-game
 	)
 	* [Subsection 7-D: Mapping the Window](
-		#mapping-the-window
+		#subsection-7d-mapping-the-window
 	)
+	* [Subsection 7-E: Handling Expose Events](
+		#subsection-7e-handling-expose-events
+	)
+		* [Subsection 7-E-1: Expose Events in X11-based Linux Desktops](
+			#subsection-7e1-expose-events-in-x11based-linux-desktops
+		)
+		* [Subsection 7-E-2: Expose Events in Wayland-based Linux Desktops](
+			#subsection-7e1-expose-events-in-waylandbased-linux-desktops
+		)
 	* [Subsection 7-E: Pausing the Game](
 		#pausing-the-game
 	)
@@ -113,7 +122,7 @@ If you are here for the source code you can copy it from [here](#initial-platfor
 	#ports
 )
 
-## Handmade Hero: Why craftsmanship still matters
+## Section 1: Why learning from Handmade Hero still matters
 
 Handmade Hero has never been more relevant now than ever for software developers. Largely because of the increasing pressure of shipping faster by integrating software development with AI, this trend has intensified the work without leaving much time to have developers connect directly with the problem space through the act of driving solutions through handmade code.
 
@@ -129,7 +138,7 @@ For me that engaging project has been [Handmade Hero](https://www.youtube.com/wa
 
 Even though developers have written about the series many times each post is unique and it matters because it is a transformative experience.
 
-## Reasons for creating a GNU/Linux port of Handmade Hero
+## Section 2: Reasons for creating a GNU/Linux port of Handmade Hero
 
 Handmade Hero is about learning about how computers work, and Casey did that by showing us how to use the Win32 API to build a game in Windows. And he used Windows because it's the platform he is most familiar with.
 
@@ -190,7 +199,7 @@ The last reason is the most personal one.  By the time I began my transition fro
 I just want to add here a little note about possible issues that you could stumble upon if you try to run the game (without modification) on a Wayland-based desktop. Xlib blocking calls, such as `XNextEvent` and `XWindowEvent`, must be replaced with their polling alternatives to avoid potential deadlocks due to the asynchronous nature of Wayland. The interested reader is referred to the official Wayland [documentation](https://wayland.freedesktop.org/docs/book/Xwayland.html).
 
 
-## <a id="clientserver-architecture"></a>Client-Server Architecture
+## <a id="section-5-clientserver-architecture"></a>Section 5: Client-Server Architecture
 
 Xlib has a client-server architecture as illustrated in the following diagram:
 
@@ -646,7 +655,7 @@ in both X11-based and Wayland-based Linux desktops.
 
 We start by talking about the blocking (or synchronous) approach that is compatible with X11-based Linux desktops in the context of Handmade Hero. 
 
-### Handling Expose Events synchronously in X11-based Linux desktops
+### Subsection 7-E-1: Expose Events in X11-based Linux desktops
 
 In the context of writing the code that makes the game window visible all that we need
 to call is the [`XWindowEvent()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XWindowEvent). The signature of that function is the following:
@@ -691,7 +700,7 @@ $3 = {
 
 The game window should now be visible on your screen.
 
-### Handling Expose Events in Wayland-based Linux desktops
+### Subsection 7-E-2: Expose Events in Wayland-based Linux desktops
 
 Wayland supports running X11 client applications via XWayland, which is based on the
 original code for the X11 server. In a nutshell, XWayland acts as an intermediary layer
