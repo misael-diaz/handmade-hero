@@ -737,9 +737,9 @@ on it.
 
 ```c
 /* 
-Copyright (c) 2026 Misael Díaz-Maldonado
-Distributed under the MIT License.
-See the MIT LICENSE URL https://opensource.org/license/mit for details.
+    Copyright (c) 2026 Misael Díaz-Maldonado
+    Distributed under the MIT License.
+    See the MIT LICENSE URL https://opensource.org/license/mit for details.
 */
 #include <stdio.h>
 #include <X11/Xlib.h>
