@@ -5,7 +5,7 @@
 
 [published: preview]: #
 
-[description: Demystifying Xlib for crafting a window for a custom software renderer targeting GNU/Linux.]: #
+[description: Demystifying Xlib for crafting a window for a custom software renderer targeting Linux.]: #
 
 [tags: xlib, linux, lowlevel, gamedev]: #
 
@@ -35,7 +35,7 @@ For me, and many others who have followed the series, the best way to solidify t
 Because of my intention to share knowledge, I have decided to write this post with an academic-like format so that it could be used as a reference for low-level systems programming.
 
 
-The next section presents a table of contents for quick navigation in the hope that this resource can be used as reference for building low-level window applications in GNU/Linux. [Section 1](#section-1-why-learning-from-handmade-hero-still-matters) explains why Handmade Hero remains relevant even in these times where AI can generate code at scales never seen before. [Section 2](#section-2-reasons-for-creating-a-gnulinux-port-of-handmade-hero) reveals my motivations for porting Handmade Hero to GNU/Linux. Then, I talk about the value of posting about libX11 (commonly known as Xlib) &mdash the library that we are going to use to put graphics on screen (see [Section 3](#section-3-is-yet-another-xlib-post-necessary)). Then, in [Section 4](#section-4-why-use-xlib-for-graphics-display) I answer the difficult question of why to choose Xlib for graphics display, despite that even X11 developers recommend other alternatives. After that I talk briefly about the client-server architecture in [Section 5](#section-5-clientserver-architecture) of the X windowing system. Then I show how to [install](#section-6-installing-dependencies) the development files for X11 client applications in GNU/Linux (Section 6). The X11 windowing development dive starts in [Section 7](#section-7-developing-an-x-client-application), the development is broken down into subsections to make the explanations more manageable; here is where I talk about the headers, creating the window, mapping it to the screen, handling events, and closing the display. Compilation, execution, and checking for memory leaks is covered for completeness. The complete listing of the source code is given after that with notes for those who prefer to head directly to the source code. After the development section I share the lessons learned in the [conclusions](#section-8-conclusions) section. That is followed by my [realization](#section-9-final-thoughts) of the importance of Xlib to the current software development world as I was writing this post. A list of [references](#section-10-references) for future study is given and also I [credit](#section-11-credits) the work of other developers that helped me learn about Xlib in the early days. My post concludes with a list of Handmade Hero [ports](#section-12-ports) that might be of interest to enthusiasts and software developers alike.
+The next section presents a table of contents for quick navigation in the hope that this resource can be used as reference for building low-level window applications in Linux. [Section 1](#section-1-why-learning-from-handmade-hero-still-matters) explains why Handmade Hero remains relevant even in these times where AI can generate code at scales never seen before. [Section 2](#section-2-reasons-for-creating-a-gnulinux-port-of-handmade-hero) reveals my motivations for porting Handmade Hero to Linux. Then, I talk about the value of posting about libX11 (commonly known as Xlib) &mdash the library that we are going to use to put graphics on screen (see [Section 3](#section-3-is-yet-another-xlib-post-necessary)). Then, in [Section 4](#section-4-why-use-xlib-for-graphics-display) I answer the difficult question of why to choose Xlib for graphics display, despite that even X11 developers recommend other alternatives. After that I talk briefly about the client-server architecture in [Section 5](#section-5-clientserver-architecture) of the X windowing system. Then I show how to [install](#section-6-installing-dependencies) the development files for X11 client applications in Linux (Section 6). The X11 windowing development dive starts in [Section 7](#section-7-developing-an-x-client-application), the development is broken down into subsections to make the explanations more manageable; here is where I talk about the headers, creating the window, mapping it to the screen, handling events, and closing the display. Compilation, execution, and checking for memory leaks is covered for completeness. The complete listing of the source code is given after that with notes for those who prefer to head directly to the source code. After the development section I share the lessons learned in the [conclusions](#section-8-conclusions) section. That is followed by my [realization](#section-9-final-thoughts) of the importance of Xlib to the current software development world as I was writing this post. A list of [references](#section-10-references) for future study is given and also I [credit](#section-11-credits) the work of other developers that helped me learn about Xlib in the early days. My post concludes with a list of Handmade Hero [ports](#section-12-ports) that might be of interest to enthusiasts and software developers alike.
 
 ## Table of Contents
 
@@ -141,13 +141,13 @@ Even though developers have written about the series many times, each post is un
 
 ## Section 2: Reasons for creating a GNU/Linux port of Handmade Hero
 
-Handmade Hero is about learning about how computers work, and Casey did that by showing us how to use the Win32 API to build a game in Windows. And he used Windows because it's the platform he is most familiar with.
+Handmade Hero is about learning how computers work, and Casey did that by showing us how to use the Win32 API to build a game in Windows. And he used Windows because it's the platform he is most familiar with.
 
 
-By analogy, I want to build the game in GNU/Linux because I am comfortable with the command-line (gives me that "at home" feeling) and because I really want to know my platform better by writing systems programming code. On a side note, I am not adamant at trying to convince anyone to switch to GNU/Linux. You will know if it is for you after interacting with it for a while. I would like to add that I do not intend to skip the Win32 platform because Handmade Hero is a cross-platform development experience.
+By analogy, I want to build the game in Linux because I am comfortable with the command-line (it gives me that "at home" feeling) and because I really want to know my platform better by writing systems programming code. On a side note, I am not adamant about trying to convince anyone to switch to Linux. You will know if it is for you after interacting with it for a while. I would like to add that I do not intend to skip the Win32 platform because Handmade Hero is a cross-platform development experience.
 
 
-The scope of this post is to share what I have learned about Xlib to create a game window in GNU/Linux by following the way of the Handmade Hero craftsman. To me that meant that I had to read the Xlib man pages, dive into the source code to peek at its implementation, and also borrow ideas from the Quake-II engine. 
+The scope of this post is to share what I have learned about Xlib to create a game window in Linux by following the way of the Handmade Hero craftsman. To me, that meant that I had to read the Xlib man pages, dive into the source code to peek at its implementation, and also borrow ideas from the Quake-II engine. 
 
 
 ## Section 3: Is yet another Xlib post necessary?
@@ -188,7 +188,7 @@ In the context of handmade game development, reaching for XCB does resonate with
 To be clear, I do find it appealing to develop the platform layer of the game with XCB.  However, choosing XCB over Xlib right now without having a playable game would be an early optimization for me.  We cannot talk effectively about performance until we have a system running.  This is why that I rather spend time to get a working system sooner with Xlib and then consider the performance bottlenecks. One has to consider that Xlib supports multi-threading and extensions such as the shared memory extension are features that should be explored in addition to speaking directly to the X11 protocol with XCB. It is worthwhile to mention that Xlib and XCB code can coexist, that means that you can have the best of two worlds by using XCB for optimizing the rate limiting features while keeping around the convenient functions that Xlib provides.  After conducting the due research I would be at a better position to assess performance differences and post about what worked best.
 
 
-Another reason for using Xlib is that Handmade Hero has not been my first experience with game development.  I started learning about game development by reading Quake-II's source code and so by the time I found out about Handmade Hero I knew that Quake uses Xlib to put graphics on the screen in GNU/Linux. It was only natural to avail myself of the experience of diving into Quake's source code to develop my own GNU/Linux port of Handmade Hero.
+Another reason for using Xlib is that Handmade Hero has not been my first experience with game development.  I started learning about game development by reading Quake-II's source code and so by the time I found out about Handmade Hero I knew that Quake uses Xlib to put graphics on the screen in Linux. It was only natural to avail myself of the experience of diving into Quake's source code to develop my own Linux port of Handmade Hero.
 
 
 I would like to tell more about why not using a toolkit with more details here.  The strongest reason for not use a toolkit is because it hides the difficulties of dealing directly with visuals, a lesson on how computers work that I do not want to skip.  Some of those difficulties translate to the platform layer of the game. For example, if the visual is TrueColor (modern monitors) one has to work directly with RGB bitmasks so that the colors shown on the game window look right.  It is important to mention that the XServer (more on that later) still does the heavy lifting to determine the properties of the visual, such as if the visual is a TrueColor or PseudoColor type, if it has a 16-bit or 24-bit depth, the RGB layout in memory (bitmasks), etc. To be precise, you can still experiment with RGB bitmasks with the GTK2 toolkit (see [here]( https://www.manpagez.com/html/gdk2/gdk2-2.24.24/gdk2-GdkRGB.php#gdk-draw-rgb-image)) but you must consider the pros and cons of adding another layer of abstraction to your application; probably, the answer to that lies with you (or with your team).
@@ -208,7 +208,7 @@ Xlib has a client-server architecture as illustrated in the following diagram:
 
 The diagram shows that the XServer receives the user input from the keyboard, mouse, and possibly a game
 controller. The diagram shows that the applications that we use such as the browser and the console
-are clients, and that even the desktop environment could be a client (in some GNU/Linux distributions).
+are clients, and that even the desktop environment could be a client (in some Linux distributions).
 I would like to comment here that the shown diagram is a simplified illustration that does not delve
 into the fact that the server has both device independent and dependent code. If you wish to look at a
 closer depiction of the architecture see the one provided in the
@@ -329,7 +329,7 @@ and put graphics on it (in a future post).
 
 The first step towards displaying a window with Xlib is to establish a connection with
 the XServer via the function call [`XOpenDisplay()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XOpenDisplay) which takes as argument the
-hardware display name. In GNU/Linux it's okay to pass `NULL`, in that case the parameter
+hardware display name. In Linux it's okay to pass `NULL`, in that case the parameter
 resolves to whatever the shell environment variable `DISPLAY` holds. If the call succeeds
 the function returns a pointer to the `Display` structure. In the Xlib context this
 encompasses not only the monitor for graphics output but also the keyboard, mouse, and other
@@ -650,7 +650,7 @@ the server is operating asynchronously a blocking call might result in a deadloc
 a situation in which the client is stuck indefinitely traversing an outdated event queue
 which does not contain the event the client cares about. This is particularly important
 for X11 client applications running in a Wayland-based Linux desktop. And this is even
-more relevant now than ever as major GNU/Linux distributions, such as Ubuntu and Fedora, are switching to [Wayland](https://www.theregister.com/2026/03/19/gnome_50/). So this
+more relevant now than ever as major Linux distributions, such as Ubuntu and Fedora, are switching to [Wayland](https://www.theregister.com/2026/03/19/gnome_50/). So this
 section aims to answer the question how to handle events of X11 client applications
 in both X11-based and Wayland-based Linux desktops.
 
@@ -922,7 +922,7 @@ To run the game from the command-line:
 ```
 
 where the dot slash means execute this relative to this path. This is important because if you are new
-to GNU/Linux you don't know that commands and executables must be in the PATH in order to run them.
+to Linux you don't know that commands and executables must be in the PATH in order to run them.
 By default, the current working directory is in the PATH so by using that notation you are saying the
 path of the executable is relative to the current directory.
 
@@ -1042,7 +1042,7 @@ the initial platform layer of my Handmade Hero game.
 By looking at pieces of the history of the development of Xlib from the commit logs
 I have truly developed a fondness for the Xlib project that I could not have obtained otherwise.
 I discovered the dedication of the developers
-that laid out the foundation for the desktop environments for GNU/Linux. The list of Xlib contributors
+that laid out the foundation for the desktop environments for Linux. The list of Xlib contributors
 is extensive but I would like to mention some notable ones.
 Keith Packard who has worked on the [development](https://www.xfree86.org/cvs/changes_4_2.html) of the
 X Windowing since the days of the XFree86 project and has continued doing so for Xlib until
@@ -1093,7 +1093,7 @@ In this section presents a list of the most relevant resources to learn about th
 
 - [Tronche's Xlib - C Language Interface](https://tronche.com/gui/x/xlib-tutorial/) This is the legacy (release 6 of the) X11 protocol C Language Interface by Christophe Tronche. It is worth mentioning that Tronche brought the Xlib documentation to the web before the X Consortium and this is why it is still a relevant, highly indexed, and searchable resource.
 
-- [Handmade Network Tour through Xlib and related technologies](https://handmade.network/forums/articles/t/2834-tutorial_a_tour_through_xlib_and_related_technologies) A practical tour of Xlib (creating the window, handling events, and working with the framebuffer) to get you on the fast track for developing the Handmade Hero game in GNU/Linux written by Florian Behr.
+- [Handmade Network Tour through Xlib and related technologies](https://handmade.network/forums/articles/t/2834-tutorial_a_tour_through_xlib_and_related_technologies) A practical tour of Xlib (creating the window, handling events, and working with the framebuffer) to get you on the fast track for developing the Handmade Hero game in Linux written by Florian Behr.
 
 ## Section 11: Credits
 
@@ -1103,8 +1103,8 @@ In this section presents a list of the most relevant resources to learn about th
 
 ## Section 12: Ports
 
-I would like to share some of the well known ports of Handmade Hero to GNU/Linux. I found about them while working on this post. I am sharing them because you may also find them to be useful.
+I would like to share some of the well known ports of Handmade Hero to Linux. I found about them while working on this post. I am sharing them because you may also find them to be useful.
 
-- [First GNU/Linux port of Handmade Hero](https://davidgow.net/handmadepenguin/) A series by David Gow on developing the platform layer for Handmade Penguin (a Linux port of Handmade Hero). David leverages the Simple Direct Media Layer (SDL) for handling graphics, sounds, and user input. This is useful for people that want to defer the hardships of implementing the platform layer with Xlib and ALSA.
+- [First Linux port of Handmade Hero](https://davidgow.net/handmadepenguin/) A series by David Gow on developing the platform layer for Handmade Penguin (a Linux port of Handmade Hero). David leverages the Simple Direct Media Layer (SDL) for handling graphics, sounds, and user input. This is useful for people that want to defer the hardships of implementing the platform layer with Xlib and ALSA.
 
-- [Multi-Platform Handmade Hero](https://github.com/laszlokorte/handmade-hero) A comprehensive implementation of Handmade Hero on various platforms Laszlo Korte. He has succeeded in porting the game to MacOS, iOS, Android, and GNU/Linux (both Wayland and X11). His work demonstrates that well designed game layer written in one platform can be easily ported to other platforms.
+- [Multi-Platform Handmade Hero](https://github.com/laszlokorte/handmade-hero) A comprehensive implementation of Handmade Hero on various platforms Laszlo Korte. He has succeeded in porting the game to MacOS, iOS, Android, and Linux (both Wayland and X11). His work demonstrates that well designed game layer written in one platform can be easily ported to other platforms.
