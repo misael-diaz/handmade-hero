@@ -191,7 +191,7 @@ To be clear, I do find it appealing to develop the platform layer of the game wi
 Another reason for using Xlib is that Handmade Hero has not been my first experience with game development.  I started learning about game development by reading Quake-II's source code and so by the time I found out about Handmade Hero I knew that Quake uses Xlib to put graphics on the screen in Linux. It was only natural to avail myself of the experience of diving into Quake's source code to develop my own Linux port of Handmade Hero.
 
 
-I would like to tell more about why not using a toolkit with more details here.  The strongest reason for not using a toolkit is because it hides the difficulties of dealing directly with visuals, a lesson on how computers work that I do not want to skip.  Some of those difficulties translate to the platform layer of the game. For example, if the visual is TrueColor (modern monitors) one has to work directly with RGB bitmasks so that the colors shown on the game window look right.  It is important to mention that the XServer (more on that later) still does the heavy lifting to determine the properties of the visual, such as if the visual is a TrueColor or PseudoColor type, whether it has a 16-bit or 24-bit depth, the RGB layout in memory (bitmasks), etc. To be precise, you can still experiment with RGB bitmasks with the GTK2 toolkit (see [here]( https://www.manpagez.com/html/gdk2/gdk2-2.24.24/gdk2-GdkRGB.php#gdk-draw-rgb-image)) but you must consider the pros and cons of adding another layer of abstraction to your application; probably, the answer to that lies with you (or with your team).
+I would like to tell more about why not using a toolkit with more details here.  The strongest reason for not using a toolkit is because it hides the difficulties of dealing directly with visuals, a lesson on how computers work that I do not want to skip.  Some of those difficulties translate to the platform layer of the game. For example, if the visual is TrueColor (modern monitors) one has to work directly with RGB bitmasks so that the colors shown on the game window look right.  It is important to mention that the X Server (more on that later) still does the heavy lifting to determine the properties of the visual, such as if the visual is a TrueColor or PseudoColor type, whether it has a 16-bit or 24-bit depth, the RGB layout in memory (bitmasks), etc. To be precise, you can still experiment with RGB bitmasks with the GTK2 toolkit (see [here]( https://www.manpagez.com/html/gdk2/gdk2-2.24.24/gdk2-GdkRGB.php#gdk-draw-rgb-image)) but you must consider the pros and cons of adding another layer of abstraction to your application; probably, the answer to that lies with you (or with your team).
 
 
 The last reason is the most personal one.  By the time I began my transition from Windows 7 to Ubuntu 9.10 (code named Karmic Koala) that Linux desktop shipped with libX11 version 1.2.2 (that can be verified via the [manifest](http://old-releases.ubuntu.com/releases/9.10/ubuntu-9.10-desktop-amd64.manifest)).  At that point Xlib already had the modernized XCB transport layer that made my Linux desktop experience so memorable. Knowing that GTK2 at that time was leveraging Xlib code heavily (as can be verified in the [source](https://gitlab.gnome.org/GNOME/gtk/-/tree/gtk-2-18?ref_type=heads)) to create the desktop environment makes me want to build the platform layer of my game with Xlib (call it nostalgia if you may).  Also my desktop is using a version of [Cinnamon](https://github.com/linuxmint/cinnamon) (a fork of GNOME2) that still depends on Xlib and so it is natural for me to stick with it. 
@@ -206,7 +206,7 @@ Xlib has a client-server architecture as illustrated in the following diagram:
 
 <p><img src="https://raw.githubusercontent.com/misael-diaz/handmade-hero/refs/heads/posts/posts/0-CreateGameWindow/img/client-server-architecture-diagram.png" alt="X11 Client-Server Architecture Diagram" width="100%"></p>
 
-The diagram shows that the XServer receives the user input from the keyboard and mouse.
+The diagram shows that the X Server receives the user input from the keyboard and mouse.
 The diagram shows that the applications that we use such as the browser and the console
 are clients, and that even the desktop environment is a client (in some Linux distributions).
 I would like to comment here that the shown diagram is a simplified illustration that does not delve
@@ -218,7 +218,7 @@ An interesting finding for me that helped me realize that even desktop environme
 can be found in the Cinnamon desktop environment source code. For context, the Cinnamon desktop
 environment is actively developed by Linux Mint developers.
 If you do look at its source code
-you will see that a connection to the XServer (via [`XOpenDisplay()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XOpenDisplay)) happens in the [main](
+you will see that a connection to the X Server (via [`XOpenDisplay()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XOpenDisplay)) happens in the [main](
 https://github.com/linuxmint/cinnamon/blob/bfc454e799f0284a3c2fd3a0ec11a716b2d425bb/src/main.c#L303)
 source file.
 
@@ -231,7 +231,7 @@ from the hardware, that is the job of the Linux kernel. And that is important be
 server implementation is modular.
 
 In general, a client application tells the
-XServer what operation it wants to do (such as drawing) and the server responds to the
+X Server what operation it wants to do (such as drawing) and the server responds to the
 request by performing that asynchronously. The motivation for this architecture is
 that it solves the problem of multiple clients competing for the same portion of the screen.
 
@@ -322,18 +322,18 @@ it to reinforce our understanding that Xlib is asynchronous. I do not recommend 
 write the platform layer of the game, instead use the macros to make your client code portable, readable,
 and maintainable.
 
-With those definitions we will be able to open a connection to the XServer, create the window for our game,
+With those definitions we will be able to open a connection to the X Server, create the window for our game,
 and put graphics on it (in a future post).
 
 ## <a id="subsection-7b-connecting-to-the-xserver"></a>Subsection 7-B: Connecting to the XServer
 
 The first step towards displaying a window with Xlib is to establish a connection with
-the XServer via the function call [`XOpenDisplay()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XOpenDisplay) which takes the
+the X Server via the function call [`XOpenDisplay()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XOpenDisplay) which takes the
 hardware display name as an argument. In Linux it's okay to pass `NULL`, in which case the parameter
 resolves to whatever the shell environment variable `DISPLAY` holds. If the call succeeds
 the function returns a pointer to the `Display` structure. In the Xlib context this
 encompasses not only the monitor for graphics output but also the keyboard, mouse, and other
-peripherals for capturing user input. On the other hand, if the connection to the XServer fails,
+peripherals for capturing user input. On the other hand, if the connection to the X Server fails,
 the function returns a `NULL` pointer and the code should stop and return an error
 message for the user.
 
@@ -350,10 +350,10 @@ if (!display) {
 }
 ```
 
-Behind the scenes `XOpenDisplay()` in Linux opens a socket in non-blocking mode to connect to the XServer
+Behind the scenes `XOpenDisplay()` in Linux opens a socket in non-blocking mode to connect to the X Server
 so that the server may handle requests from multiple clients asynchronously.
-If the XServer is
-running in localhost then the connection to the XServer happens through a Unix socket for performance.
+If the X Server is
+running in localhost then the connection to the X Server happens through a Unix socket for performance.
 It is interesting to note that the code that performs the socket connection is not present in Xlib, but rather
 in libXCB.
 
@@ -361,18 +361,18 @@ The file descriptor of the socket is stored in the Display structure. I am menti
 Xlib keeps the file descriptor around for subsequent manipulations via `fcntl` calls, not because
 we are expected to read (write) from (to) the socket ourselves.
 Display also contains other useful
-info that's fetched from the XServer such as the minimum and maximum values of the keyboard codes
+info that's fetched from the X Server such as the minimum and maximum values of the keyboard codes
 (we care about this for handling user input), the number of screens, the default graphics
 context, etc.
 
-From the XServer we also get valuable information about the screens such as the default dimensions
+From the X Server we also get valuable information about the screens such as the default dimensions
 (width and height), the values of the white and black pixels, the screen depth, and the visual information.
-In particular the visual info stores the RGB masks so that we know what the RGB layout that the XServer
+In particular the visual info stores the RGB masks so that we know what the RGB layout that the X Server
 expects for packing the pixel data; otherwise, the colors that you see on the screen are not going to be what
 you might expect.
 
 Xlib also gets the default screen by parsing the DISPLAY environment variable by calling dedicated libXCB
-utils. For example if `DISPLAY` is `:0` we know that the XServer is running in localhost and that the default
+utils. For example if `DISPLAY` is `:0` we know that the X Server is running in localhost and that the default
 screen number is zero. This matters to us because we use the default screen for our game window as you
 will see shortly.
 
@@ -386,7 +386,7 @@ The other recommendation is to read the [Xlib](https://github.com/id-Software/Qu
 an idea of the Xlib code needed to develop a solid platform layer of the game. Chances are that you will need to adapt the code for the Handmade Hero game but that is part of the exploration that you want to get into.
 
 The following snippet borrowed from the Xlib official documentation shows that to create a simple window
-via [`XCreateSimpleWindow()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XCreateSimpleWindow) one needs to have an active connection to the XServer (a display), a parent window, coordinates with
+via [`XCreateSimpleWindow()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XCreateSimpleWindow) one needs to have an active connection to the X Server (a display), a parent window, coordinates with
 respect to the top-left corner of the parent window, window dimensions (width and height),
 a border width which can be zero for our purposes, and colors for the border and background:
 
@@ -443,11 +443,11 @@ Window window = XCreateSimpleWindow(
 ```
 
 Bear in mind that this alone will not make the window visible and this could be a little surprising
-at first because we are used to thinking with an Object-Oriented Programming OOP mindset. 
+at first because we are used to the Object-Oriented Programming OOP mindset. 
 We might expect that the `Window` is an object but
-that is not the case, it is an Xlib resource Id `XID` of 64-bits in size (`typedef unsigned long XID;`). What
+that is not the case, it is an Xlib resource ID (`XID`) of 64-bits in size (`typedef unsigned long XID;`). What
 happens under the hood is that the request for creating a window is stored in the `Display` data structure.
-That means that the XServer knows nothing about this until we explicitly ask the server to
+That means that the X Server knows nothing about this until we explicitly ask the server to
 process this request (more of that later because we still have work to do).
 Xlib behaves this way for performance, it stacks our requests until the time is right for processing them. When the server does process the request it will allocate memory for
 the window but that memory region is not accessible from client applications (it is
@@ -517,8 +517,8 @@ The underlying size of the `Atom` is platform dependent (either 32 or 64-bit int
 The magic number `8` tells the server that the property should be interpreted in chunks of 8-bits which make sense for strings. 
 The `PropModeReplace` instructs the server to replace whatever it had stored for that property.
 If the name that we provide is a NULL pointer or if its length exceeds the maximum
-storage size it returns zero to indicate that an error has ocurred. This behavior is not explicitly mentioned
-in the man page; however, the official [Xlib documentation](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Errors) state that zero status is used to hint errors. In this case it is up for the client
+storage size it returns zero to indicate that an error has occurred. This behavior is not explicitly mentioned
+in the man page; however, the official [Xlib documentation](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Errors) states that zero status is used to hint errors. In this case it is up for the client
 application to check the status and up to the developer to determine what was the cause. This is a good
 example that the source code itself is the ultimate documentation.
 
@@ -530,11 +530,11 @@ that is the topic of the next section.
 
 ## <a id="subsection-7d-mapping-the-window"></a>Subsection 7-D: Mapping the Window
 
-To make our game window visible we need to add a window mapping request to the XServer. The
+To make our game window visible we need to add a window mapping request to the X Server. The
 Xlib function that allows us to place that request is [`XMapWindow()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XMapWindow). But before doing that
 we have to modify the attributes of our game window so that it responds to expose events.
 
-By design, the XServer will not send events unless the client application requests them. From the
+By design, the X Server will not send events unless the client application requests them. From the
 context of the ongoing discussion if our game window is not configured to handle (graphics) expose events
 the server will not send any.
 The interested reader might want to consult this
@@ -546,7 +546,7 @@ application will hang there indefinitely (a deadlock).
 
 To change the attributes of our game window we must call [`XChangeWindowAttributes()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XChangeWindowAttributes) with an instance of the
 [`XSetWindowAttributes`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Window_Attributes) data structure. For the objective of making the window ready for graphics display
-all that we need to do is to tell the XServer that we want
+all that we need to do is to tell the X Server that we want
 to respond to graphics exposure events and therefore we must set the `event_mask` field
 with the `ExposureMask` in this way:
 
@@ -604,7 +604,7 @@ The call in our code would look like this:
 XChangeWindowAttributes(display, window, CWEventMask, &template);
 ``` 
 
-Now we are in a good position to place the request of mapping the game window to the XServer to
+Now we are in a good position to place the request of mapping the game window to the X Server to
 mark it as eligible for display via the `XMapWindow`.
 The function takes as arguments our display and Window Id:
 
@@ -613,7 +613,7 @@ XMapWindow(display, window);
 ```
 
 It's worth noting that at this point we are still adding requests to our display structure locally, the
-XServer is unaware of our intentions until we call `XWindowEvent` to wait for the expose
+X Server is unaware of our intentions until we call `XWindowEvent` to wait for the expose
 event so that our game window becomes visible. This can be confirmed by looking at the display data:
 
 ```gdb
@@ -753,7 +753,7 @@ to a minimum I decided to stick with `fread`.
 
 ## <a id="subsection-7g-destroying-the-window"></a>Subsection 7-G: Destroying the Window
 
-As mentioned in the [creating](#Creating-a-Window-for-the-Game) a window section the XServer allocates
+As mentioned in the [creating](#Creating-a-Window-for-the-Game) a window section the X Server allocates
 resources for the game window and so the right thing to do is to request the server to destroy it before we
 close the connection.
 The server will destroy all the properties associated to that window and decrement the global
@@ -775,13 +775,13 @@ destroy request and when the resources allocated on the server side will be free
 ## <a id="subsection-7h-closing-the-display"></a>Subsection 7-H: Closing the Display
 
 At the end of the program you want to close the display via [`XCloseDisplay()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Closing_the_Display) so that Xlib's internal data structures get
-freed from the heap memory and to close the socket used for communicating with the XServer via:
+freed from the heap memory and to close the socket used for communicating with the X Server via:
 
 ```c
 XCloseDisplay(display);
 ```
 
-As mentioned in the preceding [section](#Destroying-the-Window) the XServer performs a final synchronization
+As mentioned in the preceding [section](#Destroying-the-Window) the X Server performs a final synchronization
 via [`XSync()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XSync) to send requests in the output buffer (this feature is also mentioned in the man page).
 
 ## <a id="subsection-7i-initial-platform-layer-of-the-game"></a>Subsection 7-I: Initial Platform Layer of the Game
@@ -994,7 +994,7 @@ screen (a shared resource) concurrently; it is the server that processes and res
 update the screen framebuffer.
 
 - We also found out that in Xlib the display refers to the
-connection to the XServer which manages the screens
+connection to the X Server which manages the screens
 (for graphics output) along with the peripherals such
 as the keyboard, mouse, or game console controller (for user input).
 
