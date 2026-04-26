@@ -1021,10 +1021,10 @@ need synchronization such as `XWindowEvent` flush the output buffer and block un
 
 ## Section 9: Final Thoughts
 
-In this current world of software which is comprised by multiple layers of code that we cannot simply
-discard or choose not to use it because it is integral to the code that we write, at least we can dive
+In this current world of software which is comprised of multiple layers of code that we cannot simply
+discard or choose not to use them because they are integral to the code that we write, at least we can dive
 into it to write better software. For example, if you are a frontend engineer developing with Next.js
-maybe taking your coding to the next level means to dive into React's implementation to find out what
+maybe taking your coding to the next level means diving into React's implementation to find out what
 happens under the hood. Maybe by doing just that you will know enough about React to write better code
 and discover things about JavaScript that you did not know. And I mention this because by diving into
 Xlib's implementation I was able to see why just calling `XCreateSimpleWindow` will not just make the
@@ -1053,7 +1053,7 @@ and contributed the Xlib project from
 to
 [2011](https://gitlab.freedesktop.org/xorg/lib/libx11/-/commit/83e1ba59c48c79f8b0a7e7aa0b9c9cfd84fa403d);
 it is also remarkable that during that same time he was also developing libxcb.
-But what it is more impressive is that he kept reviewing code submitted to the Xlib project until
+But what it is even more impressive is that he kept reviewing code submitted to the Xlib project until
 [2017](https://gitlab.freedesktop.org/xorg/lib/libx11/-/commit/2d20890e7ffd3ee88a9ceb25cdd2ac1fe7aaceb6).
 It was interesting to see a commit log from Keith Packard mentioning that Jamey Sharp was looking over his
 shoulder while he was working on fixing an issue with the XCB transport layer
@@ -1076,7 +1076,7 @@ I am assigning the readers (that have made it up to this point) the task of answ
 what of that craftsmanship evinced by these developers they need as a foundation to be outstanding
 software developers.
 
-Stayed tuned for the next post.
+Stay tuned for the next post.
 
 ## Section 10: References
 
