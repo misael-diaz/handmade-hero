@@ -19,8 +19,6 @@ FUTURE:
 - ALSO LINK THE POST ITSELF TO YOUR GITHUB FOR SEO
 
 TODO:
-- SHOW THE POLLING VERSION FOR XWAYLAND CLIENT APPS FOR SEO AND USE THAT VERSION IN
-  THE FINAL SRC CODE LISTING.
 - UPDATE TAGS IN POSTING SITE
 - IMPROVE REASONS FOR STICKING WITH XLIB
 
@@ -853,11 +851,17 @@ int main() {
     XMapWindow(display, window);
 
 /*
-    We wait for the expose event to happen and continue execution after that. Without blocking by reading from
-    standard input the game window may not have time to show up before we close the connection to the server.
+    Use polling to handle async XWayland communications with the client while retaining backwards
+    compatibility with X11-based Linux desktops. The client waits for the expose event to happen so that
+    the game window becomes visible. Note that without blocking the client by reading from standard
+    input the game window may not have time to show up before we close the connection to the server.
 */
-    XEvent ev = {};
-    XWindowEvent(display, window, ExposureMask, &ev);
+    while (1) {
+	XEvent ev = {};
+	if (XCheckWindowEvent(display, window, ExposureMask, &ev)) {
+		    break;
+	}
+    }
 
     char c = 0;
     fprintf(stdout, "%s", "game paused, press enter to continue\n");
