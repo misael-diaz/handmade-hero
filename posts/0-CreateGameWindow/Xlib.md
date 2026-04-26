@@ -529,43 +529,30 @@ We can see that the sequence number of last request read has not mutated but the
 
 ## <a id="subsection-7e-expose-events"></a>Subsection 7-E: Expose Events
 
-As we saw in the previous section mapping the window does not make it show up, instead
-it batches the request into the output buffer. To make the window visible we need to
-flush the output buffer and wait for the server to send the Expose event. Xlib provides
-blocking and non-blocking function calls, it is up to the developer to make the code
-on the client side capable of handling asynchronous requests. To make this clear, if
-the server is operating asynchronously a blocking call might result in a deadlock &mdash
-a situation in which the client is stuck indefinitely traversing an outdated event queue
-that does not contain the event the client cares about. This is particularly important
-for X11 client applications running in a Wayland-based Linux desktop. And this is even
-more relevant now than ever as major Linux distributions, such as Ubuntu and Fedora, are switching to [Wayland](https://www.theregister.com/2026/03/19/gnome_50/). Therefore, this
-section aims to answer the question how to handle events of X11 client applications
-in both X11-based and Wayland-based Linux desktops.
+As we saw in the previous section mapping the window does not make it show up, instead it batches the request into the output buffer. To make the window visible we need to flush the output buffer and wait for the server to send the Expose event. Xlib provides blocking and non-blocking function calls, it is up to the developer to make the code on the client side capable of handling asynchronous requests. To make this clear, if the server is operating asynchronously a blocking call might result in a deadlock &mdash a situation in which the client is stuck indefinitely traversing an outdated event queue that does not contain the event the client cares about. This is particularly important for X11 client applications running in a Wayland-based Linux desktop. And this is even more relevant now than ever as major Linux distributions, such as Ubuntu and Fedora, are switching to [Wayland](https://www.theregister.com/2026/03/19/gnome_50/). Therefore, this section aims to answer the question how to handle events of X11 client applications in both X11-based and Wayland-based Linux desktops.
 
-We start by talking about the blocking (or synchronous) approach that is compatible with X11-based Linux desktops in the context of Handmade Hero. 
+
+We start by talking about the blocking (or synchronous) approach that is compatible with X11-based Linux desktops in the context of Handmade Hero.
 
 ### <a id="subsection-7e1-handling-expose-events-in-x11based-linux-desktops"></a>Subsection 7-E-1: Handling Expose Events in X11-based Linux desktops
 
-In the context of writing the code that makes the game window visible all we need
-to call is the [`XWindowEvent()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XWindowEvent). The signature of that function is the following:
+In the context of writing the code that makes the game window visible all we need to call is the [`XWindowEvent()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XWindowEvent). The signature of that function is the following:
+
 
 ```c
 int XWindowEvent(Display *display, Window w, long event_mask, XEvent *event_return);
 ```
 
-again we have the display and the window id, we also need to pass the event-mask `ExposureMask`
-of the Expose event, and a pointer to an `XEvent` data structure:
+again we have the display and the window id, we also need to pass the event-mask `ExposureMask` of the Expose event, and a pointer to an `XEvent` data structure:
+
 
 ```c
 XEvent ev = {};
 XWindowEvent(display, window, ExposureMask, &ev);
 ```
 
-The `XWindowEvent()` call will block until the game window comes into view, which is one of the conditions that causes the server to send
-the Expose event, as stated in the official documentation for [expose-events](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Expose_Events). 
-Because of our use of `XWindowEvent()` the only event
-that gets pushed out of the event queue is the Expose event, all the other events are preserved in the
-event queue.
+The `XWindowEvent()` call will block until the game window comes into view, which is one of the conditions that causes the server to send the Expose event, as stated in the official documentation for [expose-events](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Expose_Events).  Because of our use of `XWindowEvent()` the only event that gets pushed out of the event queue is the Expose event, all the other events are preserved in the event queue.
+
 
 We can verify with gdb that the sequence number of the last request read now matches the current one:
 
@@ -591,13 +578,11 @@ The game window should now be visible on your screen.
 
 ### <a id="subsection-7e2-handling-expose-events-in-waylandbased-linux-desktops"></a>Subsection 7-E-2: Handling Expose Events in Wayland-based Linux desktops
 
-Wayland supports running X11 client applications via XWayland, which is based on the
-original code for the X11 server. In a nutshell, XWayland acts as an intermediary layer
-that translates the X11 protocol between client X11 window applications and the Wayland compositor. In modern software development you can think of this as another layer of abstraction
-that adds an overhead to the process of displaying graphics and handling user input.
+Wayland supports running X11 client applications via XWayland, which is based on the original code for the X11 server. In a nutshell, XWayland acts as an intermediary layer that translates the X11 protocol between client X11 window applications and the Wayland compositor. In modern software development you can think of this as another layer of abstraction that adds an overhead to the process of displaying graphics and handling user input.
 
-The polling version of the code compared to the one we used for X11-based Linux desktops could be written this way for
-the Wayland counterparts:
+
+The polling version of the code compared to the one we used for X11-based Linux desktops could be written this way for the Wayland counterparts:
+
 
 ```c
 while (1) {
@@ -608,19 +593,19 @@ while (1) {
 }
 ```
 
-Note that the choice of looping indefinitely is deliberate to expose the asynchronous nature of the communication with the XWayland layer;
-we don't know when the client will receive the Expose event. We are not going to do anything special with the event itself and this is why it is scoped to the while block. The [`XCheckWindowEvent()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XCheckWindowEvent) polls for the specified Expose event, if the event is found in the event queue, the function moves the event into the `XEvent` structure and returns true, otherwise it returns false to signal that such an event is not in the queue (in this case the event structure retains its zero initialization). The `XCheckWindowEvent()` function can be thought to be an efficient find and remove from the queue operation in one go for performance.
+Note that the choice of looping indefinitely is deliberate to expose the asynchronous nature of the communication with the XWayland layer; we don't know when the client will receive the Expose event. We are not going to do anything special with the event itself and this is why it is scoped to the while block. The [`XCheckWindowEvent()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XCheckWindowEvent) polls for the specified Expose event, if the event is found in the event queue, the function moves the event into the `XEvent` structure and returns true, otherwise it returns false to signal that such an event is not in the queue (in this case the event structure retains its zero initialization). The `XCheckWindowEvent()` function can be thought to be an efficient find and remove from the queue operation in one go for performance.
 
-To avoid wasting CPU cycles on the polling you may want to use a high resolution clock such as [`clock_nanosleep`](https://man7.org/linux/man-pages/man2/clock_nanosleep.2.html) just before stepping into the next while-loop cycle. To avoid shifting the attention into that I am not going to discuss that here. Just mentioning it to motivate you to explore this on your own.
 
+To avoid wasting CPU cycles on the polling you may want to use a high resolution clock such as [`clock_nanosleep`](https://man7.org/linux/man-pages/man2/clock_nanosleep.2.html) just before stepping into the next while-loop cycle. To avoid shifting the attention into that I am not going to discuss that here. Just mentioning it to motivate you to explore this on your own. 
+ 
 Regardless of the platform you should be able to see the game window.
 
 <p><img src="https://raw.githubusercontent.com/misael-diaz/handmade-hero/refs/heads/posts/posts/0-CreateGameWindow/img/x11-window-handmade-game.png" alt="X11 Client Window of the Handmade Hero Game" width="100%"></p>
 
 ## <a id="subsection-7f-pausing-the-game"></a>Subsection 7-F: Pausing the Game
 
-One thing that you want to do is to pause the game to be able to see the window on your screen and this
-can be done simply by requesting a read from standard input:
+One thing that you want to do is to pause the game to be able to see the window on your screen and this can be done simply by requesting a read from standard input:
+
 
 ```c
 char c = 0;
@@ -628,37 +613,22 @@ fprintf(stdout, "%s", "game paused, press enter to continue\n");
 fread(&c, sizeof(c), 1, stdin);
 ```
 
-where the `fprintf` shows an instructive message to the user (the game is paused and press enter to
-continue) on standard output. And the function `fread` is used to read a byte from the input stream `stdin`.
-The `fread` call
-is a blocking call and that means that the code will not proceed until a character has been read,
-effectively pausing our game. Note that the variable `c` is just a placeholder for the byte to be read.
-The `sizeof()` function is commonly used by Linux kernel programmers to write type independent code
-(the placeholder may change but the fact that we intend to write into the entire placeholder will not).
-The magic number one after `sizeof` tells us that we only want to read one item of size `sizeof(c)`. This
-could be a little strange at first and this is why I prefer to use `read` instead but to keep things
-to a minimum I decided to stick with `fread`.
+where the `fprintf` shows an instructive message to the user (the game is paused and press enter to continue) on standard output. And the function `fread` is used to read a byte from the input stream `stdin`.  The `fread` call is a blocking call and that means that the code will not proceed until a character has been read, effectively pausing our game. Note that the variable `c` is just a placeholder for the byte to be read.  The `sizeof()` function is commonly used by Linux kernel programmers to write type independent code (the placeholder may change but the fact that we intend to write into the entire placeholder will not).  The magic number one after `sizeof` tells us that we only want to read one item of size `sizeof(c)`. This could be a little strange at first and this is why I prefer to use `read` instead but to keep things to a minimum I decided to stick with `fread`.
+
 
 ## <a id="subsection-7g-destroying-the-window"></a>Subsection 7-G: Destroying the Window
 
-As mentioned in the [creating](#Creating-a-Window-for-the-Game) a window section the X Server allocates
-resources for the game window and so the right thing to do is to request the server to destroy it before we
-close the connection.
-The server will destroy all the properties associated with that window and decrement the global
-property registry accordingly.
+As mentioned in the [creating](#Creating-a-Window-for-the-Game) a window section the X Server allocates resources for the game window and so the right thing to do is to request the server to destroy it before we close the connection.  The server will destroy all the properties associated with that window and decrement the global property registry accordingly.
 
-Destroying the game window can be done by calling [`XDestroyWindow()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XDestroyWindow) :
+
+Destroying the game window can be done by calling [`XDestroyWindow()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XDestroyWindow): 
 
 ```c
 XDestroyWindow(display, window);
 ```
 
-As you can see the function takes the usual display pointer and window resource Id.
-If you look at the implementation of `XDestroyWindow()` in `Xlib` you will find that it stores the
-destroy window request in the display structure.
-There is no implicit synchronization, it is not really needed, because
-closing the display does the final synchronization. That's when the server will receive the
-destroy request and when the resources allocated on the server-side will be freed.
+As you can see the function takes the usual display pointer and window resource Id.  If you look at the implementation of `XDestroyWindow()` in `Xlib` you will find that it stores the destroy window request in the display structure.  There is no implicit synchronization, it is not really needed, because closing the display does the final synchronization. That's when the server will receive the destroy request and when the resources allocated on the server-side will be freed.
+
 
 ## <a id="subsection-7h-closing-the-display"></a>Subsection 7-H: Closing the Display
 
