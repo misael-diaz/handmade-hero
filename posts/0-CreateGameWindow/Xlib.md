@@ -244,11 +244,11 @@ It helps to bear these aspects of Xlib in mind when reading X client application
 ## Section 6: Installing dependencies
 
 If you want to follow along you would probably need to install the development libraries
-for creating client X11 applications. If you have not done that before the likeliness is
-that they may not be installed in your system even if your desktop environment still
+for creating client X11 applications. If you have not done that before it is likely
+that they may not be installed on your system even if your desktop environment still
 uses Xlib.
 
-On Debian based distributions (such as Ubuntu and Linux Mint) you can do so by
+On Debian-based distributions (such as Ubuntu and Linux Mint) you can do so by
 invoking the package manager from the command-line:
 
 ```sh
@@ -258,7 +258,7 @@ sudo apt install libx11-dev libx11-doc
 - `libx11-dev` package provides the client interface to Xlib
 - `libx11-doc` provides the official Xlib documentation as man pages
 
-For example if you wish to consult the documentation for opening a display (more on that later)
+For example, if you wish to consult the documentation for opening a display (more on that later)
 you can use the command-line string:
 
 ```sh
