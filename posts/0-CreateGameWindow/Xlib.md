@@ -648,9 +648,9 @@ blocking and non-blocking function calls, it is up to the developer to make the 
 on the client side capable of handling asynchronous requests. To make this clear, if
 the server is operating asynchronously a blocking call might result in a deadlock &mdash
 a situation in which the client is stuck indefinitely traversing an outdated event queue
-which does not contain the event the client cares about. This is particularly important
+that does not contain the event the client cares about. This is particularly important
 for X11 client applications running in a Wayland-based Linux desktop. And this is even
-more relevant now than ever as major Linux distributions, such as Ubuntu and Fedora, are switching to [Wayland](https://www.theregister.com/2026/03/19/gnome_50/). So this
+more relevant now than ever as major Linux distributions, such as Ubuntu and Fedora, are switching to [Wayland](https://www.theregister.com/2026/03/19/gnome_50/). Therefore, this
 section aims to answer the question how to handle events of X11 client applications
 in both X11-based and Wayland-based Linux desktops.
 
@@ -658,7 +658,7 @@ We start by talking about the blocking (or synchronous) approach that is compati
 
 ### <a id="subsection-7e1-handling-expose-events-in-x11based-linux-desktops"></a>Subsection 7-E-1: Handling Expose Events in X11-based Linux desktops
 
-In the context of writing the code that makes the game window visible all that we need
+In the context of writing the code that makes the game window visible all we need
 to call is the [`XWindowEvent()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XWindowEvent). The signature of that function is the following:
 
 ```c
@@ -666,7 +666,7 @@ int XWindowEvent(Display *display, Window w, long event_mask, XEvent *event_retu
 ```
 
 again we have the display and the window id, we also need to pass the event-mask `ExposureMask`
-of the Expose event, and a pointer to the `XEvent` data structure:
+of the Expose event, and a pointer to an `XEvent` data structure:
 
 ```c
 XEvent ev = {};
