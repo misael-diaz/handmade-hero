@@ -530,12 +530,12 @@ that is the topic of the next section.
 
 ## <a id="subsection-7d-mapping-the-window"></a>Subsection 7-D: Mapping the Window
 
-To make our game window visible we need to add a window mapping request to the X Server. The
+To make our game window visible, we need to add a window mapping request to the X Server. The
 Xlib function that allows us to place that request is [`XMapWindow()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XMapWindow). But before doing that
-we have to modify the attributes of our game window so that it responds to expose events.
+we have to modify the attributes of our game window so that it responds to Expose events.
 
 By design, the X Server will not send events unless the client application requests them. From the
-context of the ongoing discussion if our game window is not configured to handle (graphics) expose events
+context of the ongoing discussion if our game window is not configured to handle (graphics) Expose events
 the server will not send any.
 The interested reader might want to consult this
 [resource](https://tronche.com/gui/x/xlib/window/attributes/) for verification.
@@ -572,9 +572,9 @@ Note that these [event-masks](https://www.x.org/releases/current/doc/libX11/libX
 ```
 
 Just for displaying our game window we only need to set the `event_mask` with the `ExposureMask` and
-nothing else really (a future post will address user input).
+nothing else, really (a future post will address user input).
 
-The function [`XChangeWindowAttributes()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XChangeWindowAttributes) enable us to change the window attributes, which has the following signature:
+The function [`XChangeWindowAttributes()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XChangeWindowAttributes) enables us to change the window attributes, which has the following signature:
 
 ```c
 int XChangeWindowAttributes(
@@ -643,7 +643,7 @@ request sequence number adds up perfectly.
 
 As we saw in the previous section mapping the window does not make it show up, instead
 it batches the request into the output buffer. To make the window visible we need to
-flush the output buffer and wait for the server to send the expose event. Xlib provides
+flush the output buffer and wait for the server to send the Expose event. Xlib provides
 blocking and non-blocking function calls, it is up to the developer to make the code
 on the client side capable of handling asynchronous requests. To make this clear, if
 the server is operating asynchronously a blocking call might result in a deadlock &mdash
@@ -666,7 +666,7 @@ int XWindowEvent(Display *display, Window w, long event_mask, XEvent *event_retu
 ```
 
 again we have the display and the window id, we also need to pass the event-mask `ExposureMask`
-of the expose event, and a pointer to the `XEvent` data structure:
+of the Expose event, and a pointer to the `XEvent` data structure:
 
 ```c
 XEvent ev = {};
@@ -674,9 +674,9 @@ XWindowEvent(display, window, ExposureMask, &ev);
 ```
 
 The `XWindowEvent()` call will block until the game window comes into view, which is one of the conditions that causes the server to send
-the expose event, as stated in the official documentation for [expose-events](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Expose_Events). 
+the Expose event, as stated in the official documentation for [expose-events](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Expose_Events). 
 Because of our use of `XWindowEvent()` the only event
-that gets pushed out of the event queue is the expose event, all the other events are preserved in the
+that gets pushed out of the event queue is the Expose event, all the other events are preserved in the
 event queue.
 
 We can verify with gdb that the sequence number of the last request read now matches the current one:
@@ -721,7 +721,7 @@ while (1) {
 ```
 
 Note that the choice of looping indefinitely is deliberate to expose the asynchronous nature of the communication with the XWayland layer;
-we don't know when the client will receive the expose event. We are not going to do anything special with the event itself and this is why it is scoped to the while block. The [`XCheckWindowEvent()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XCheckWindowEvent) polls for the specified expose event, if the event is found in the event queue the function moves the event into the `XEvent` structure and returns true, otherwise it returns false to signal that such event is not in the queue (in this case the event structure retains its zero initialization). The `XCheckWindowEvent()` function can be thought to be an efficient find and remove from the queue operation in one go for performance.
+we don't know when the client will receive the Expose event. We are not going to do anything special with the event itself and this is why it is scoped to the while block. The [`XCheckWindowEvent()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XCheckWindowEvent) polls for the specified Expose event, if the event is found in the event queue the function moves the event into the `XEvent` structure and returns true, otherwise it returns false to signal that such event is not in the queue (in this case the event structure retains its zero initialization). The `XCheckWindowEvent()` function can be thought to be an efficient find and remove from the queue operation in one go for performance.
 
 To avoid wasting CPU cycles on the polling you may want to use a high resolution clock such as [`clock_nanosleep`](https://man7.org/linux/man-pages/man2/clock_nanosleep.2.html) just before stepping into the next while-loop cycle. To avoid shifting the attention into that I am not going to discuss that here. Just mentioning it to motivate you to explore this on your own.
 
@@ -835,7 +835,7 @@ int main() {
     Setting Window Properties and Attributes. Naming the window feels good, knowing that the name is stored on
     the server side along the other window properties makes you think of X11 window application developement
     as modifying the state of a state machine. This is good to have in mind because not all Xlib calls
-    involve visible changes on your screen. We need to tell the server that we care about expose events to
+    involve visible changes on your screen. We need to tell the server that we care about Expose events to
     be able to know how much we need to wait on the client side for the event to happen, this reveals the
     async nature of the X11 windowing system.
 */
@@ -852,7 +852,7 @@ int main() {
 
 /*
     Use polling to handle async XWayland communications with the client while retaining backwards
-    compatibility with X11-based Linux desktops. The client waits for the expose event to happen so that
+    compatibility with X11-based Linux desktops. The client waits for the Expose event to happen so that
     the game window becomes visible. Note that without blocking the client by reading from standard
     input the game window may not have time to show up before we close the connection to the server.
 */
