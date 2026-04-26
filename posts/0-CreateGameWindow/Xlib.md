@@ -802,7 +802,7 @@ int main() {
 /*
     Think of opening the display as connecting to the default session of the X11 server. When you pass
     zero or NULL to this function it tells the client to lookup the default from your system configuration.
-    More specifically the shell environment variable DISPLAY. This is more portable and less error prone
+    More specifically the shell environment variable DISPLAY. This is more portable and less error-prone
     than typing it yourself. If there is an error the display will be NULL and so the application informs
     the user about the problem and returns the general purpose error code.
 */
@@ -832,12 +832,12 @@ int main() {
     );
 
 /*
-    Setting Window Properties and Attributes. Naming the window feels good, knowing that the name is stored on
-    the server side along the other window properties makes you think of X11 window application developement
+    Setting Window Properties and Attributes. Naming the window feels good; knowing that the name is stored on
+    the server-side along with other window properties makes you think of X11 window application development
     as modifying the state of a state machine. This is good to have in mind because not all Xlib calls
     involve visible changes on your screen. We need to tell the server that we care about Expose events to
     be able to know how much we need to wait on the client side for the event to happen, this reveals the
-    async nature of the X11 windowing system.
+    asynchronous nature of the X11 windowing system.
 */
     XStoreName(display, window, "Handmade Hero");
     XSetWindowAttributes template = {};
