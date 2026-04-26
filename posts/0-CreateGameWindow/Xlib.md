@@ -39,10 +39,10 @@ The next section presents a table of contents for quick navigation in the hope t
 
 ## Table of Contents
 
-Use the table of contents to get an outline of the post and to navigate to the sections that you might want to read next time you come back.
+Use the table of contents to view an outline of the post and to navigate to the sections that you might want to revisit.
 
 
-If you are here for the source code you can copy it from [here](#initial-platform-layer-of-the-game).
+If you are here for the source code, you can copy it from [Subsection 7-I](#subsection-7i-initial-platform-layer-of-the-game).
 
 - [Section 1: Why learning from Handmade Hero still matters](
 	#section-1-why-learning-from-handmade-hero-still-matters
@@ -116,7 +116,7 @@ If you are here for the source code you can copy it from [here](#initial-platfor
 - [Section 10: References](
 	#section-10-references
 )
-* [Section 11: Credits](
+- [Section 11: Credits](
 	#section-11-credits
 )
 - [Section 12: Ports](
