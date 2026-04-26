@@ -921,10 +921,9 @@ To run the game from the command-line:
 ./linux-handmade.bin
 ```
 
-where the dot slash means execute this relative to this path. This is important because if you are new
-to Linux you don't know that commands and executables must be in the PATH in order to run them.
-By default, the current working directory is in the PATH so by using that notation you are saying the
-path of the executable is relative to the current directory.
+where the dot slash (`./`) prefix tells the shell to look for the executable in the current directory. This is important because if you are new
+to Linux, you don't know that commands and executables must be in the PATH in order to run them.
+For those executable that are not in the path the dot slash prefix is required as in this case.
 
 ## <a id="subsection-7l-checking-memory-leaks-with-valgrind"></a>Subsection 7-L: Checking Memory Leaks with Valgrind
 
