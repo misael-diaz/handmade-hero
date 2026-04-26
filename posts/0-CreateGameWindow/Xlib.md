@@ -927,9 +927,9 @@ For those executable that are not in the path the dot slash prefix is required a
 
 ## <a id="subsection-7l-checking-memory-leaks-with-valgrind"></a>Subsection 7-L: Checking Memory Leaks with Valgrind
 
-Valgrind is a tool suite for debugging and profiling programs. I use often to check for memory leaks
+Valgrind is a tool suite for debugging and profiling programs. I use it often to check for memory leaks
 at the end of the program. In the context of our simple client application we are making sure that
-by calling `XCloseDisplay()` all the internals allocated in the heap memory are freed. In Xlib there
+by calling `XCloseDisplay()` all the internals allocated in the heap memory are freed. In Xlib, there
 are some resources that we need to free ourselves by calling `XFree`; there are others and so it
 is important to check the official documentation for the right function call to free a resource.
 
@@ -965,13 +965,13 @@ game paused, press enter to continue
 We can see that in the heap summary the system reports 91 allocations (on the heap) and 91 frees and so
 this means that by calling `XCloseDisplay()` we have made sure that the client application releases
 its memory to the operating system. Even if we don't do that the operating system will reclaim the
-memory anyways but it's a good practice to do so. The edge of doing these checks periodically during
+memory anyways but it's a good practice to do so. The benefit of doing these checks periodically during
 development is that you can find errors related to memory more easily, reducing the time needed to
 find the faulty line of code.
 
 I would like to mention that leaving out `XDestroyWindow()` from the client code would not affect
 the total heap usage results. The reason for that is that the memory for the window is allocated
-by the server this request instructs the server to destroy the window and its properties. And even
+by the server; this request instructs the server to destroy the window and its properties. And even
 if we miss the call (due to a crash for example) the server will free the resources allocated to
 the client and that of course includes the window.
 
