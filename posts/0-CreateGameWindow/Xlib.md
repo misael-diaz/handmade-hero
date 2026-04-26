@@ -144,7 +144,7 @@ As a result of this trend, software developers write code less frequently, and t
 A practical way of addressing this situation is to work on an engaging side project that keeps your ability to engineer solutions through the act of writing code sharp. This means that as technology improves and we learn better ways to integrate AI into our workflow our craftsmanship not only remains but evolves.
 
 
-For me, that engaging side project has been [Handmade Hero](https://www.youtube.com/watch?v=I5fNrmQYeuI&list=PLnuhp3Xd9PYTt6svyQPyRO_AAuMWGxPzU). Handmade Hero is a low-level systems engineering series that legendary engine developer Casey Muratori streamed for a period of two years to teach developers how computers work and how to write performant software by developing a game from scratch (no libraries and no game engines). This series has helped me encounter a balance between using AI to generate code for work and keeping my problem-solving and coding skills honed in my free time.
+For me, that engaging side project has been [Handmade Hero](https://www.youtube.com/watch?v=I5fNrmQYeuI&list=PLnuhp3Xd9PYTt6svyQPyRO_AAuMWGxPzU). Handmade Hero is a low-level systems engineering series that legendary engine developer Casey Muratori streamed for a period of two years to teach developers how computers work and how to write performant software by developing a game from scratch (no libraries and no game engines). This series has helped me encounter a balance between using AI to generate code for work and keeping my problem-solving and coding skills honed in my spare time.
 
 
 Even though developers have written about the series many times, each post is unique and it matters because it is a transformative experience.
@@ -157,7 +157,7 @@ Handmade Hero is about learning how computers work, and Casey did that by showin
 By analogy, I want to build the game in Linux because I am comfortable with the command-line (it gives me that "at home" feeling) and because I really want to know my platform better by writing systems programming code. On a side note, I am not adamant about trying to convince anyone to switch to Linux. You will know if it is for you after interacting with it for a while. I would like to add that I do not intend to skip the Win32 platform because Handmade Hero is a cross-platform development experience.
 
 
-The scope of this post is to share what I have learned about Xlib to create a game window in Linux by following the way of the Handmade Hero craftsman. To me, that meant that I had to read the Xlib man pages, dive into the source code to peek at its implementation, and also borrow ideas from the Quake-II engine. 
+The scope of this post is to share what I have learned about Xlib to create a game window in Linux by following the way of Handmade Hero craftsmen. To me, that meant that I had to read the Xlib man pages, dive into the source code to peek at its implementation, and also borrow ideas from the Quake-II engine. 
 
 
 ## Section 3: Is yet another Xlib post necessary?
