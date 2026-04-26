@@ -144,7 +144,7 @@ As a result of this trend, software developers write code less frequently, and t
 A practical way of addressing this situation is to work on an engaging side project that keeps your ability to engineer solutions through the act of writing code sharp. This means that as technology improves and we learn better ways to integrate AI into our workflow our craftsmanship not only remains but evolves.
 
 
-For me that engaging project has been [Handmade Hero](https://www.youtube.com/watch?v=I5fNrmQYeuI&list=PLnuhp3Xd9PYTt6svyQPyRO_AAuMWGxPzU). Handmade Hero is a low-level systems engineering series that legendary engine developer Casey Muratori streamed for a period of two years to teach developers how computers work and how to write performant software by developing a game from scratch (no libraries and no game engines). This series has helped me encounter a balance between using AI to generate code for work and keeping my problem-solving and coding skills honed in my free time.
+For me, that engaging side project has been [Handmade Hero](https://www.youtube.com/watch?v=I5fNrmQYeuI&list=PLnuhp3Xd9PYTt6svyQPyRO_AAuMWGxPzU). Handmade Hero is a low-level systems engineering series that legendary engine developer Casey Muratori streamed for a period of two years to teach developers how computers work and how to write performant software by developing a game from scratch (no libraries and no game engines). This series has helped me encounter a balance between using AI to generate code for work and keeping my problem-solving and coding skills honed in my free time.
 
 
 Even though developers have written about the series many times, each post is unique and it matters because it is a transformative experience.
