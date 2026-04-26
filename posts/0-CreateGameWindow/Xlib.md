@@ -632,20 +632,19 @@ As you can see the function takes the usual display pointer and window resource 
 
 ## <a id="subsection-7h-closing-the-display"></a>Subsection 7-H: Closing the Display
 
-At the end of the program, you should close the display via [`XCloseDisplay()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Closing_the_Display) so that Xlib's internal data structures are
-freed from heap memory and the socket used for communicating with the X Server is closed:
+At the end of the program, you should close the display via [`XCloseDisplay()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Closing_the_Display) so that Xlib's internal data structures are freed from heap memory and the socket used for communicating with the X Server is closed:
+
 
 ```c
 XCloseDisplay(display);
 ```
 
-As mentioned in the preceding [section](#Destroying-the-Window) the X Server performs a final synchronization
-via [`XSync()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XSync) to send requests in the output buffer (this feature is also mentioned in the man page).
+As mentioned in the preceding [section](#Destroying-the-Window) the X Server performs a final synchronization via [`XSync()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XSync) to send requests in the output buffer (this feature is also mentioned in the man page).
+
 
 ## <a id="subsection-7i-initial-platform-layer-of-the-game"></a>Subsection 7-I: Initial Platform Layer of the Game
 
-Here's the source code we have written to create a window for our game that we can use to put graphics
-on it.
+Here's the source code we have written to create a window for our game that we can use to put graphics on it.
 
 ```c
 /* 
@@ -737,18 +736,11 @@ int main() {
 }
 ```
 
-As you can see the Xlib API is quite readable and this is why I have not added comments to the
-source code. As stressed in the stream "comments are always outdated". In this case comments should
-not be used to tell what the Xlib function does, that's the purpose of the documentation (man pages).
-And this is why I recommended you to install and consult Xlib's man pages.
+As you can see the Xlib API is quite readable and this is why I have not added comments to the source code. As stressed in the stream "comments are always outdated". In this case comments should not be used to tell what the Xlib function does, that's the purpose of the documentation (man pages).  And this is why I recommended you to install and consult Xlib's man pages.
 
-Note that the `XLIB_ILLEGAL_ACCESS` definition has been excluded from the source code to
-reinforce that it should not be used except when you have strong reasons for looking at Xlib's internals,
-such as debugging and learning purposes. Use Xlib's macros to write portable and readable code.
 
-The current state of the development of this project can be found in this GitHub [repository](
-https://github.com/misael-diaz/handmade-hero/
-).
+Note that the `XLIB_ILLEGAL_ACCESS` definition has been excluded from the source code to reinforce that it should not be used except when you have strong reasons for looking at Xlib's internals, such as debugging and learning purposes. Use Xlib's macros to write portable and readable code.
+
 
 ## <a id="subsection-7j-compilation"></a>Subsection 7-J: Compilation
 
