@@ -223,13 +223,11 @@ It helps to bear these aspects of Xlib in mind when reading X client application
 
 ## Section 6: Installing dependencies
 
-If you want to follow along you would probably need to install the development libraries
-for creating client X11 applications. If you have not done that before it is likely
-that they may not be installed on your system even if your desktop environment still
-uses Xlib.
+If you want to follow along you would probably need to install the development libraries for creating client X11 applications. If you have not done that before it is likely that they may not be installed on your system even if your desktop environment still uses Xlib.
 
-On Debian-based distributions (such as Ubuntu and Linux Mint) you can do so by
-invoking the package manager from the command-line:
+
+On Debian-based distributions (such as Ubuntu and Linux Mint) you can do so by invoking the package manager from the command-line:
+
 
 ```sh
 sudo apt install libx11-dev libx11-doc
@@ -238,8 +236,8 @@ sudo apt install libx11-dev libx11-doc
 - `libx11-dev` package provides the client interface to Xlib
 - `libx11-doc` provides the official Xlib documentation as man pages
 
-For example, if you wish to consult the documentation for opening a display (more on that later)
-you can use the command-line string:
+For example, if you wish to consult the documentation for opening a display (more on that later) you can use the command-line string:
+
 
 ```sh
 man XOpenDisplay
@@ -257,26 +255,22 @@ Now we can start writing our X client code to create a game window for our game.
 
 ## Section 7: Developing an X Client application
 
-Xlib is the original Application Programming Interface (API) of the X11 protocol, written in C. Although
-there are bindings to make it possible to call Xlib from other languages such as Python, Go, and Rust,
-you would want to write C code if you wanted to work closer to the metal.
+Xlib is the original Application Programming Interface (API) of the X11 protocol, written in C. Although there are bindings to make it possible to call Xlib from other languages such as Python, Go, and Rust, you would want to write C code if you wanted to work closer to the metal.
 
-Another reason for using C is that you will be free of the overhead of mental context switching when reading the
-Xlib source code or documentation. The Xlib code will not seem foreign to you as it would if you are
-calling it from Python.
 
-If you are familiar with the Handmade Hero series you know that Casey essentially writes C code
-on stream despite the fact that he compiles the source code of the game with a C++ compiler.
-He did not leverage C++ features heavily until implementing vector math (via operator overloading)
-to make the operations read more like math to the next developer.
+Another reason for using C is that you will be free of the overhead of mental context switching when reading the Xlib source code or documentation. The Xlib code will not seem foreign to you as it would if you are calling it from Python.
+
+
+If you are familiar with the Handmade Hero series you know that Casey essentially writes C code on stream despite the fact that he compiles the source code of the game with a C++ compiler.  He did not leverage C++ features heavily until implementing vector math (via operator overloading) to make the operations read more like math to the next developer.
+
 
 ## <a id="subsection-7a-headers"></a>Subsection 7-A: Headers
 
-C programs typically start with a header section that specifies the function prototypes (declarations) and 
-types (data structures) that the program needs to compile the source down to machine code. 
+C programs typically start with a header section that specifies the function prototypes (declarations) and types (data structures) that the program needs to compile the source down to machine code. 
 
-The minimal set of headers that we may want to use for creating the game window, having an improved
-debugging experience, and logging useful information to the developer (or user) is the following:
+
+The minimal set of headers that we may want to use for creating the game window, having an improved debugging experience, and logging useful information to the developer (or user) is the following:
+
 
 ```c
 #include <stdio.h>
@@ -284,26 +278,14 @@ debugging experience, and logging useful information to the developer (or user) 
 #include <X11/Xlib.h>
 ```
 
-The standard input-output header `<stdio.h>` provides functions for formatted printing (such as
-`fprintf`) which can be used to channel messages through the standard output `stdout` and standard error
-`stderr` streams.
-By doing it this way, we can redirect error messages to a file for debugging without the informative
-messages that we may want to show to the user.
+The standard input-output header `<stdio.h>` provides functions for formatted printing (such as `fprintf`) which can be used to channel messages through the standard output `stdout` and standard error `stderr` streams.  By doing it this way, we can redirect error messages to a file for debugging without the informative messages that we may want to show to the user.
 
-The `<X11/Xlib.h>` header provides the necessary definitions for the Xlib data structures, macros, and
-functions that we need for putting our game graphics on the screen.
-The Xlib header should be located on your system at the standard path
-`/usr/include/X11/Xlib.h`.
-If you read it you are going to find out that client X window applications that
-set the `XLIB_ILLEGAL_ACCESS` macro to a truthy value before including `<X11/Xlib.h>` obtain
-(limited) access to the `Display` data structure which contains all Xlib internals. 
-As we advance in the discussion we are going to use
-it to reinforce our understanding that Xlib is asynchronous. I do not recommend using this hack to
-write the platform layer of the game, instead use the macros to make your client code portable, readable,
-and maintainable.
 
-With those definitions we will be able to open a connection to the X Server, create the window for our game,
-and put graphics on it (in a future post).
+The `<X11/Xlib.h>` header provides the necessary definitions for the Xlib data structures, macros, and functions that we need for putting our game graphics on the screen.  The Xlib header should be located on your system at the standard path `/usr/include/X11/Xlib.h`.  If you read it you are going to find out that client X window applications that set the `XLIB_ILLEGAL_ACCESS` macro to a truthy value before including `<X11/Xlib.h>` obtain (limited) access to the `Display` data structure which contains all Xlib internals.  As we advance in the discussion we are going to use it to reinforce our understanding that Xlib is asynchronous. I do not recommend using this hack to write the platform layer of the game, instead use the macros to make your client code portable, readable, and maintainable.
+
+
+With those definitions we will be able to open a connection to the X Server, create the window for our game, and put graphics on it (in a future post).
+
 
 ## <a id="subsection-7b-connecting-to-the-xserver"></a>Subsection 7-B: Connecting to the XServer
 
