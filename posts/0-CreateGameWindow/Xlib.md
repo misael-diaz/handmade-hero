@@ -756,7 +756,7 @@ to a minimum I decided to stick with `fread`.
 As mentioned in the [creating](#Creating-a-Window-for-the-Game) a window section the X Server allocates
 resources for the game window and so the right thing to do is to request the server to destroy it before we
 close the connection.
-The server will destroy all the properties associated to that window and decrement the global
+The server will destroy all the properties associated with that window and decrement the global
 property registry accordingly.
 
 Destroying the game window can be done by calling [`XDestroyWindow()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XDestroyWindow) :
@@ -768,9 +768,9 @@ XDestroyWindow(display, window);
 As you can see the function takes the usual display pointer and window resource Id.
 If you look at the implementation of `XDestroyWindow()` in `Xlib` you will find that it stores the
 destroy window request in the display structure.
-There is no implicit synchronization, it is not needed really because
+There is no implicit synchronization, it is not really needed, because
 closing the display does the final synchronization. That's when the server will receive the
-destroy request and when the resources allocated on the server side will be freed.
+destroy request and when the resources allocated on the server-side will be freed.
 
 ## <a id="subsection-7h-closing-the-display"></a>Subsection 7-H: Closing the Display
 
