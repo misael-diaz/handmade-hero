@@ -12,6 +12,7 @@
 [---]: #
 
 FUTURE:
+- ADD DIRECT LINK TO SRC CODE FROM THE OUTLINE PARAGRAPH FOR THOSE READERS THAT WANT TO HEAD DIRECLY THERE
 - &mdash DOES NOT WORK IN POSTING SITES
 - PROVIDE A SUMMARY OF THE XLIB FUNCTIONS CALLS WITH GOOD BRIEF DESCRIPTIONS AND LINKS TO THE OFFICIAL DOCS
 - MAKE THE README OF YOUR REPO MORE USEFUL MAYBE EVEN EXPLAIN WHAT MIGHT BE NEW NOT ADDRESSED IN PREVIOUS IMPLEMENTATIONS (TOUGH HANDMADE HERO HAS BEEN DONE BY MANY). THIS IS A MUST IF YOU ARE GOING TO LINK THIS POST TO YOUR GITHUB WHICH YOU ARE TO DO. CONSIDER SHOWING EITHER SNAPSHOTS OR VIDEOS AT KEY COMMITS. WHAT PROBLEMS DID YOU STUMBLED ON TOO SINCE YOU ARE DOING IT IN LINUX.
@@ -48,7 +49,7 @@ The next section presents a table of contents for quick navigation in the hope t
 
 ## Table of Contents
 
-Use the table of contents to view an outline of the post and to navigate to the sections that you might want to revisit.
+Use the table of contents to view an outline of the post and to navigate to the sections that you might want to (re)visit.
 
 
 If you are here for the source code, you can copy it from [Subsection 7-I](#subsection-7i-initial-platform-layer-of-the-game).
