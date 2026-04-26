@@ -135,7 +135,7 @@ If you are here for the source code, you can copy it from [Subsection 7-I](#subs
 
 ## Section 1: Why learning from Handmade Hero still matters
 
-Handmade Hero has never been more relevant than ever for software developers. Largely because of the increasing pressure of shipping faster by integrating software development with AI, this trend has intensified the work without leaving much time to have developers connect directly with the problem space through the act of crafting solutions through handmade code.
+Handmade Hero has never been more relevant than ever for software developers. Largely because of the increasing pressure of shipping faster by integrating software development with AI, this trend has intensified the work without leaving much time to have developers connect directly with the problem space by crafting solutions from the act of writing exploratory code.
 
 
 As a result of this trend, software developers write code less frequently, and their ability to find solutions through writing exploratory code diminishes. It's not hard to see that this can lead to burnout in some cases because the intensity of the work that the developer does has increased by orders of magnitude. Or to some developers, it means an eventual loss of confidence in writing a single line of code when compared to the amount of code that AI can generate in the same amount of time.
