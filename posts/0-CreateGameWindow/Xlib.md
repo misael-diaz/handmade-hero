@@ -652,7 +652,7 @@ As mentioned in the preceding [section](#Destroying-the-Window) the X Server per
 
 ## <a id="subsection-7i-initial-platform-layer-of-the-game"></a>Subsection 7-I: Initial Platform Layer of the Game
 
-Here's the source code we have written to create a window for our game that we can use to put graphics on it.
+Here is the complete source code to create the game window, the code should work on both X11-based and Wayland-based Linux desktops. Normally, I write comments to write about things that are not evident; however, for the sourcce code to be useful to developers that are new to Xlib I have added some notes. As you familiarize with Xlib, you will see that the X client code reads by itself. If you bear in mind that many of the calls just push requests to the output buffer on the client side, and that few calls like `XWindowEvent()` flush the output buffer and block until the server responds, you will see that developing X client applications is easier than you think. If in doubt about what functions call block you are recommended to read "The Specs" or the man pages.
 
 ```c
 /* 
@@ -666,8 +666,8 @@ Here's the source code we have written to create a window for our game that we c
 int main() {
 /*
     Think of opening the display as connecting to the default session of the X11 server. When you pass
-    zero or NULL to this function it tells the client to lookup the default from your system configuration.
-    More specifically the shell environment variable DISPLAY. This is more portable and less error-prone
+    zero or NULL to this function it tells the client to lookup the default from your system configuration;
+    more specifically the shell environment variable DISPLAY. This is more portable and less error-prone
     than typing it yourself. If there is an error the display will be NULL and so the application informs
     the user about the problem and returns the general purpose error code.
 */
