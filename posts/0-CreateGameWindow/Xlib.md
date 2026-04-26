@@ -207,23 +207,23 @@ Xlib has a client-server architecture as illustrated in the following diagram:
 <p><img src="https://raw.githubusercontent.com/misael-diaz/handmade-hero/refs/heads/posts/posts/0-CreateGameWindow/img/client-server-architecture-diagram.png" alt="X11 Client-Server Architecture Diagram" width="100%"></p>
 
 The diagram shows that the XServer receives the user input from the keyboard and mouse.
-controller. The diagram shows that the applications that we use such as the browser and the console
-are clients, and that even the desktop environment could be a client (in some Linux distributions).
+The diagram shows that the applications that we use such as the browser and the console
+are clients, and that even the desktop environment is a client (in some Linux distributions).
 I would like to comment here that the shown diagram is a simplified illustration that does not delve
-into the fact that the server has both device independent and dependent code. If you wish to look at a
+into the fact that the server has both device-independent and device-dependent code. If you wish to look at a
 closer depiction of the architecture see the one provided in the
 [X Window Concepts](https://www.x.org/wiki/guide/concepts/) section of the guide for new developers.
 
 An interesting finding for me that helped me realize that even desktop environments can also be X clients 
-can be found in the Cinnamon desktop environment source code. In case you don't know, the Cinnamon desktop
+can be found in the Cinnamon desktop environment source code. For context, the Cinnamon desktop
 environment is actively developed by Linux Mint developers.
 If you do look at its source code
 you will see that a connection to the XServer (via [`XOpenDisplay()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XOpenDisplay)) happens in the [main](
 https://github.com/linuxmint/cinnamon/blob/bfc454e799f0284a3c2fd3a0ec11a716b2d425bb/src/main.c#L303)
 source file.
 
-The communication between the client and the server happens over the network via the X11 protocol and
-so that means that the client could be in a remote machine as well. For security
+The communication between the client and the server happens over the network via the X11 protocol;
+this means that the client could be on a remote machine as well. For security
 ssh forwarding (see `man ssh`) is commonly used to encrypt the communication between the client and server.
 If both the client and the server are in the same machine, a Unix socket is commonly used for communication.
 It is worth mentioning for clarification that the server does not capture the input directly
