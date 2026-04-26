@@ -281,12 +281,12 @@ Xlib is the original Application Programming Interface (API) of the X11 protocol
 there are bindings to make it possible to call Xlib from other languages such as Python, Go, and Rust,
 you would want to write C code if you wanted to work closer to the metal.
 
-Another reason for using C is that you will be free of the overhead of context switching when reading the
+Another reason for using C is that you will be free of the overhead of mental context switching when reading the
 Xlib source code or documentation. The Xlib code will not seem foreign to you as it would if you are
 calling it from Python.
 
 If you are familiar with the Handmade Hero series you know that Casey essentially writes C code
-on stream despite that he is compiling the source code of the game with a C++ compiler. 
+on stream despite the fact that he compiles the source code of the game with a C++ compiler.
 He did not leverage C++ features heavily until implementing vector math (via operator overloading)
 to make the operations read more like math to the next developer.
 
@@ -307,18 +307,18 @@ debugging experience, and logging useful information to the developer (or user) 
 The standard input-output header `<stdio.h>` provides functions for formatted printing (such as
 `fprintf`) which can be used to channel messages through the standard output `stdout` and standard error
 `stderr` streams.
-By doing this way we can redirect error messages to a file for debugging without the informative
+By doing it this way, we can redirect error messages to a file for debugging without the informative
 messages that we may want to show to the user.
 
 The `<X11/Xlib.h>` header provides the necessary definitions for the Xlib data structures, macros, and
 functions that we need for putting our game graphics on the screen.
-The Xlib header should be located in your system in the standard path
+The Xlib header should be located on your system at the standard path
 `/usr/include/X11/Xlib.h`.
 If you read it you are going to find out that client X window applications that
 set the `XLIB_ILLEGAL_ACCESS` macro to a truthy value before including `<X11/Xlib.h>` obtain
 (limited) access to the `Display` data structure which contains all Xlib internals. 
 As we advance in the discussion we are going to use
-it to reinforce our understanding that Xlib is asynchronous. I do not recommend to use this hack to
+it to reinforce our understanding that Xlib is asynchronous. I do not recommend using this hack to
 write the platform layer of the game, instead use the macros to make your client code portable, readable,
 and maintainable.
 
