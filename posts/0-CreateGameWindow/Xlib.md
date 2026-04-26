@@ -328,12 +328,12 @@ and put graphics on it (in a future post).
 ## <a id="subsection-7b-connecting-to-the-xserver"></a>Subsection 7-B: Connecting to the XServer
 
 The first step towards displaying a window with Xlib is to establish a connection with
-the XServer via the function call [`XOpenDisplay()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XOpenDisplay) which takes as argument the
-hardware display name. In Linux it's okay to pass `NULL`, in that case the parameter
+the XServer via the function call [`XOpenDisplay()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XOpenDisplay) which takes the
+hardware display name as an argument. In Linux it's okay to pass `NULL`, in which case the parameter
 resolves to whatever the shell environment variable `DISPLAY` holds. If the call succeeds
 the function returns a pointer to the `Display` structure. In the Xlib context this
 encompasses not only the monitor for graphics output but also the keyboard, mouse, and other
-peripherals for capturing the user input. On the other hand, if the connection to the XServer fails
+peripherals for capturing user input. On the other hand, if the connection to the XServer fails,
 the function returns a `NULL` pointer and the code should stop and return an error
 message for the user.
 
@@ -354,7 +354,7 @@ Behind the scenes `XOpenDisplay()` in Linux opens a socket in non-blocking mode 
 so that the server may handle requests from multiple clients asynchronously.
 If the XServer is
 running in localhost then the connection to the XServer happens through a Unix socket for performance.
-It is interesting to note that the code that performs the socket connection is not present in Xlib but
+It is interesting to note that the code that performs the socket connection is not present in Xlib, but rather
 in libXCB.
 
 The file descriptor of the socket is stored in the Display structure. I am mentioning it because
