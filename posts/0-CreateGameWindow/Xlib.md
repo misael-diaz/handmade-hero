@@ -902,9 +902,9 @@ for the platform layer code.
 gcc -std=gnu99 -Wall -g -Og -gdwarf-4 linux_handmade.c -o linux-handmade.bin -lX11
 ```
 
-where we are telling the compiler that we want our code to conform to the `C99` standard with GNU extensions, this is so that we can initialize structs the way Casey did on the stream, we are also asking the compiler to enable all warnings, generate debugging symbols in
+where we are telling the compiler that we want our code to conform to the `C99` standard with GNU extensions, this is so that we can initialize structs the way Casey did on the stream; we are also asking the compiler to enable all warnings, generate debugging symbols in
 the DWARF version 4 format that `valgrind` (memcheck tool) understands, and
-apply optimizations that do not interfere with the debugging session. The last one `-lX11` is for the linker
+apply optimizations that will not interfere with the debugging session. The last one `-lX11` is for the linker
 so that our code gets dynamically linked with Xlib.
 
 It's important to mention that Casey uses a batch file to compile the source code and that's what I also
