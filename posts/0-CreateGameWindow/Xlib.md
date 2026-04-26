@@ -1080,11 +1080,11 @@ Stay tuned for the next post.
 
 ## Section 10: References
 
-In this section presents a list of the most relevant resources to learn about the X11 protocol and the C Language Interface libX11 (or commonly known as Xlib): 
+This section presents a list of the most relevant resources to learn about the X11 protocol and the C Language Interface libX11 (or commonly known as Xlib):
 
 - [Xlib - C Language Interface](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html) The official Xorg Technical Specification of the X11 Protocol with the C bindings. 
  
-- [The X New Developer's Guide](https://www.x.org/wiki/guide/) Provides a high-level documentation of the X11 Protocol that is tailored for new contributors. It provides information about modern extensions, the asynchronous X C Bindings (XCB), a fresher presentation of the the original C Language Interface libX11, and contributing guidelines.
+- [The X New Developer's Guide](https://www.x.org/wiki/guide/) Provides a high-level documentation of the X11 Protocol that is tailored for new contributors. It provides information about modern extensions, the asynchronous X C Bindings (XCB), a fresher presentation of the original C Language Interface libX11, and contributing guidelines.
 
 - [Xlib Repository](https://gitlab.freedesktop.org/xorg/lib/libX11) The official Xlib repository hosted in GitLab. This is the definitive Xlib documentation written in source code form.
 
@@ -1096,14 +1096,14 @@ In this section presents a list of the most relevant resources to learn about th
 
 ## Section 11: Credits
 
-- [Xlib Learning Notes](https://github.com/Faison/xlib-learning) A series of study notes that covers topics of interest for developers just getting started with Xlib, such as opening a window, toggling fullscreen mode, and using OpenGL by Faison Zutavern. This was the first GitHub repository that I found on Xlib when I was exploring the Quake engine. I am citing his work as a token of respect.
+- [Xlib Learning Notes](https://github.com/Faison/xlib-learning) by Faison Zutavern. A series of study notes that covers topics of interest for developers just getting started with Xlib, such as opening a window, toggling fullscreen mode, and using OpenGL. This was the first GitHub repository that I found on Xlib when I was exploring the Quake engine. I am citing this work as a token of respect.
 
 - [Xlib Examples](https://github.com/QMonkey/Xlib-demo) A repository of Xlib examples by Charles Qiu. This is another repository that I found useful when studying the Quake engine. I am sharing it as well as a token of respect.
 
 ## Section 12: Ports
 
-I would like to share some of the well known ports of Handmade Hero to Linux. I found about them while working on this post. I am sharing them because you may also find them to be useful.
+I would like to share some of the well known ports of Handmade Hero to Linux. I found out about them while working on this post. I am sharing them because you may also find them to be useful.
 
 - [First Linux port of Handmade Hero](https://davidgow.net/handmadepenguin/) A series by David Gow on developing the platform layer for Handmade Penguin (a Linux port of Handmade Hero). David leverages the Simple Direct Media Layer (SDL) for handling graphics, sounds, and user input. This is useful for people that want to defer the hardships of implementing the platform layer with Xlib and ALSA.
 
-- [Multi-Platform Handmade Hero](https://github.com/laszlokorte/handmade-hero) A comprehensive implementation of Handmade Hero on various platforms Laszlo Korte. He has succeeded in porting the game to MacOS, iOS, Android, and Linux (both Wayland and X11). His work demonstrates that well designed game layer written in one platform can be easily ported to other platforms.
+- [Multi-Platform Handmade Hero](https://github.com/laszlokorte/handmade-hero) A comprehensive implementation of Handmade Hero on various platforms by Laszlo Korte. He has succeeded in porting the game to MacOS, iOS, Android, and Linux (both Wayland and X11). His work demonstrates that a well-designed game layer written in one platform can be easily ported to other platforms.
