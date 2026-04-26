@@ -705,10 +705,10 @@ The game window should now be visible on your screen.
 
 Wayland supports running X11 client applications via XWayland, which is based on the
 original code for the X11 server. In a nutshell, XWayland acts as an intermediary layer
-that translates X11 protocol between client X11 window applications and the Wayland compositor. In modern software development you can think of this as another layer of abstraction
+that translates the X11 protocol between client X11 window applications and the Wayland compositor. In modern software development you can think of this as another layer of abstraction
 that adds an overhead to the process of displaying graphics and handling user input.
 
-The polling version of the code that we used for X11-based Linux desktops could be written this way for
+The polling version of the code compared to the one we used for X11-based Linux desktops could be written this way for
 the Wayland counterparts:
 
 ```c
@@ -721,7 +721,7 @@ while (1) {
 ```
 
 Note that the choice of looping indefinitely is deliberate to expose the asynchronous nature of the communication with the XWayland layer;
-we don't know when the client will receive the Expose event. We are not going to do anything special with the event itself and this is why it is scoped to the while block. The [`XCheckWindowEvent()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XCheckWindowEvent) polls for the specified Expose event, if the event is found in the event queue the function moves the event into the `XEvent` structure and returns true, otherwise it returns false to signal that such event is not in the queue (in this case the event structure retains its zero initialization). The `XCheckWindowEvent()` function can be thought to be an efficient find and remove from the queue operation in one go for performance.
+we don't know when the client will receive the Expose event. We are not going to do anything special with the event itself and this is why it is scoped to the while block. The [`XCheckWindowEvent()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XCheckWindowEvent) polls for the specified Expose event, if the event is found in the event queue, the function moves the event into the `XEvent` structure and returns true, otherwise it returns false to signal that such an event is not in the queue (in this case the event structure retains its zero initialization). The `XCheckWindowEvent()` function can be thought to be an efficient find and remove from the queue operation in one go for performance.
 
 To avoid wasting CPU cycles on the polling you may want to use a high resolution clock such as [`clock_nanosleep`](https://man7.org/linux/man-pages/man2/clock_nanosleep.2.html) just before stepping into the next while-loop cycle. To avoid shifting the attention into that I am not going to discuss that here. Just mentioning it to motivate you to explore this on your own.
 
