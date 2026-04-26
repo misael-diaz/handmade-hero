@@ -977,10 +977,10 @@ the client and that of course includes the window.
 
 ## Section 8: Conclusions
 
-In this post we delved into some of Xlib internals to close the gap between the information presented in the
+In this post we delved into some of the Xlib internals to close the gap between the information presented in the
 official documentation and what we can understand from reading it in order to be in a better position to
 build the foundation of our game based on [Handmade Hero](handmadehero.org). As a result of doing this exercise we
-now have a better idea of what happens behind scenes, we no longer perceive Xlib code to be a "black box"
+now have a better idea of what happens behind the scenes, we no longer perceive Xlib code to be a "black box"
 through which we can make a window visible in our desktop environment that a user can interact with.
 
 These are some of the most important achievements and things that we learned from going through this exercise:
@@ -990,7 +990,7 @@ These are some of the most important achievements and things that we learned fro
 - In the process we
 learned that Xlib has a client-server architecture that enables multiple client applications to draw to the
 screen (a shared resource) concurrently; it is the server that processes and resolves those requests to
-update the screen framebuffer.
+update the screen's framebuffer.
 
 - We also found out that in Xlib the display refers to the
 connection to the X Server which manages the screens
@@ -1000,9 +1000,9 @@ as the keyboard, mouse, or game console controller (for user input).
 - We have realized that Xlib provides convenient
 macros for getting at the screen, visuals, etc. in a portable way. We have found that under the hood these macros
 cast the "opaque" display structure into a known type (private display) and subsequently dereferenced
-to get at,
-for example, the root window Id, screen dimensions, or the black pixel value for the screen.
-These macros have enabled the developers to change Xlib internals while not breaking the
+to obtain,
+for example, the root window ID, screen dimensions, or the black pixel value for the screen.
+These macros enable developers to change Xlib internals while not breaking the
 existing client code.
 
 - Additionally, we learned that Xlib allocates the resources for the window on the server side and that the
