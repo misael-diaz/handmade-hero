@@ -206,7 +206,7 @@ Xlib has a client-server architecture as illustrated in the following diagram:
 
 <p><img src="https://raw.githubusercontent.com/misael-diaz/handmade-hero/refs/heads/posts/posts/0-CreateGameWindow/img/client-server-architecture-diagram.png" alt="X11 Client-Server Architecture Diagram" width="100%"></p>
 
-The diagram shows that the XServer receives the user input from the keyboard, mouse, and possibly a game
+The diagram shows that the XServer receives the user input from the keyboard and mouse.
 controller. The diagram shows that the applications that we use such as the browser and the console
 are clients, and that even the desktop environment could be a client (in some Linux distributions).
 I would like to comment here that the shown diagram is a simplified illustration that does not delve
