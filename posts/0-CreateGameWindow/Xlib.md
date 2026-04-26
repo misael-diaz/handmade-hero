@@ -774,8 +774,8 @@ destroy request and when the resources allocated on the server-side will be free
 
 ## <a id="subsection-7h-closing-the-display"></a>Subsection 7-H: Closing the Display
 
-At the end of the program you want to close the display via [`XCloseDisplay()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Closing_the_Display) so that Xlib's internal data structures get
-freed from the heap memory and to close the socket used for communicating with the X Server via:
+At the end of the program, you should close the display via [`XCloseDisplay()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Closing_the_Display) so that Xlib's internal data structures are
+freed from heap memory and the socket used for communicating with the X Server is closed:
 
 ```c
 XCloseDisplay(display);
