@@ -289,20 +289,11 @@ With those definitions we will be able to open a connection to the X Server, cre
 
 ## <a id="subsection-7b-connecting-to-the-xserver"></a>Subsection 7-B: Connecting to the XServer
 
-The first step towards displaying a window with Xlib is to establish a connection with
-the X Server via the function call [`XOpenDisplay()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XOpenDisplay) which takes the
-hardware display name as an argument. In Linux it's okay to pass `NULL`, in which case the parameter
-resolves to whatever the shell environment variable `DISPLAY` holds. If the call succeeds
-the function returns a pointer to the `Display` structure. In the Xlib context this
-encompasses not only the monitor for graphics output but also the keyboard, mouse, and other
-peripherals for capturing user input. On the other hand, if the connection to the X Server fails,
-the function returns a `NULL` pointer and the code should stop and return an error
-message for the user.
+The first step towards displaying a window with Xlib is to establish a connection with the X Server via the function call [`XOpenDisplay()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XOpenDisplay) which takes the hardware display name as an argument. In Linux it's okay to pass `NULL`, in which case the parameter resolves to whatever the shell environment variable `DISPLAY` holds. If the call succeeds the function returns a pointer to the `Display` structure. In the Xlib context this encompasses not only the monitor for graphics output but also the keyboard, mouse, and other peripherals for capturing user input. On the other hand, if the connection to the X Server fails, the function returns a `NULL` pointer and the code should stop and return an error message for the user.
 
-It's okay to put all the Xlib code in the main function, this aligns with the spirit of exploratory
-development philosophy that Casey advocates throughout the series. We are discovering what our game
-needs from the underlying platform to put graphics on the screen and (maybe in a future post)
-handle user input from peripherals (keyboard, gaming console controller, etc.).
+
+It's okay to put all the Xlib code in the main function, this aligns with the spirit of exploratory development philosophy that Casey advocates throughout the series. We are discovering what our game needs from the underlying platform to put graphics on the screen and (maybe in a future post) handle user input from peripherals (keyboard, gaming console controller, etc.).
+
 
 ```c
 Display *display = XOpenDisplay(NULL);
@@ -312,45 +303,28 @@ if (!display) {
 }
 ```
 
-Behind the scenes `XOpenDisplay()` in Linux opens a socket in non-blocking mode to connect to the X Server
-so that the server may handle requests from multiple clients asynchronously.
-If the X Server is
-running in localhost then the connection to the X Server happens through a Unix socket for performance.
-It is interesting to note that the code that performs the socket connection is not present in Xlib, but rather
-in libXCB.
+Behind the scenes `XOpenDisplay()` in Linux opens a socket in non-blocking mode to connect to the X Server so that the server may handle requests from multiple clients asynchronously.  If the X Server is running in localhost then the connection to the X Server happens through a Unix socket for performance.  It is interesting to note that the code that performs the socket connection is not present in Xlib, but rather in libXCB.
 
-The file descriptor of the socket is stored in the Display structure. I am mentioning it because
-Xlib keeps the file descriptor around for subsequent manipulations via `fcntl` calls, not because
-we are expected to read (write) from (to) the socket ourselves.
-Display also contains other useful
-info that's fetched from the X Server such as the minimum and maximum values of the keyboard codes
-(we care about this for handling user input), the number of screens, the default graphics
-context, etc.
 
-From the X Server we also get valuable information about the screens such as the default dimensions
-(width and height), the values of the white and black pixels, the screen depth, and the visual information.
-In particular the visual info stores the RGB masks so that we know what the RGB layout that the X Server
-expects for packing the pixel data; otherwise, the colors that you see on the screen are not going to be what
-you might expect.
+The file descriptor of the socket is stored in the Display structure. I am mentioning it because Xlib keeps the file descriptor around for subsequent manipulations via `fcntl` calls, not because we are expected to read (write) from (to) the socket ourselves.  Display also contains other useful info that's fetched from the X Server such as the minimum and maximum values of the keyboard codes (we care about this for handling user input), the number of screens, the default graphics context, etc.
 
-Xlib also gets the default screen by parsing the DISPLAY environment variable by calling dedicated libXCB
-utils. For example if `DISPLAY` is `:0` we know that the X Server is running in localhost and that the default
-screen number is zero. This matters to us because we use the default screen for our game window as you
-will see shortly.
+
+From the X Server we also get valuable information about the screens such as the default dimensions (width and height), the values of the white and black pixels, the screen depth, and the visual information.  In particular the visual info stores the RGB masks so that we know what the RGB layout that the X Server expects for packing the pixel data; otherwise, the colors that you see on the screen are not going to be what you might expect.
+
+
+Xlib also gets the default screen by parsing the DISPLAY environment variable by calling dedicated libXCB utils. For example if `DISPLAY` is `:0` we know that the X Server is running in localhost and that the default screen number is zero. This matters to us because we use the default screen for our game window as you will see shortly.
+
 
 ## <a id="subsection-7c-creating-a-window-for-the-game"></a>Subsection 7-C: Creating a Window for the Game
 
-This is where the fun part really begins. I strongly recommend you to consult the Xlib
-documentation (man pages) as you read the code snippets to familiarize yourself with some aspects of Xlib
-that we cannot possibly cover in a post like this.
+This is where the fun part really begins. I strongly recommend you to consult the Xlib documentation (man pages) as you read the code snippets to familiarize yourself with some aspects of Xlib that we cannot possibly cover in a post like this.
 
-The other recommendation is to read the [Xlib](https://github.com/id-Software/Quake-2/blob/master/linux/rw_x11.c) source code that the Quake engine uses to display graphics on screen with Xlib. That should give you
-an idea of the Xlib code needed to develop a solid platform layer of the game. Chances are that you will need to adapt the code for the Handmade Hero game but that is part of the exploration that you want to get into.
 
-The following snippet borrowed from the Xlib official documentation shows that to create a simple window
-via [`XCreateSimpleWindow()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XCreateSimpleWindow) one needs to have an active connection to the X Server (a display), a parent window, coordinates with
-respect to the top-left corner of the parent window, window dimensions (width and height),
-a border width which can be zero for our purposes, and colors for the border and background:
+The other recommendation is to read the [Xlib](https://github.com/id-Software/Quake-2/blob/master/linux/rw_x11.c) source code that the Quake engine uses to display graphics on screen with Xlib. That should give you an idea of the Xlib code needed to develop a solid platform layer of the game. Chances are that you will need to adapt the code for the Handmade Hero game but that is part of the exploration that you want to get into.
+
+
+The following snippet borrowed from the Xlib official documentation shows that to create a simple window via [`XCreateSimpleWindow()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XCreateSimpleWindow) one needs to have an active connection to the X Server (a display), a parent window, coordinates with respect to the top-left corner of the parent window, window dimensions (width and height), a border width which can be zero for our purposes, and colors for the border and background:
+
 
 ```c
 Window XCreateSimpleWindow(
@@ -365,14 +339,10 @@ Window XCreateSimpleWindow(
     unsigned long background);
 ```
 
-For the purposes of putting graphics on screen for our game and keeping things simple we can tell Xlib
-that we want the root window as the parent of our game window via the macro [`DefaultRootWindow()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#DefaultRootWindow)
-which takes as argument our display. The macro will return the Window ID of the root window. We can pass
-zero for both the `x` and `y` coordinates, we could specify standard dimensions for our window such as
-1600 x 900 where the width, 1600, and the height, 900, are in pixels.
+For the purposes of putting graphics on screen for our game and keeping things simple we can tell Xlib that we want the root window as the parent of our game window via the macro [`DefaultRootWindow()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#DefaultRootWindow) which takes as argument our display. The macro will return the Window ID of the root window. We can pass zero for both the `x` and `y` coordinates, we could specify standard dimensions for our window such as 1600 x 900 where the width, 1600, and the height, 900, are in pixels.
 
-If you wish to make your code more portable you may get the default screen of your display and use query
-macros, [`WidthOfScreen()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#WidthOfScreen) and [`HeightOfScreen()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#HeightOfScreen), to use the default dimensions:
+
+If you wish to make your code more portable you may get the default screen of your display and use query macros, [`WidthOfScreen()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#WidthOfScreen) and [`HeightOfScreen()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#HeightOfScreen), to use the default dimensions:
 
 ```c
 Screen *screen = DefaultScreenOfDisplay(display);
@@ -380,8 +350,8 @@ int width = WidthOfScreen(screen);
 int height = HeightOfScreen(screen);
 ```
 
-There is also a query function for getting the black pixel value, [`BlackPixelOfScreen()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#BlackPixelOfScreen), for the screen to use it for the
-border and background colors:
+There is also a query function for getting the black pixel value, [`BlackPixelOfScreen()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#BlackPixelOfScreen), for the screen to use it for the border and background colors:
+
 
 ```c
 unsigned long BlackPixelValue = BlackPixelOfScreen(screen);
@@ -404,19 +374,11 @@ Window window = XCreateSimpleWindow(
 );
 ```
 
-Bear in mind that this alone will not make the window visible and this could be a little surprising
-at first because we are used to the Object-Oriented Programming OOP mindset. 
-We might expect that the `Window` is an object but
-that is not the case, it is an Xlib resource ID (`XID`) of 64-bits in size (`typedef unsigned long XID;`). What
-happens under the hood is that the request for creating a window is stored in the `Display` data structure.
-That means that the X Server knows nothing about this until we explicitly ask the server to
-process this request (more of that later because we still have work to do).
-Xlib behaves this way for performance, it stacks our requests until the time is right for processing them. When the server does process the request it will allocate memory for
-the window but that memory region is not accessible from client applications (it is
-private to the server).
+Bear in mind that this alone will not make the window visible and this could be a little surprising at first because we are used to the Object-Oriented Programming OOP mindset.  We might expect that the `Window` is an object but that is not the case, it is an Xlib resource ID (`XID`) of 64-bits in size (`typedef unsigned long XID;`). What happens under the hood is that the request for creating a window is stored in the `Display` data structure.  That means that the X Server knows nothing about this until we explicitly ask the server to process this request (more of that later because we still have work to do).  Xlib behaves this way for performance, it stacks our requests until the time is right for processing them. When the server does process the request it will allocate memory for the window but that memory region is not accessible from client applications (it is private to the server).
 
-From looking at the display data with gdb we can determine that we have a request that has not been processed
-by the server (only showing some of the fields):
+
+From looking at the display data with gdb we can determine that we have a request that has not been processed by the server (only showing some of the fields):
+
 
 ```gdb
 (gdb) p *display
@@ -436,28 +398,18 @@ $1 = {
 }
 ```
 
-The sequence number of the last request considered by the server is 6 (`last_request_read = 6`)
-and that happened when we
-called [`XOpenDisplay()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XOpenDisplay) and the sequence number of the current request is 7 (`request = 7`). This means
-that the request is stored locally in the display structure. The server has not seen it because we have
-not called [`XFlush()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XFlush) ourselves to push the requests to the server. Xlib's implementation is
-conservative on what function calls have the side-effect of flushing the output buffer (we will call one soon
-enough) and so client applications seldom have to call `XFlush()` directly, as stressed in the official
-documentation. Only functions that require an immediate response from the server flush the output buffer
-and block until the response has been received.
-I hope that this has convinced you of the asynchronous nature of the X protocol.
+The sequence number of the last request considered by the server is 6 (`last_request_read = 6`) and that happened when we called [`XOpenDisplay()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XOpenDisplay) and the sequence number of the current request is 7 (`request = 7`). This means that the request is stored locally in the display structure. The server has not seen it because we have not called [`XFlush()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XFlush) ourselves to push the requests to the server. Xlib's implementation is conservative on what function calls have the side-effect of flushing the output buffer (we will call one soon enough) and so client applications seldom have to call `XFlush()` directly, as stressed in the official documentation. Only functions that require an immediate response from the server flush the output buffer and block until the response has been received.  I hope that this has convinced you of the asynchronous nature of the X protocol.
 
-You may also wish to name your window as `Handmade Hero` at this point as Casey did to get that hello
-world experience when your game window appears:
+
+You may also wish to name your window as `Handmade Hero` at this point as Casey did to get that hello world experience when your game window appears:
+
 
 ```c
 XStoreName(display, window, "Handmade Hero");
 ```
 
-Calling [`XStoreName()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XStoreName) also updates the output buffer with the request to change the name of the window shown in the
-window manager, the function does not trigger a synchronization request with the server
-as in the previous cases. It is interesting to see that it forwards the operation to the [`XChangeProperty()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XChangeProperty)
-function (which implements the corresponding X11 protocol request):
+Calling [`XStoreName()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XStoreName) also updates the output buffer with the request to change the name of the window shown in the window manager, the function does not trigger a synchronization request with the server as in the previous cases. It is interesting to see that it forwards the operation to the [`XChangeProperty()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XChangeProperty) function (which implements the corresponding X11 protocol request):
+
 
 ```c
 int
@@ -474,57 +426,39 @@ XStoreName (
 }
 ```
 
-As can be seen from the code snippet, the function we just called is a convenient wrapper that makes the Xlib code easier to read. The display and window handle arguments are easy to see, the new ones are `Atom` macros,`XA_WM_NAME` and `XA_STRING`, which are defined in the standard [header](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Standard_Header_Files) `X11/Xatom.h`, that help identify the property name and the type of the property. 
-The underlying size of the `Atom` is platform dependent (either 32 or 64-bit integer). In this case the name of the window and the string type. 
-The magic number `8` tells the server that the property should be interpreted in chunks of 8-bits which make sense for strings. 
-The `PropModeReplace` instructs the server to replace whatever it had stored for that property.
-If the name that we provide is a NULL pointer or if its length exceeds the maximum
-storage size it returns zero to indicate that an error has occurred. This behavior is not explicitly mentioned
-in the man page; however, the official [Xlib documentation](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Errors) states that zero status is used to hint errors. In this case it is up for the client
-application to check the status and up to the developer to determine what was the cause. This is a good
-example that the source code itself is the ultimate documentation.
+As can be seen from the code snippet, the function we just called is a convenient wrapper that makes the Xlib code easier to read. The display and window handle arguments are easy to see, the new ones are `Atom` macros,`XA_WM_NAME` and `XA_STRING`, which are defined in the standard [header](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Standard_Header_Files) `X11/Xatom.h`, that help identify the property name and the type of the property.  The underlying size of the `Atom` is platform dependent (either 32 or 64-bit integer). In this case the name of the window and the string type.  The magic number `8` tells the server that the property should be interpreted in chunks of 8-bits which make sense for strings.  The `PropModeReplace` instructs the server to replace whatever it had stored for that property.  If the name that we provide is a NULL pointer or if its length exceeds the maximum storage size it returns zero to indicate that an error has occurred. This behavior is not explicitly mentioned in the man page; however, the official [Xlib documentation](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Errors) states that zero status is used to hint errors. In this case it is up for the client application to check the status and up to the developer to determine what was the cause. This is a good example that the source code itself is the ultimate documentation.
 
-The stored name remains in the server until the it receives a request to destroy the window, it is not
-stored on the client side.
 
-It is important to note that to make the window visible we will need to make a mapping request, and
-that is the topic of the next section.
+The stored name remains in the server until the it receives a request to destroy the window, it is not stored on the client side.
+
+
+It is important to note that to make the window visible we will need to make a mapping request, and that is the topic of the next section.
+
 
 ## <a id="subsection-7d-mapping-the-window"></a>Subsection 7-D: Mapping the Window
 
-To make our game window visible, we need to add a window mapping request to the X Server. The
-Xlib function that allows us to place that request is [`XMapWindow()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XMapWindow). But before doing that
-we have to modify the attributes of our game window so that it responds to Expose events.
+To make our game window visible, we need to add a window mapping request to the X Server. The Xlib function that allows us to place that request is [`XMapWindow()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XMapWindow). But before doing that we have to modify the attributes of our game window so that it responds to Expose events.
 
-By design, the X Server will not send events unless the client application requests them. From the
-context of the ongoing discussion if our game window is not configured to handle (graphics) Expose events
-the server will not send any.
-The interested reader might want to consult this
-[resource](https://tronche.com/gui/x/xlib/window/attributes/) for verification.
-So, if we were to call the function that looks for events (right now without changing the window attributes)
-the call would block until the specific event is received from the server. It is not hard to see that
-the server will not send any such event because we have not requested that from the server and so the client
-application will hang there indefinitely (a deadlock).
 
-To change the attributes of our game window we must call [`XChangeWindowAttributes()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XChangeWindowAttributes) with an instance of the
-[`XSetWindowAttributes`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Window_Attributes) data structure. For the objective of making the window ready for graphics display
-all that we need to do is to tell the X Server that we want
-to respond to graphics exposure events and therefore we must set the `event_mask` field
-with the `ExposureMask` in this way:
+By design, the X Server will not send events unless the client application requests them. From the context of the ongoing discussion if our game window is not configured to handle (graphics) Expose events the server will not send any.  The interested reader might want to consult this [resource](https://tronche.com/gui/x/xlib/window/attributes/) for verification.  So, if we were to call the function that looks for events (right now without changing the window attributes) the call would block until the specific event is received from the server. It is not hard to see that the server will not send any such event because we have not requested that from the server and so the client application will hang there indefinitely (a deadlock).
+
+
+To change the attributes of our game window we must call [`XChangeWindowAttributes()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XChangeWindowAttributes) with an instance of the [`XSetWindowAttributes`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Window_Attributes) data structure. For the objective of making the window ready for graphics display all that we need to do is to tell the X Server that we want to respond to graphics exposure events and therefore we must set the `event_mask` field with the `ExposureMask` in this way:
+
 
 ```c
 XSetWindowAttributes template = {};
 template.event_mask = ExposureMask;
 ```
 
-It is worth mentioning that if we wanted to capture user input from the keyboard we would bitwise OR
-the event mask with the `KeyPressMask` and `KeyReleaseMask` as in this example:
+It is worth mentioning that if we wanted to capture user input from the keyboard we would bitwise OR the event mask with the `KeyPressMask` and `KeyReleaseMask` as in this example:
+
 
 ```c
 template.event_mask = ExposureMask | KeyPressMask | KeyReleaseMask;
 ```
 
-Note that these [event-masks](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Event_Masks) are actually bitmasks and they can be found in `/usr/include/X11/X.h`:
+Note that these [event-masks](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Event_Masks) are actually bitmasks and they can be found in `/usr/include/X11/X.h`: 
 
 ```c
 #define NoEventMask                     0L
@@ -533,8 +467,8 @@ Note that these [event-masks](https://www.x.org/releases/current/doc/libX11/libX
 #define ExposureMask                    (1L<<15)
 ```
 
-Just for displaying our game window we only need to set the `event_mask` with the `ExposureMask` and
-nothing else, really (a future post will address user input).
+Just for displaying our game window we only need to set the `event_mask` with the `ExposureMask` and nothing else, really (a future post will address user input).
+
 
 The function [`XChangeWindowAttributes()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XChangeWindowAttributes) enables us to change the window attributes, which has the following signature:
 
@@ -547,18 +481,14 @@ int XChangeWindowAttributes(
 );
 ```
 
-It takes the usual display pointer and window id,
-a bitmask that corresponds to the window attributes that we want to change, and a pointer
-to the `XSetWindowAttributes` data structure.
-Because the only thing that we want to tell the server is about the events the game window will respond
-to we only need to pass the `CWEventMask` bitmask, this one is also defined in the `<X11/X.h>` header:
+It takes the usual display pointer and window id, a bitmask that corresponds to the window attributes that we want to change, and a pointer to the `XSetWindowAttributes` data structure.  Because the only thing that we want to tell the server is about the events the game window will respond to we only need to pass the `CWEventMask` bitmask, this one is also defined in the `<X11/X.h>` header:
+
 
 ```c
 #define CWEventMask             (1L<<11)
 ```
 
-You may also find it worthwhile to read about Xlib's window attributes
-[here](https://tronche.com/gui/x/xlib/window/attributes/).
+You may also find it worthwhile to read about Xlib's [window attributes](https://tronche.com/gui/x/xlib/window/attributes/).
 
 The call in our code would look like this:
 
@@ -566,17 +496,15 @@ The call in our code would look like this:
 XChangeWindowAttributes(display, window, CWEventMask, &template);
 ``` 
 
-Now we are in a good position to place the request of mapping the game window to the X Server to
-mark it as eligible for display via the `XMapWindow`.
-The function takes as arguments our display and Window Id:
+Now we are in a good position to place the request of mapping the game window to the X Server to mark it as eligible for display via the `XMapWindow`.  The function takes as arguments our display and Window Id:
+
 
 ```c  
 XMapWindow(display, window);
 ```
 
-It's worth noting that at this point we are still adding requests to our display structure locally, the
-X Server is unaware of our intentions until we call `XWindowEvent` to wait for the expose
-event so that our game window becomes visible. This can be confirmed by looking at the display data:
+It's worth noting that at this point we are still adding requests to our display structure locally, the X Server is unaware of our intentions until we call `XWindowEvent` to wait for the expose event so that our game window becomes visible. This can be confirmed by looking at the display data:
+
 
 ```gdb
 (gdb) p *display
@@ -596,10 +524,8 @@ $2 = {
 }
 ```
 
-We can see that the sequence number of last request read has not mutated but the request sequence number
-has increased to 10 after calling [`XMapWindow()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XMapWindow). We have requested a name for our game window, 
-requested attributes change, and performed a window mapping request; thus, the increment in the
-request sequence number adds up perfectly.
+We can see that the sequence number of last request read has not mutated but the request sequence number has increased to 10 after calling [`XMapWindow()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XMapWindow). We have requested a name for our game window, requested attributes change, and performed a window mapping request; thus, the increment in the request sequence number adds up perfectly.
+
 
 ## <a id="subsection-7e-expose-events"></a>Subsection 7-E: Expose Events
 
