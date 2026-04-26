@@ -20,10 +20,6 @@ FUTURE:
 - ALSO LINK THE POST ITSELF TO YOUR GITHUB FOR SEO
 
 TODO:
-- MAKE SURE THAT IT IS CLEAR THAT UNIX SOCKETS ARE USED WHEN DISPLAY IS :0
-  AND TCP/IP EVEN IF 127.0.0.1:0 IS LOCALHOST AND THIS IS IMPORTANT FOR PERFORMANCE;
-  THIS PASSING NULL TO XOPENDISPLAY IS NOT ONLY FOR PORTABILITY BUT FOR PERFORMANCE
-  IN OUR CONTEXT OF HANDMADE HERO.
 - TALK ABOUT XEVENT STRUCT REFERENCE THE SPECS
 - UPDATE TAGS IN POSTING SITE
 - PROOFREAD THE POST IN THE PLATFORM
@@ -319,7 +315,7 @@ The file descriptor of the socket is stored in the Display structure. I am menti
 From the X Server we also get valuable information about the screens such as the default dimensions (width and height), the values of the white and black pixels, the screen depth, and the visual information.  In particular the visual info stores the RGB masks so that we know what the RGB layout that the X Server expects for packing the pixel data; otherwise, the colors that you see on the screen are not going to be what you might expect.
 
 
-Xlib also gets the default screen by parsing the DISPLAY environment variable by calling dedicated libXCB utils. For example if `DISPLAY` is `:0` we know that the X Server is running in localhost and that the default screen number is zero. This matters to us because we use the default screen for our game window as you will see shortly.
+Xlib also gets the default screen by parsing the DISPLAY environment variable by calling dedicated libXCB utils. For example if `DISPLAY` is `:0` we know that the X Server is running in localhost and that the default screen number is zero. This matters because the communication to the X Server goes through a Unix socket; otherwise the communication falls back to TCP/IP. This matter to us because this tells us that X11 developers care about performance (communication over a Unix socket is preferrable when the client and server are in the same machine). Shortly you will see the default screen is zero by peeking at the `Display` structure.
 
 
 ## <a id="subsection-7c-creating-a-window-for-the-game"></a>Subsection 7-C: Creating a Window for the Game
