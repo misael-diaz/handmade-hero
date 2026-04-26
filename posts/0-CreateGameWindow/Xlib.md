@@ -744,24 +744,18 @@ Note that the `XLIB_ILLEGAL_ACCESS` definition has been excluded from the source
 
 ## <a id="subsection-7j-compilation"></a>Subsection 7-J: Compilation
 
-For simplicity we have opted to write all the source code in a single source file `linux_handmade.c`
-that goes with the convention established by Casey in Handmade Hero to prefix the platform name
-for the platform layer code.
+For simplicity we have opted to write all the source code in a single source file `linux_handmade.c` that goes with the convention established by Casey in Handmade Hero to prefix the platform name for the platform layer code.
+
 
 ```sh
 gcc -std=gnu99 -Wall -g -Og -gdwarf-4 linux_handmade.c -o linux-handmade.bin -lX11
 ```
 
-where we are telling the compiler that we want our code to conform to the `C99` standard with GNU extensions, this is so that we can initialize structs the way Casey did on the stream; we are also asking the compiler to enable all warnings, generate debugging symbols in
-the DWARF version 4 format that `valgrind` (memcheck tool) understands, and
-apply optimizations that will not interfere with the debugging session. The last one `-lX11` is for the linker
-so that our code gets dynamically linked with Xlib.
+where we are telling the compiler that we want our code to conform to the `C99` standard with GNU extensions, this is so that we can initialize structs the way Casey did on the stream; we are also asking the compiler to enable all warnings, generate debugging symbols in the DWARF version 4 format that `valgrind` (memcheck tool) understands, and apply optimizations that will not interfere with the debugging session. The last one `-lX11` is for the linker so that our code gets dynamically linked with Xlib.
 
-It's important to mention that Casey uses a batch file to compile the source code and that's what I also
-did because my intention is to experience cross-platform development. To have a consistent build
-I am currently using a Makefile that can be used for compiling the source in Windows (via MinGW) and Linux.
-The advantage of using a Makefile is that one can extend it for other platforms -- "one Makefile
-to build them all".
+
+It's important to mention that Casey uses a batch file to compile the source code and that's what I also did because my intention is to experience cross-platform development. To have a consistent build I am currently using a Makefile that can be used for compiling the source in Windows (via MinGW) and Linux.  The advantage of using a Makefile is that one can extend it for other platforms -- "one Makefile to build them all".
+
 
 ## <a id="subsection-7k-running-the-game"></a>Subsection 7-K: Running the Game
 
@@ -771,17 +765,13 @@ To run the game from the command-line:
 ./linux-handmade.bin
 ```
 
-where the dot slash (`./`) prefix tells the shell to look for the executable in the current directory. This is important because if you are new
-to Linux, you don't know that commands and executables must be in the PATH in order to run them.
-For those executable that are not in the path the dot slash prefix is required as in this case.
+where the dot slash (`./`) prefix tells the shell to look for the executable in the current directory. This is important because if you are new to Linux, you don't know that commands and executables must be in the PATH in order to run them.  For those executable that are not in the path the dot slash prefix is required as in this case.
+
 
 ## <a id="subsection-7l-checking-memory-leaks-with-valgrind"></a>Subsection 7-L: Checking Memory Leaks with Valgrind
 
-Valgrind is a tool suite for debugging and profiling programs. I use it often to check for memory leaks
-at the end of the program. In the context of our simple client application we are making sure that
-by calling `XCloseDisplay()` all the internals allocated in the heap memory are freed. In Xlib, there
-are some resources that we need to free ourselves by calling `XFree`; there are others and so it
-is important to check the official documentation for the right function call to free a resource.
+Valgrind is a tool suite for debugging and profiling programs. I use it often to check for memory leaks at the end of the program. In the context of our simple client application we are making sure that by calling `XCloseDisplay()` all the internals allocated in the heap memory are freed. In Xlib, there are some resources that we need to free ourselves by calling `XFree`; there are others and so it is important to check the official documentation for the right function call to free a resource.
+
 
 To use the tool to check for memory leaks use the following command:
 
@@ -789,8 +779,7 @@ To use the tool to check for memory leaks use the following command:
 valgrind -s ./linux-handmade.bin
 ```
 
-where the `-s` flag informs valgrind that we want a list of detected (and suppressed) errors so
-that we can address them if any. 
+where the `-s` flag informs valgrind that we want a list of detected (and suppressed) errors so that we can address them if any.
 
 The output for this code is the following:
 
@@ -812,58 +801,36 @@ game paused, press enter to continue
 ==17063== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 ```
 
-We can see that in the heap summary the system reports 91 allocations (on the heap) and 91 frees and so
-this means that by calling `XCloseDisplay()` we have made sure that the client application releases
-its memory to the operating system. Even if we don't do that the operating system will reclaim the
-memory anyways but it's a good practice to do so. The benefit of doing these checks periodically during
-development is that you can find errors related to memory more easily, reducing the time needed to
-find the faulty line of code.
+We can see that in the heap summary the system reports 91 allocations (on the heap) and 91 frees and so this means that by calling `XCloseDisplay()` we have made sure that the client application releases its memory to the operating system. Even if we don't do that the operating system will reclaim the memory anyways but it's a good practice to do so. The benefit of doing these checks periodically during development is that you can find errors related to memory more easily, reducing the time needed to find the faulty line of code.
 
-I would like to mention that leaving out `XDestroyWindow()` from the client code would not affect
-the total heap usage results. The reason for that is that the memory for the window is allocated
-by the server; this request instructs the server to destroy the window and its properties. And even
-if we miss the call (due to a crash for example) the server will free the resources allocated to
-the client and that of course includes the window.
+
+I would like to mention that leaving out `XDestroyWindow()` from the client code would not affect the total heap usage results. The reason for that is that the memory for the window is allocated by the server; this request instructs the server to destroy the window and its properties. And even if we miss the call (due to a crash for example) the server will free the resources allocated to the client and that of course includes the window.
 
 ## Section 8: Conclusions
 
-In this post we delved into some of the Xlib internals to close the gap between the information presented in the
-official documentation and what we can understand from reading it in order to be in a better position to
-build the foundation of our game based on [Handmade Hero](handmadehero.org). As a result of doing this exercise we
-now have a better idea of what happens behind the scenes, we no longer perceive Xlib code to be a "black box"
-through which we can make a window visible in our desktop environment that a user can interact with.
+In this post we delved into some of the Xlib internals to close the gap between the information presented in the official documentation and what we can understand from reading it in order to be in a better position to build the foundation of our game based on [Handmade Hero](handmadehero.org). As a result of doing this exercise we now have a better idea of what happens behind the scenes, we no longer perceive Xlib code to be a "black box" through which we can make a window visible in our desktop environment that a user can interact with.
+
 
 These are some of the most important achievements and things that we learned from going through this exercise:
 
-- We have an initial idea of what the platform layer of the game (for graphics display) with Xlib might look like.
 
-- In the process we
-learned that Xlib has a client-server architecture that enables multiple client applications to draw to the
-screen (a shared resource) concurrently; it is the server that processes and resolves those requests to
-update the screen's framebuffer.
+- We have an initial idea of what the platform layer of the game (for graphics display) with Xlib might look like.  
 
-- We also found out that in Xlib the display refers to the
-connection to the X Server which manages the screens
-(for graphics output) along with the peripherals such
-as the keyboard, mouse, or game console controller (for user input).
+- In the process we learned that Xlib has a client-server architecture that enables multiple client applications to draw to the screen (a shared resource) concurrently; it is the server that processes and resolves those requests to update the screen's framebuffer.
 
-- We have realized that Xlib provides convenient
-macros for getting at the screen, visuals, etc. in a portable way. We have found that under the hood these macros
-cast the "opaque" display structure into a known type (private display) and subsequently dereferenced
-to obtain,
-for example, the root window ID, screen dimensions, or the black pixel value for the screen.
-These macros enable developers to change Xlib internals while not breaking the
-existing client code.
 
-- Additionally, we learned that Xlib allocates the resources for the window on the server side and that the
-client
-code (our game) allocates the window resource Id (or handle).
+- We also found out that in Xlib the display refers to the connection to the X Server which manages the screens (for graphics output) along with the peripherals such as the keyboard, mouse, or game console controller (for user input).
 
-- We used the GNU debugger `gdb` to demonstrate that
-client applications batch their requests into an output buffer.
 
-- We also saw that Xlib commands that
-need synchronization such as `XWindowEvent` flush the output buffer and block until the server responds.
+- We have realized that Xlib provides convenient macros for getting at the screen, visuals, etc. in a portable way. We have found that under the hood these macros cast the "opaque" display structure into a known type (private display) and subsequently dereferenced to obtain, for example, the root window ID, screen dimensions, or the black pixel value for the screen.  These macros enable developers to change Xlib internals while not breaking the existing client code.
+
+
+- Additionally, we learned that Xlib allocates the resources for the window on the server side and that the client code (our game) allocates the window resource Id (or handle).
+
+
+- We used the GNU debugger `gdb` to demonstrate that client applications batch their requests into an output buffer.
+
+- We also saw that Xlib commands that need synchronization such as `XWindowEvent` flush the output buffer and block until the server responds.
 
 - To verify that our code has no memory leaks we used valgrind's memcheck tool.
 
