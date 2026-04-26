@@ -20,7 +20,6 @@ FUTURE:
 
 TODO:
 - UPDATE TAGS IN POSTING SITE
-- IMPROVE REASONS FOR STICKING WITH XLIB
 
 ## Handmade Hero: A Systems Programming Odyssey
 
