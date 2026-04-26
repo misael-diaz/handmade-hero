@@ -26,7 +26,6 @@ TODO:
   IN OUR CONTEXT OF HANDMADE HERO.
 - TALK ABOUT XEVENT STRUCT REFERENCE THE SPECS
 - UPDATE TAGS IN POSTING SITE
-- FIX MISLEADING COMMENT ABOUT NO COMMENTS IN SOURCE CODE BECAUSE THERE ARE COMMENTS IN IT.
 - PROOFREAD THE POST IN THE PLATFORM
 - HAVE CHECKED THAT LINKS WORK
 
@@ -652,7 +651,7 @@ As mentioned in the preceding [section](#Destroying-the-Window) the X Server per
 
 ## <a id="subsection-7i-initial-platform-layer-of-the-game"></a>Subsection 7-I: Initial Platform Layer of the Game
 
-Here is the complete source code to create the game window, the code should work on both X11-based and Wayland-based Linux desktops. Normally, I write comments to write about things that are not evident; however, for the sourcce code to be useful to developers that are new to Xlib I have added some notes. As you familiarize with Xlib, you will see that the X client code reads by itself. If you bear in mind that many of the calls just push requests to the output buffer on the client side, and that few calls like `XWindowEvent()` flush the output buffer and block until the server responds, you will see that developing X client applications is easier than you think. If in doubt about what functions call block you are recommended to read "The Specs" or the man pages.
+Here is the complete source code to create the game window, the code should work on both X11-based and Wayland-based Linux desktops. Normally, I write comments to inform about things that are not evident. (As Casey mentioned in the series various times "comments are always outdated" and so the source code is the source of thruth about what the code does.) However, for the source code posted in this section to be useful to developers that are new to Xlib I have added some notes. As you familiarize with Xlib, you will see that the X11 client code reads by itself. If you bear in mind that many of the calls just push requests to the output buffer on the client side, and that few calls like `XWindowEvent()` flush the output buffer and block until the server responds, you will see that developing X client applications is easier than you think. If in doubt about what functions call block you are recommended to read "The Specs" or the man pages.
 
 ```c
 /* 
@@ -746,8 +745,6 @@ int main() {
     return 0;
 }
 ```
-
-As you can see the Xlib API is quite readable and this is why I have not added comments to the source code. As stressed in the stream "comments are always outdated". In this case comments should not be used to tell what the Xlib function does, that's the purpose of the documentation (man pages).  And this is why I recommended you to install and consult Xlib's man pages.
 
 
 Note that the `XLIB_ILLEGAL_ACCESS` definition has been excluded from the source code to reinforce that it should not be used except when you have strong reasons for looking at Xlib's internals, such as debugging and learning purposes. Use Xlib's macros to write portable and readable code.
