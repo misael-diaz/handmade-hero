@@ -732,7 +732,7 @@ Regardless of the platform you should be able to see the game window.
 ## <a id="subsection-7f-pausing-the-game"></a>Subsection 7-F: Pausing the Game
 
 One thing that you want to do is to pause the game to be able to see the window on your screen and this
-can be done in simply by requesting a read from standard input:
+can be done simply by requesting a read from standard input:
 
 ```c
 char c = 0;
@@ -740,8 +740,8 @@ fprintf(stdout, "%s", "game paused, press enter to continue\n");
 fread(&c, sizeof(c), 1, stdin);
 ```
 
-where the `fprintf` shows a instructive message to the user (the game is paused and press enter to
-continue) on standard output and `fread` is used to read a byte from the input stream `stdin`.
+where the `fprintf` shows an instructive message to the user (the game is paused and press enter to
+continue) on standard output. And the function `fread` is used to read a byte from the input stream `stdin`.
 The `fread` call
 is a blocking call and that means that the code will not proceed until a character has been read,
 effectively pausing our game. Note that the variable `c` is just a placeholder for the byte to be read.
