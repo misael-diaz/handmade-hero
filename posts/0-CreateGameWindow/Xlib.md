@@ -545,8 +545,10 @@ In the context of writing the code that makes the game window visible all we nee
 int XWindowEvent(Display *display, Window w, long event_mask, XEvent *event_return);
 ```
 
-again we have the display and the window id, we also need to pass the event-mask `ExposureMask` of the Expose event, and a pointer to an `XEvent` data structure:
+again we have the display and the window id, we also need to pass the event-mask `ExposureMask` of the Expose event, and a pointer to an `XEvent` data structure. It is interesting to see that the `XEvent` is an union of all events and that the X11 protocol reserves the first four bytes to store the type of the event. This is
+a clever way to send different events consistently over the network.
 
+The code that we need to write to wait for the game window to become visible is the following based on what we have found about the X11 protocol:
 
 ```c
 XEvent ev = {};
