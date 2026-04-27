@@ -806,7 +806,7 @@ game paused, press enter to continue
 ==17063== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 ```
 
-We can see that in the heap summary the system reports 91 allocations (on the heap) and 91 frees and so this means that by calling `XCloseDisplay()` we have made sure that the client application releases its memory to the operating system. Even if we don't do that the operating system will reclaim the memory anyways but it's a good practice to do so. The benefit of doing these checks periodically during development is that you can find errors related to memory more easily, reducing the time needed to find the faulty line of code.
+We can see that in the heap summary the system reports 91 allocations and 91 frees and so this means that by calling `XCloseDisplay()` we have made sure that the client application releases its memory to the operating system. Even if we don't do that the operating system will reclaim the memory anyways but it's a good practice to do so. The benefit of doing these checks periodically during development is that you can find errors related to memory more easily, reducing the time needed to find the faulty line of code.
 
 
 I would like to mention that leaving out `XDestroyWindow()` from the client code would not affect the total heap usage results. The reason for that is that the memory for the window is allocated by the server; this request instructs the server to destroy the window and its properties. And even if we miss the call (due to a crash for example) the server will free the resources allocated to the client and that of course includes the window.
