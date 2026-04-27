@@ -20,6 +20,7 @@ FUTURE:
 - ALSO LINK THE POST ITSELF TO YOUR GITHUB FOR SEO
 
 TODO:
+- FIX INDENTATION OF WHILE BLOCK IN SRC
 - FIX BROKEN LINKS IN TEXT
 - PROOFREAD THE POST IN THE PLATFORM
 
@@ -714,7 +715,7 @@ int main() {
     compatibility with X11-based Linux desktops. The client waits for the Expose event to happen so that
     the game window becomes visible. Note that without blocking the client by reading from standard
     input the game window may not have time to show up before we close the connection to the server.
-    It is recommended to put the throttle the CPU by sleeping for a suitable time interval at the end
+    It is recommended to throttle the CPU by sleeping for a suitable time interval at the end
     of each while-loop cycle; otherwise, many CPU cycles will be wasted on checking window events
     too frequently.
 */
