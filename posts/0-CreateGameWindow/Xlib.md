@@ -21,7 +21,6 @@ FUTURE:
 
 TODO:
 - FIX INDENTATION OF WHILE BLOCK IN SRC
-- FIX BROKEN LINKS IN TEXT
 - PROOFREAD THE POST IN THE PLATFORM
 
 ## Handmade Hero: A Systems Programming Odyssey
@@ -720,10 +719,10 @@ int main() {
     too frequently.
 */
     while (1) {
-	XEvent ev = {};
-	if (XCheckWindowEvent(display, window, ExposureMask, &ev)) {
+		XEvent ev = {};
+		if (XCheckWindowEvent(display, window, ExposureMask, &ev)) {
 		    break;
-	}
+		}
     }
 
     char c = 0;
