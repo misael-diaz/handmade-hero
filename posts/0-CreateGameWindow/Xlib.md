@@ -524,7 +524,7 @@ $2 = {
 }
 ```
 
-We can see that the sequence number of last request read has not mutated but the request sequence number has increased to 10 after calling [`XMapWindow()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XMapWindow). We have requested a name for our game window, requested attributes change, and performed a window mapping request; thus, the increment in the request sequence number adds up perfectly.
+We can see that the sequence number of last request read has not mutated but the request sequence number has increased to 10 after calling [`XMapWindow()`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#XMapWindow). We have requested a name for our game window, requested attributes change, and performed a window mapping request (explaining the sequence number increment).
 
 
 ## <a id="subsection-7e-expose-events"></a>Subsection 7-E: Expose Events
