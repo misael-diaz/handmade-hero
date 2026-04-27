@@ -759,7 +759,7 @@ gcc -std=gnu99 -Wall -g -Og -gdwarf-4 linux_handmade.c -o linux-handmade.bin -lX
 where we are telling the compiler that we want our code to conform to the `C99` standard with GNU extensions, this is so that we can initialize structs the way Casey did on the stream; we are also asking the compiler to enable all warnings, generate debugging symbols in the DWARF version 4 format that `valgrind` (memcheck tool) understands, and apply optimizations that will not interfere with the debugging session. The last one `-lX11` is for the linker so that our code gets dynamically linked with Xlib.
 
 
-It's important to mention that Casey uses a batch file to compile the source code and that's what I also did because my intention is to experience cross-platform development. To have a consistent build I am currently using a Makefile that can be used for compiling the source in Windows (via MinGW) and Linux.  The advantage of using a Makefile is that one can extend it for other platforms -- "one Makefile to build them all".
+It's important to mention that Casey uses a batch file to compile the source code and that's what I also did at first when I was working solely on the Win32 implementation (I started following along on Windows). However, to have a consistent build I am currently using a Makefile that can be used for compiling the source in Windows (via MinGW) and Linux.  The advantage of using a Makefile is that one can extend it for other platforms&mdash;"one Makefile to build them all".
 
 
 ## <a id="subsection-7k-running-the-game"></a>Subsection 7-K: Running the Game
