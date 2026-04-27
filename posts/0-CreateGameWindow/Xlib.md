@@ -750,6 +750,7 @@ Note that the `XLIB_ILLEGAL_ACCESS` definition has been excluded from the source
 
 For simplicity we have opted to write all the source code in a single source file `linux_handmade.c` that goes with the convention established by Casey in Handmade Hero to prefix the platform name for the platform layer code.
 
+The command-line for compiling the code with GCC is the following:
 
 ```sh
 gcc -std=gnu99 -Wall -g -Og -gdwarf-4 linux_handmade.c -o linux-handmade.bin -lX11
