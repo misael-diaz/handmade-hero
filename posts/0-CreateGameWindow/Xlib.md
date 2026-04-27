@@ -503,7 +503,7 @@ Now we are in a good position to place the request of mapping the game window to
 XMapWindow(display, window);
 ```
 
-It's worth noting that at this point we are still adding requests to our display structure locally, the X Server is unaware of our intentions until we call `XWindowEvent` to wait for the expose event so that our game window becomes visible. This can be confirmed by looking at the display data:
+It's worth noting that at this point we are still adding requests to our display structure locally, the X Server is unaware of our intentions until we call `XWindowEvent` to wait for the Expose event so that our game window becomes visible. This can be confirmed by looking at the display data:
 
 
 ```gdb
