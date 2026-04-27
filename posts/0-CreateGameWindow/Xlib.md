@@ -19,10 +19,6 @@ FUTURE:
 - LINK THIS POST FROM GITHUB FOR SEO
 - ALSO LINK THE POST ITSELF TO YOUR GITHUB FOR SEO
 
-TODO:
-- FIX INDENTATION OF WHILE BLOCK IN SRC
-- PROOFREAD THE POST IN THE PLATFORM
-
 ## Handmade Hero: A Systems Programming Odyssey
 
 <p><img src="https://raw.githubusercontent.com/misael-diaz/handmade-hero/refs/heads/posts/posts/0-CreateGameWindow/img/x11-arch-code-window-cover.png" alt="Architecture diagram of X11 Server-Client communication next to C code for Xlib window creation." width="100%"></p>
